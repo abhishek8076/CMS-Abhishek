@@ -1,7 +1,12 @@
-// import Link from "@mui/material/Link";
-import {Box,Container} from "@mui/material";
-import 'bootstrap/dist/css/bootstrap.css';
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 import { Link } from "react-router-dom";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
 
 export default function Login() {
   const handleSubmit = (event) => {
@@ -12,11 +17,6 @@ export default function Login() {
       password: data.get("password"),
     });
   };
-  const handleClick =()=>{
-    <Link to='/'>
-      Dashboard
-    </Link>
-  }
 
   return (
     <Container component="main" maxWidth="sm">
@@ -32,36 +32,49 @@ export default function Login() {
           alignItems: "center",
         }}
       >
-    <form>
-
-  <div class="form-outline mb-4">
-    <input type="email" id="form2Example1" class="form-control" />
-    <label class="form-label" for="form2Example1">Email address</label>
-  </div>
-
- 
-  <div class="form-outline mb-4">
-    <input type="password" id="form2Example2" class="form-control" />
-    <label class="form-label" for="form2Example2">Password</label>
-  </div>
-
- 
-  <div class="row mb-4">
-    <div class="col d-flex justify-content-center">
-    
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
-        <label class="form-check-label" for="form2Example31"> Remember me </label>
-      </div>
-    </div>
-
-   
-  </div>
-
- <Link to="/">
-  <button type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
-  </Link>
-</form>
+        <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+          />
+          <TextField
+            margin="normal"
+            
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+          />
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Remember me"
+          />
+           <Link to="/" style={{ textDecoration: "none" }}>
+          <Button
+            type="button"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign In
+          </Button>
+          </Link>
+          <Grid container>
+           
+           
+          </Grid>
+        </Box>
       </Box>
     </Container>
   );
