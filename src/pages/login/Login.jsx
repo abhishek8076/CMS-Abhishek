@@ -9,51 +9,42 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useState } from "react";
 import axios from "axios";
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import * as Yup from 'yup';
+import authService from '../../utils/auth.service';
+
 
 export default function Login() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
-  async function loginUser(credentials) {
-    return fetch('https://www.mecallapi.com/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(credentials)
-    })
-      .then(data => data.json())
-   }
-   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleLogin = () => {
-    // Your API endpoint URL for login
-    const apiUrl = 'https://localhost:7170/api/Login';
+  const schema = Yup.object().shape({
+    email: Yup.string().email().required(),
+    password: Yup.string().required()
+  });
 
-    // Data to be sent in the request body
-    const data = {
-      email: username,
-      password: password,
-    };
+  const { register, handleSubmit, formState: { errors, isDirty, isValid } } = useForm({
+    mode: 'all',
+    resolver: yupResolver(schema)
+  });
 
-    // Make the API call using fetch or Axios
-    axios.post(apiUrl, data)
-      .then(response => {
-        // Handle the successful login response
-        console.log('Login successful:', response.data);
-        // You can store the user token or any relevant information in state, context, or local storage at this point.
-      })
-      .catch(error => {
-        // Handle login error
-        console.error('Login failed:', error);
-      });
-  };
+  const handleValidSubmit = async (data) => {
+    setIsSubmitted(true)
+    try {
+      const result = await authService.login(data);
+      if (result.data) {
+        navigate('/profile');
+      }
+    } catch (error) {
+      toast.error(error.data.message);
+    }
+    setIsSubmitted(false)
+  }
+
+
 
   return (
     <Container component="main" maxWidth="sm">
@@ -72,7 +63,8 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box component="form"  noValidate sx={{ mt: 1 }}>
+        <form onSubmit={handleSubmit(handleValidSubmit)}>
+        <Box  noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             
@@ -82,7 +74,7 @@ export default function Login() {
             name="email"
             autoComplete="email"
             autoFocus
-            onChange={e => setUsername(e.target.value)}
+            {...register('email')}
           />
           <TextField
             margin="normal"
@@ -93,29 +85,31 @@ export default function Login() {
             type="password"
             id="password"
             autoComplete="current-password"
-            onChange={e => setPassword(e.target.value)}
+            {...register('password')}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
-           <Link to="/" style={{ textDecoration: "none" }}>
+          
           <Button
-            type="button"
+            type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            onClick={handleLogin}
+            disabled={isSubmitted || !isDirty || !isValid}
           >
             Sign In
           </Button>
-          </Link>
+         
           <Grid container>
            
            
           </Grid>
         </Box>
+        </form>
       </Box>
+     
     </Container>
   );
 }

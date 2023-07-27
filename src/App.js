@@ -11,6 +11,7 @@ import { DarkModeContext } from "./context/darkModeContext";
 import Sidebar from "./components/sidebar/Sidebar";
 import Navbar from "./components/navbar/Navbar";
 import { Cms } from "./pages/CMS/Cms";
+import AuthGuard from "./services/auth.guard";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -19,9 +20,10 @@ function App() {
     <div className={darkMode ? "app dark" : "app"}>
       <BrowserRouter>
         <Routes>
-          <Route path="/">
-            <Route index element={<Home />} />
-            <Route path="login" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+
+          <Route element={<AuthGuard />}>
+            <Route path="/" element={<Home />} />
             <Route path="cms" element={<Cms />} />
             <Route path="users">
               <Route index element={<List />} />
@@ -40,6 +42,8 @@ function App() {
               />
             </Route>
           </Route>
+          {/* Add a catch-all route for 404 */}
+          {/* <Route path='*' element={<NotFoundComponent />} /> */}
         </Routes>
       </BrowserRouter>
     </div>
