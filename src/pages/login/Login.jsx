@@ -7,6 +7,8 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { useState } from "react";
+import axios from "axios";
 
 export default function Login() {
   const handleSubmit = (event) => {
@@ -16,6 +18,41 @@ export default function Login() {
       email: data.get("email"),
       password: data.get("password"),
     });
+  };
+  async function loginUser(credentials) {
+    return fetch('https://www.mecallapi.com/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(credentials)
+    })
+      .then(data => data.json())
+   }
+   const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = () => {
+    // Your API endpoint URL for login
+    const apiUrl = 'https://localhost:7170/api/Login';
+
+    // Data to be sent in the request body
+    const data = {
+      email: username,
+      password: password,
+    };
+
+    // Make the API call using fetch or Axios
+    axios.post(apiUrl, data)
+      .then(response => {
+        // Handle the successful login response
+        console.log('Login successful:', response.data);
+        // You can store the user token or any relevant information in state, context, or local storage at this point.
+      })
+      .catch(error => {
+        // Handle login error
+        console.error('Login failed:', error);
+      });
   };
 
   return (
@@ -35,7 +72,7 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form"  noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             
@@ -45,6 +82,7 @@ export default function Login() {
             name="email"
             autoComplete="email"
             autoFocus
+            onChange={e => setUsername(e.target.value)}
           />
           <TextField
             margin="normal"
@@ -55,6 +93,7 @@ export default function Login() {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={e => setPassword(e.target.value)}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -66,6 +105,7 @@ export default function Login() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            onClick={handleLogin}
           >
             Sign In
           </Button>
