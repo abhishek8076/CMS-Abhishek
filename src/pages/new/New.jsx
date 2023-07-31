@@ -9,9 +9,14 @@ import axios  from "axios";
 
 const New = ({ inputs, title }) => {
   const [formData, setFormData] = useState({
-    username: '',
+    name: '',
     email: '',
-    password: ''
+    mobile_no: '',
+    address:'jhkjhh',
+    usertype:'1',
+    createdby:'admin',
+    password:'B23@321',
+    ip_address:'23332232'
   });
 
   const handleChange = (event) => {
@@ -33,9 +38,9 @@ const New = ({ inputs, title }) => {
 
         // Optionally, reset the form after successful submission
         setFormData({
-          usernamename: '',
+         name: '',
           email: '',
-          password: ''
+          mobile_no: ''
         });
       })
       .catch((error) => {
@@ -70,8 +75,8 @@ const New = ({ inputs, title }) => {
                                  id="form3Example1c"
                                   className="form-control"
                                    style={{border : '2px solid black'}}
-                                   name="username"
-                                   value={formData.username}
+                                   name="name"
+                                   value={formData.name}
                                    onChange={handleChange}
                                    placeholder="Name"
                                    />
@@ -111,12 +116,12 @@ const New = ({ inputs, title }) => {
                               <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
                               <div className="form-outline flex-fill mb-0">
                                 <label className="form-label" for="form3Example4c">Mobile No</label>
-                                <input type="password"
+                                <input type="text"
                                  id="form3Example4c"
                                   className="form-control"
                                    style={{border : '2px solid black'}}
-                                   name="password"
-                                   value={formData.password}
+                                   name="mobile_no"
+                                   value={formData.mobile_no}
                                    onChange={handleChange}
                                    placeholder="Name"
                                     />
