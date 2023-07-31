@@ -27,10 +27,14 @@ const New = ({ inputs, title }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <>   <div>
+    <div className="home">
+       <Sidebar className='nav' style={{}} />
+       <div className="homeContainer">
+       <Navbar />
+       <form onSubmit={handleSubmit}>
       <div className="row ">
-        <Navbar/>
-        <Sidebar/>
+       
         <div className="col-lg-4 user-data">
         <div className="name">
         <label htmlFor="firstName">Username 
@@ -104,6 +108,11 @@ const New = ({ inputs, title }) => {
 
       </div>
     </form>
+       </div>
+       </div>
+     </div>
+    
+    </>
   );
 };
 
