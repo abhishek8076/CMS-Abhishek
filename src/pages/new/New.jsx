@@ -36,7 +36,7 @@ const New = ({ inputs, title }) => {
           <Navbar />
           <section style={{ backgroundColor: '#eee' }}>
             <div className="container">
-              <div className="row d-flex justify-content-center align-items-center h-100">
+              <div className="row d-flex justify-content-center align-items-center h-100" style={{ backgroundColor : "white" }}>
                 <div className="col-lg-12 col-xl-11">
                   <div className="card mt-5 mb-5 text-black" style={{ borderRadius: "25px",border: "none" }}>
                     <div className="card-body p-md-5">
