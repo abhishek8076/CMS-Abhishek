@@ -1,10 +1,10 @@
 import "./new.scss";
-import Sidebar from "../../components/sidebar/Sidebar";
-import Navbar from "../../components/navbar/Navbar";
+// import Sidebar from "../../components/sidebar/Sidebar";
+// import Navbar from "../../components/navbar/Navbar";
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
 import { useState } from "react";
 
-const New = ({ inputs, title }) => {
+const FoNewUserrm = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -29,8 +29,6 @@ const New = ({ inputs, title }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className="row ">
-        <Navbar/>
-        <Sidebar/>
         <div className="col-lg-4 user-data">
         <div className="name">
         <label htmlFor="firstName">Username 
@@ -107,4 +105,4 @@ const New = ({ inputs, title }) => {
   );
 };
 
-export default New;
+export default NewUser;
