@@ -5,13 +5,16 @@ import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUpload
 import { useState } from "react";
 // import 'bootstrap/dist/css/bootstrap. css';
 import 'bootstrap/dist/css/bootstrap.css';
+import axios from "axios";
 
 const New = ({ inputs, title }) => {
+  
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    message: '',
+    username: '',
+    usertype: '',
+    password: '',
+    address: '',
+    mobile:''
   });
 
   const handleChange = (e) => {
@@ -22,11 +25,31 @@ const New = ({ inputs, title }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Do something with the form data, such as sending it to a server
-    console.log(formData);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    // Call the API to submit the form data
+    axios.post('/api/user', formData)
+      .then((response) => {
+        console.log('Data submitted successfully!', response.data);
+        // Handle success, if needed
+
+        // Optionally, reset the form after successful submission
+        setFormData({
+          username: '',
+    password: '',
+    email: '',
+    address: '',
+    mobile:""
+        });
+      })
+      .catch((error) => {
+        console.error('Error submitting data:', error);
+        // Handle error, if needed
+      });
   };
+
+
 
   return (
     <>   <div>
@@ -43,55 +66,50 @@ const New = ({ inputs, title }) => {
                       <div className="row justify-content-center">
                         <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
-                          <form className="mx-1 mx-md-4">
+                <form className="mx-1 mx-md-4">
 
-                            <div className="d-flex flex-row align-items-center mb-4">
-                              <i className="fas fa-user fa-lg me-3 fa-fw"></i>
-                              <div className="form-outline flex-fill mb-0">
-                                <label className="form-label" for="form3Example1c">Username</label>
-                                <input type="text" id="form3Example1c" className="form-control" style={{border : '2px solid black'}}/>
-                              </div>
-                            </div>
+                  <div className="d-flex flex-row align-items-center mb-4">
+                    <i className="fas fa-user fa-lg me-3 fa-fw"></i>
+                    <div className="form-outline flex-fill mb-0">
+                      <label className="form-label" for="form3Example1c">Username</label>
+                      <input type="text" id="form3Example1c" className="form-control" />
+                    </div>
+                  </div>
 
-                            <div className="d-flex flex-row align-items-center mb-4">
-                              <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                              <div className="form-outline flex-fill mb-0">
-                                <label className="form-label" for="form3Example3c">Email</label>
-                                <input type="email" id="form3Example3c" className="form-control" style={{border : '2px solid black'}} />
-                              </div>
-                            </div>
+                  <div className="d-flex flex-row align-items-center mb-4">
+                    <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                    <div className="form-outline flex-fill mb-0">
+                      <label className="form-label" for="form3Example3c">Email</label>
+                      <input type="email" id="form3Example3c" className="form-control" />
+                    </div>
+                  </div>
 
-                            <div className="d-flex flex-row align-items-center mb-4">
-                              <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
-                              <div className="form-outline flex-fill mb-0">
-                                <label for="usertype">Usertype</label><br></br>
-                                <select id="usertype" name="usertype" style={{ width: '22vw',backgroundColor : "white", border : '2px solid black', padding : '6px', borderRadius:'8px', marginTop : '4px'}}>
-                                  <option value="Select">Select</option>
-                                  <option value="Superadmin">Superadmin</option>
-                                  <option value="Admin">Admin</option>
-                                  
-                                </select>
-                              </div>
-                            </div>
+                  <div className="d-flex flex-row align-items-center mb-4">
+                    <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
+                    <div className="form-outline flex-fill mb-0">
+                        <label className="form-label" for="form3Example4c">Usertype</label>
+                        <input type="password" id="form3Example4c" className="form-control" />
+                    </div>
+                  </div>
 
-                            <div className="d-flex flex-row align-items-center mb-4">
-                              <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
-                              <div className="form-outline flex-fill mb-0">
-                                <label className="form-label" for="form3Example4c">Mobile No</label>
-                                <input type="password" id="form3Example4c" className="form-control" style={{border : '2px solid black'}} />
-                              </div>
-                            </div>
-                            <div className="d-flex flex-row align-items-center mb-4">
-                              <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
-                              <div className="form-outline flex-fill mb-0">
-                                <label className="form-label" for="form3Example4c">Address</label>
-                                <input type="password" id="form3Example4c" className="form-control" style={{border : '2px solid black'}} />
-                              </div>
-                            </div>
+                  <div className="d-flex flex-row align-items-center mb-4">
+                    <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
+                    <div className="form-outline flex-fill mb-0">
+                      <label className="form-label" for="form3Example4c">Mobile No</label>
+                      <input type="password" id="form3Example4c" className="form-control" />
+                    </div>
+                  </div>
+                  <div className="d-flex flex-row align-items-center mb-4">
+                    <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
+                    <div className="form-outline flex-fill mb-0">
+                         <label className="form-label" for="form3Example4c">Address</label>
+                         <input type="password" id="form3Example4c" className="form-control" />
+                    </div>
+                  </div>
 
-                            <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                              <button type="button" className="btn btn-primary btn-lg">Register</button>
-                            </div>
+                  <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                    <button type="button" className="btn btn-primary btn-lg">Register</button>
+                  </div>
 
                           </form>
 
