@@ -11,41 +11,64 @@ import { useState } from "react";
 import axios from "axios";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
-import * as Yup from 'yup';
-import authService from '../../utils/auth.service';
+
+import apis from '../../utils/apiUrl.json'
+
 
 
 export default function Login() {
-  const navigate = useNavigate();
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const schema = Yup.object().shape({
-    email: Yup.string().email().required(),
-    password: Yup.string().required()
+  let navigate = useNavigate();
+  //  function loginView (){
+  const [user, setUser] = useState({
+      userName: "",
+      password: ""
   });
+  const [validation, setValidation] =useState([])
 
-  const { register, handleSubmit, formState: { errors, isDirty, isValid } } = useForm({
-    mode: 'all',
-    resolver: yupResolver(schema)
-  });
-
-  const handleValidSubmit = async (data) => {
-    setIsSubmitted(true)
-    try {
-      const result = await authService.login(data);
-      if (result.data) {
-        navigate('/profile');
-      }
-    } catch (error) {
-      toast.error(error.data.message);
-    }
-    setIsSubmitted(false)
+  function handleChange(event) {
+      const { name, value } = event.target;
+      setUser({ ...user, [name]: value });
+      console.log(user, name)
   }
+  const handleSubmit = async (user) => {
+      // api.login(user);
 
+      let validationArr = [];
 
-
+      if (!user.userName || user.userName == '') {
+          validationArr.push("UserName Required");
+      }
+      if (!user.password || user.password == '') {
+          validationArr.push("Password Required");
+      }
+      if (validationArr.length > 0) {
+          setValidation(validationArr);
+          return false;
+      }
+      else {
+          setValidation([]);
+          console.log(user, 'submitted')
+          let response = await apis.login(user)
+          if (response && response.data) {
+              if (response.data.statusCode == 200) {
+                  let dt = response.data.data
+                  if (dt) {
+                      sessionStorage.setItem("user", JSON.stringify(dt.user))
+                      sessionStorage.setItem("apiToken", dt.token)
+                      //  window['setUserFunc'](getUserProfile());
+                      navigate("/")
+                      alert("done");
+                  }
+              }
+              else if (response.data.statusCode == 401) {
+                  setValidation(["UserName or Password Not Matched"])
+              }
+          }
+          else {
+              alert("Unauthorised User")
+          }
+      }
+  }
   return (
     <Container component="main" maxWidth="sm">
       <Box
@@ -63,7 +86,7 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form onSubmit={handleSubmit(handleValidSubmit)}>
+        <form  >
         <Box  noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
@@ -74,7 +97,9 @@ export default function Login() {
             name="email"
             autoComplete="email"
             autoFocus
-            {...register('email')}
+            placeholder="Username"
+            onChange={(e) => { handleChange(e) }}
+            
           />
           <TextField
             margin="normal"
@@ -83,9 +108,8 @@ export default function Login() {
             name="password"
             label="Password"
             type="password"
-            id="password"
-            autoComplete="current-password"
-            {...register('password')}
+            onChange={(e) => { handleChange(e) }}
+          
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -97,7 +121,8 @@ export default function Login() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            disabled={isSubmitted || !isDirty || !isValid}
+            onClick={(e) => { handleSubmit(user) }}
+           
           >
             Sign In
           </Button>
