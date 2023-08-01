@@ -1,13 +1,44 @@
 import "./new.scss";
+import axios from 'axios';
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
-import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
 import { useState } from "react";
 // import 'bootstrap/dist/css/bootstrap. css';
-import 'bootstrap/dist/css/bootstrap.css';
-import axios  from "axios";
+import Box from '@mui/material/Box';
+// import TextField from '@mui/material/TextField';
+import IconButton from '@mui/material/IconButton';
+import Input from '@mui/material/Input';
+import FilledInput from '@mui/material/FilledInput';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+import TextField from '@mui/material/TextField';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import {
+  Container,
+  Grid,
+  Card,
+  CardHeader,
+  CardContent,
+  Divider
+} from '@mui/material';
 
-const New = ({ inputs, title }) => {
+import Button from '@mui/material/Button';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+// import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+// import MobileDatePicker from '/packages/x-date-pickers/src/MobileDatePicker'
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Link, useNavigate } from 'react-router-dom';
+import api from "../../utils/apiUrl.json"
+
+
+const New = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -31,7 +62,7 @@ const New = ({ inputs, title }) => {
     event.preventDefault();
 
     // Call the API to submit the form data
-    axios.post('/api/user', formData)
+    axios.post(api.newuser, formData)
       .then((response) => {
         console.log('Data submitted successfully!', response.data);
         // Handle success, if needed
@@ -56,103 +87,84 @@ const New = ({ inputs, title }) => {
         <Sidebar className='nav' style={{}} />
         <div className="homeContainer">
           <Navbar />
-          <section style={{ backgroundColor: '#eee' }}>
-            <div className="container">
-              <div className="row d-flex justify-content-center align-items-center h-100" style={{ backgroundColor : "white" }}>
-                <div className="col-lg-12 col-xl-11">
-                  <div className="card mt-5 mb-5 text-black" style={{ borderRadius: "25px",border: "none" }}>
-                    <div className="card-body p-md-5">
-                      <div className="row justify-content-center">
-                        <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+          <div>
+      <div className="container">
+        <div className="row mt-5">
+          <div className="col-9 offset-2">
+            <Card>
+              <CardHeader title="Registration Form" />
+              <form onSubmit={handleSubmit}>
+              <CardContent>
+                <FormControl  sx={{ m: 1 }} variant="standard">
+                  <InputLabel htmlFor="standard-adornment-amount">Name</InputLabel>
+                  <Input
+                    required
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
 
-                          <form className="mx-1 mx-md-4" onSubmit={handleSubmit}>
+                  />
+                </FormControl>
+               
+           
 
-                            <div className="d-flex flex-row align-items-center mb-4">
-                              <i className="fas fa-user fa-lg me-3 fa-fw"></i>
-                              <div className="form-outline flex-fill mb-0">
-                                <label className="form-label" for="form3Example1c">Username</label>
-                                <input type="text"
-                                 id="form3Example1c"
-                                  className="form-control"
-                                   style={{border : '2px solid black'}}
-                                   name="name"
-                                   value={formData.name}
-                                   onChange={handleChange}
-                                   placeholder="Name"
-                                   />
-                              </div>
-                            </div>
-
-                            <div className="d-flex flex-row align-items-center mb-4">
-                              <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                              <div className="form-outline flex-fill mb-0">
-                                <label className="form-label" for="form3Example3c">Email</label>
-                                <input type="email" 
-                                id="form3Example3c" 
-                                className="form-control" 
-                                style={{border : '2px solid black'}} 
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                placeholder="Name"
-                                />
-                              </div>
-                            </div>
-
-                            <div className="d-flex flex-row align-items-center mb-4">
-                              <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
-                              <div className="form-outline flex-fill mb-0">
-                                <label for="usertype">Usertype</label><br></br>
-                                <select id="usertype" name="usertype" style={{ width: '22vw',backgroundColor : "white", border : '2px solid black', padding : '6px', borderRadius:'8px', marginTop : '4px'}}>
-                                  <option value="Select">Select</option>
-                                  <option value="Superadmin">Superadmin</option>
-                                  <option value="Admin">Admin</option>
-                                  
-                                </select>
-                              </div>
-                            </div>
-
-                            <div className="d-flex flex-row align-items-center mb-4">
-                              <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
-                              <div className="form-outline flex-fill mb-0">
-                                <label className="form-label" for="form3Example4c">Mobile No</label>
-                                <input type="text"
-                                 id="form3Example4c"
-                                  className="form-control"
-                                   style={{border : '2px solid black'}}
-                                   name="mobile_no"
-                                   value={formData.mobile_no}
-                                   onChange={handleChange}
-                                   placeholder="Name"
-                                    />
-                              </div>
-                            </div>
-                            <div className="d-flex flex-row align-items-center mb-4">
-                              <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
-                              <div className="form-outline flex-fill mb-0">
-                                <label className="form-label" for="form3Example4c">Address</label>
-                                <input type="password" id="form3Example4c" className="form-control" style={{border : '2px solid black'}} />
-                              </div>
-                            </div>
-
-                            <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                              <button type="submit" className="btn btn-primary btn-lg">Register</button>
-                            </div>
-
-                          </form>
-
-                        </div>
-                        <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-                          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
-                            className="img-fluid" alt="Sample image" />
-                        </div>
-                      </div>
-                    </div>
+             
+                <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                  <InputLabel htmlFor="standard-adornment-amount">Email</InputLabel>
+                  <Input
+                    required
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
+                </FormControl>
+                <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                  <InputLabel htmlFor="standard-adornment-amount">mobile</InputLabel>
+                  <Input
+                    required
+                    type="text"
+                    name="mobile"
+                    value={formData.mobile}
+                    onChange={handleChange}
+                  />
+                </FormControl>
+                <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                  <InputLabel htmlFor="standard-adornment-amount">Password</InputLabel>
+                  <Input
+                    required
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                  />
+                </FormControl>
+                <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                  <InputLabel htmlFor="standard-adornment-amount">Address</InputLabel>
+                  <Input
+                    required
+                    type="text"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChange}
+                  />
+                </FormControl>
+                <Box sx={{ '& button': { m: 3 } }}>
+                  <div>
+                    <Button  type="submit" variant="contained">Submit</Button>
                   </div>
-                </div>
+                </Box>
+              </CardContent>
+              </form>
+              <div>
+                
               </div>
-            </div>
-          </section>
+            </Card>
+          </div>
+        </div>
+      </div >
+   
+    </div >
         </div>
       </div>
     </div>
