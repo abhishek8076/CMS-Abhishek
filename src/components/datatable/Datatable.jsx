@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {Link } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Button from '@mui/material/Button';
+import EditIcon from '@mui/icons-material/Edit';
 import api from '../../utils/apiUrl.json'
+import './datatable.scss'
 import { Table,
    TableBody, 
    TableCell,
@@ -9,7 +13,7 @@ import { Table,
      TableHead,
       TableRow, 
       Paper,
-    Button } from '@mui/material';
+     } from '@mui/material';
 
 const Datatable = () => {
   const [data, setData] = useState([]);
@@ -34,7 +38,7 @@ const Datatable = () => {
         return (
           <div className="cellAction">
             <Link to="/users/test" style={{ textDecoration: "none" }}>
-              <div className="viewButton">View</div>
+              <div className="viewButton" ><EditIcon/>View</div>
             </Link>
             <div
               className="deleteButton"
@@ -52,13 +56,14 @@ debugger;
     <>
     
           <div className="datatable">
-      <div className="datatableTitle">
-        Add New User
+      <div className="datatableTitle"style={{paddingTop: 20, paddingLeft: 10}}>
+        <h2>Add New User</h2>
         <Link to="/users/new" className="link">
-        <Button variant="outlined">Add New</Button>
+        <Button  id="btn" variant="contained">Add New</Button>
         </Link>
       </div>
       </div>
+      <div className="container">
           <TableContainer component={Paper} className="table">
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
@@ -84,10 +89,10 @@ debugger;
               <TableCell>{item.user_mobile_no}</TableCell>
               <TableCell>{item.user_address}</TableCell>
               <TableCell> <Link to="/users/${:id}" className="link">
-        <Button variant="outlined" margin-right="5px">Edit</Button>
+        <Button variant="contained"><EditIcon/>View</Button>
         </Link>
-        <Link to="/users/new" className="link"></Link>
-        <Button variant="outlined" >Delete</Button>
+        {/* <Link to="/users/new" className="link"></Link>
+        <Button variant="outlined" >Delete</Button> */}
         </TableCell>
               
               
@@ -99,6 +104,7 @@ debugger;
         </TableBody>
       </Table>
     </TableContainer>
+    </div>
     </>
   );
 };

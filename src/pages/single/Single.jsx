@@ -54,9 +54,12 @@ export function Registration() {
                         className="mb-3"
                         controlId="formBasicCheckbox"
                       ></Form.Group>
-                      <div className="d-grid">
-                        <Button variant="primary" type="submit" style={{width:100}}>
+                      <div id="button" className=" d-flex">
+                        <Button variant="primary" type="button" style={{width:100}}>
                           Update
+                        </Button>
+                        <Button variant="primary" type="button" style={{width:100, marginLeft:5}}>
+                          Delete
                         </Button>
                       </div>
                     </Form>

@@ -40,12 +40,12 @@ import api from "../../utils/apiUrl.json"
 
 const New = () => {
   const [formData, setFormData] = useState({
-    name: 'abhi',
+    name: '',
     email: '',
     mobile_no: '',
     address:'',
     usertype:'',
-    createdby:'admin',
+    createdby:'',
     password:'',
     ip_address:''
   });
