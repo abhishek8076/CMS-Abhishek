@@ -12,7 +12,7 @@ import FilledInput from '@mui/material/FilledInput';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
-import FormHelperText from '@mui/material/FormHelperText';
+import FormHelperText from '@mui/material/FormHelperText';                       
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Visibility from '@mui/icons-material/Visibility';
@@ -40,14 +40,14 @@ import api from "../../utils/apiUrl.json"
 
 const New = () => {
   const [formData, setFormData] = useState({
-    name: '',
+    name: 'abhi',
     email: '',
     mobile_no: '',
-    address:'jhkjhh',
-    usertype:'1',
+    address:'',
+    usertype:'',
     createdby:'admin',
-    password:'B23@321',
-    ip_address:'23332232'
+    password:'',
+    ip_address:''
   });
 
   const handleChange = (event) => {
@@ -86,7 +86,7 @@ const New = () => {
       <div className="home">
         <Sidebar className='nav' style={{}} />
         <div className="homeContainer">
-          <Navbar />
+          <Navbar />             
           <div>
       <div className="container">
         <div className="row mt-5">
