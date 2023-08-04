@@ -83,11 +83,11 @@ debugger;
               <TableCell>{item.user_email}</TableCell>
               <TableCell>{item.user_mobile_no}</TableCell>
               <TableCell>{item.user_address}</TableCell>
-              <TableCell> <Link to="/users/:userId" className="link">
-        <Button variant="outlined">Edit</Button>
+              <TableCell> <Link to="/users/${:id}" className="link">
+        <Button variant="outlined" margin-right="5px">Edit</Button>
         </Link>
         <Link to="/users/new" className="link"></Link>
-        <Button variant="outlined">Delete</Button>
+        <Button variant="outlined" >Delete</Button>
         </TableCell>
               
               
