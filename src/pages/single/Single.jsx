@@ -65,6 +65,7 @@ export function Registration() {
                     </Form>
                   </div>
                 </div>
+                
               </Card.Body>
             
           </Col>
