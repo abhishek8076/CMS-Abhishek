@@ -1,11 +1,39 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import { Col, Button, Row, Container, Card, Form } from 'react-bootstrap';
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import 'bootstrap/dist/css/bootstrap.css';     
+import axios from 'axios'
 
+export function Registration({itemId}) {
+  const [data, setData] = useState(null);
 
-export function Registration() {
+  useEffect(() => {
+    fetchData();
+  }, [itemId]);
+
+  const fetchData = () => {
+    axios.get(`/api/get_data/${itemId}`)
+      .then(response => setData(response.data))
+      .catch(error => console.error('Error fetching data:', error));
+  };
+
+  const handleUpdate = () => {
+    const newData = {
+      // Update fields as needed
+      name: 'Updated Item Name',
+      description: 'Updated Description',
+    };
+    axios.put(`/api/update_data/${itemId}`, newData)
+      .then(() => fetchData())
+      .catch(error => console.error('Error updating data:', error));
+  };
+
+  const handleDelete = () => {
+    axios.delete(`/api/delete_data/${itemId}`)
+      .then(() => setData(null))
+      .catch(error => console.error('Error deleting data:', error));
+  };
   return (
          <>   
          <div>
@@ -55,10 +83,10 @@ export function Registration() {
                         controlId="formBasicCheckbox"
                       ></Form.Group>
                       <div id="button" className=" d-flex">
-                        <Button variant="primary" type="button" style={{width:100}}>
+                        <Button variant="primary" type="button" onClick={handleUpdate} style={{width:100}}>
                           Update
                         </Button>
-                        <Button variant="primary" type="button" style={{width:100, marginLeft:5}}>
+                        <Button variant="primary" type="button" onClick={handleDelete} style={{width:100, marginLeft:5}}>
                           Delete
                         </Button>
                       </div>
