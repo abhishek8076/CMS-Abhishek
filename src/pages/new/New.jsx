@@ -4,7 +4,7 @@ import { Col, Button, Row, Container, Card, Form } from 'react-bootstrap';
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import 'bootstrap/dist/css/bootstrap.css';
-import Select from 'react-select';
+// import Select from 'react-select';
 import api from '../../utils/apiUrl.json';
 import { Options } from 'react-select';
 import MenuItem from '@mui/material/MenuItem';
@@ -155,9 +155,9 @@ export function New() {
                           <Form.Group className="mb-3" controlId="Address">
                             <div className="mb-12"><Form.Label className="text-center">Role</Form.Label>
                               <select className='form-control' name='usertype' value={selectedRole} onChange={handleRoleChange}>
-                                <option value={formData.usertype}>Select a role</option>
+                                <option value=''>Select a role</option>
                                 {roles.map((role) => (
-                                  <option key={role.value} value={formData.usertype}>
+                                  <option key={role.value} value={role.usertype}>
                                     {role.label}
                                   </option>
                                 ))}

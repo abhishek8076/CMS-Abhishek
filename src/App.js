@@ -27,7 +27,7 @@ function App() {
             <Route path="cms" element={<Cms />} />
             <Route path="users">
               <Route index element={<List />} />
-              <Route path=":id" element={<Single />} />
+              <Route path=":user_id" element={<Single />} />
               <Route
                 path="new"
                 element={<New/>}

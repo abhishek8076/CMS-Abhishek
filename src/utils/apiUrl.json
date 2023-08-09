@@ -4,7 +4,7 @@
     "url": "http://localhost:3000",
     "proxyTargetUrl": "http://localhost:8800/",
     "newuser":"/api/user",  
-    "edituser":"/api/user",     
+    "edituser":"/api/user/:id",     
     "getApiToken":"/auth/getApiToken",
     "login": "/auth/api/login"
     

@@ -17,6 +17,7 @@ import { Table,
 
 const Datatable = () => {
   const [data, setData] = useState([]);
+  //  const [catId, setCatId] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +30,16 @@ const Datatable = () => {
     };
     fetchData();
   }, []);
+
+  const handleButtonClick = (id) => {
+    // Find the item with the clicked ID
+    const selectedItem = data.find(item => item.id === id);
+    
+    if (selectedItem) {
+      // Do something with the selected item data
+      console.log('Selected item:', selectedItem);
+    }
+  };
   const actionColumn = [
     {
       field: "action",
@@ -37,7 +48,7 @@ const Datatable = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to="/users/test" style={{ textDecoration: "none" }}>
+            <Link Link to={`/users/?id=${data.users_id}`} onClick={() => handleButtonClick(data.user_id)} style={{ textDecoration: "none" }}>
               <div className="viewButton" ><EditIcon/>View</div>
             </Link>
             <div
@@ -88,7 +99,7 @@ debugger;
               <TableCell>{item.user_email}</TableCell>
               <TableCell>{item.user_mobile_no}</TableCell>
               <TableCell>{item.user_address}</TableCell>
-              <TableCell> <Link to="/users/${:id}" className="link">
+              <TableCell> <Link Link to={`/users/42`} onClick={() => handleButtonClick(item.user_id)} style={{ textDecoration: "none" }}>
         <Button variant="contained"><EditIcon/>View</Button>
         </Link>
         {/* <Link to="/users/new" className="link"></Link>
