@@ -11,6 +11,7 @@ import { DarkModeContext } from "./context/darkModeContext";
 import Sidebar from "./components/sidebar/Sidebar";
 import Navbar from "./components/navbar/Navbar";
 import { Cms } from "./pages/CMS/Cms";
+import { Extra } from "./pages/extra/Extra";
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
          
             <Route path="/" element={<Home />} />
             <Route path="cms" element={<Cms />} />
+            <Route path="extra" element={<Extra />} />
             <Route path="users">
               <Route index element={<List />} />
               <Route path=":user_id" element={<Single />} />

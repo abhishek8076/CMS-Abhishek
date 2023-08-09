@@ -47,6 +47,12 @@ const Sidebar = () => {
               <span>CMS</span>
             </li>
           </Link>
+          <Link to="/extra" style={{ textDecoration: "none" }}>
+            <li>
+              <PersonOutlineIcon className="icon" />
+              <span>Extra</span>
+            </li>
+          </Link>
           <Link to="/products" style={{ textDecoration: "none" }}>
             <li>
               <StoreIcon className="icon" />
