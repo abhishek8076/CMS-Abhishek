@@ -29,7 +29,7 @@ function App() {
             <Route path="extra" element={<Extra />} />
             <Route path="users">
               <Route index element={<List />} />
-              <Route path=":user_id" element={<Single />} />
+              <Route path="single/:id" element={<Single />} />
               <Route
                 path="new"
                 element={<New/>}

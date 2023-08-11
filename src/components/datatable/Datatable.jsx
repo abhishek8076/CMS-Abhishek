@@ -22,7 +22,7 @@ const Datatable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(api.edituser);
+        const response = await axios.get(api.newuser);
         setData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -31,9 +31,9 @@ const Datatable = () => {
     fetchData();
   }, []);
 
-  const handleButtonClick = (id) => {
+  const handleButtonClick = (users_id) => {
     // Find the item with the clicked ID
-    const selectedItem = data.find(item => item.id === id);
+    const selectedItem = data.find(item => item.users_id === users_id);
     
     if (selectedItem) {
       // Do something with the selected item data
@@ -48,7 +48,7 @@ const Datatable = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link Link to={`/users/?id=${data.users_id}`} onClick={() => handleButtonClick(data.user_id)} style={{ textDecoration: "none" }}>
+            <Link Link to={`/users/single/?id=${data.users_id}`} style={{ textDecoration: "none" }}>
               <div className="viewButton" ><EditIcon/>View</div>
             </Link>
             <div
@@ -62,7 +62,7 @@ const Datatable = () => {
       },
     },
   ];
-debugger;
+// debugger;
   return (
     <>
     
@@ -99,7 +99,7 @@ debugger;
               <TableCell>{item.user_email}</TableCell>
               <TableCell>{item.user_mobile_no}</TableCell>
               <TableCell>{item.user_address}</TableCell>
-              <TableCell> <Link Link to={`/users/42`} onClick={() => handleButtonClick(item.user_id)} style={{ textDecoration: "none" }}>
+              <TableCell> <Link Link to={`/users/single/${item.users_id}`} onClick={() => handleButtonClick(item.user_id)} style={{ textDecoration: "none" }}>
         <Button variant="contained"><EditIcon/>View</Button>
         </Link>
         {/* <Link to="/users/new" className="link"></Link>
