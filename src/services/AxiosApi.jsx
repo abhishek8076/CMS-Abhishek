@@ -21,9 +21,9 @@ export const headers = () => {
 };
 
 const instance = axios.create({
-  baseURL: "http://api.employmentnew.c2k.in",
-  //baseURL: "https://onlineemploymentportal.delhi.gov.in/empApi",
-  headers: headers("Access-Control-Allow-Origin: *"),
+  baseURL: "https://localhost:7170/api",
+
+  //headers: headers("Access-Control-Allow-Origin: *"),
   // headers: headers("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS"),
   // headers: headers("Access-Control-Allow-Headers", "Content-Type"),
   //mode: "no-cors", // 'cors' by default
@@ -59,7 +59,7 @@ instance.interceptors.response.use(undefined, (err) => {
 
 export default instance;
 
-export const staticToken =
-  "eyJhb5cCI6IkpXVCJ9.eyJzdWIiOiJEZXB0IiwiZW1hRhaHViLmVtcDA5QGdtYWlsLmNvbSIsImp0aSI6ImgzMy05MDAwLTE0ObG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0AsqYeezwXWqsL6WLZulQ9bwI";
-export const baseURL = "https://onlineemploymentportal.delhi.gov.in/empApi";
-//export const baseURL = "http://api.employmentnew.c2k.in";
+//export const staticToken =
+//  "eyJhb5cCI6IkpXVCJ9.eyJzdWIiOiJEZXB0IiwiZW1hRhaHViLmVtcDA5QGdtYWlsLmNvbSIsImp0aSI6ImgzMy05MDAwLTE0ObG9jYWxob3N0IiwiYXVkIjoibG9jYWxob3N0In0AsqYeezwXWqsL6WLZulQ9bwI";
+export const baseURL = "https://localhost:7170/api";
+

@@ -12,7 +12,8 @@ import Sidebar from "./components/sidebar/Sidebar";
 import Navbar from "./components/navbar/Navbar";
 import { Cms } from "./pages/CMS/Cms";
 import { Extra } from "./pages/extra/Extra";
-
+import { IndexWhatsNew } from "./components/WhatsNew/IndexWhatsNew";
+import { IndexBanner } from "./components/Banner/IndexBanner";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -26,6 +27,8 @@ function App() {
          
             <Route path="/" element={<Home />} />
             <Route path="cms" element={<Cms />} />
+            <Route path="whatsnew" element={<IndexWhatsNew />} />
+            <Route path="Banner" element={<IndexBanner />} />
             <Route path="extra" element={<Extra />} />
             <Route path="users">
               <Route index element={<List />} />

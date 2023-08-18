@@ -1,79 +1,54 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate,useLocation } from 'react-router-dom';
-import { Col, Button, Row, Container, Card, Form } from 'react-bootstrap';
+import {useParams } from 'react-router-dom';
+import { Col, Row, Container, Card, Form } from 'react-bootstrap';
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import 'bootstrap/dist/css/bootstrap.css';
+import apiClinet from '../../services/AxiosApi';
 import axios from 'axios';
 import api from '../../utils/apiUrl.json'
+export function Single() {
+  const { id } = useParams();
+  const [data, setData] = useState([]);
+  // console.log(id);
+  // const fetchData = async () => {
 
-export function Registration({ param }) {
-  const navigate = useNavigate(); // Use the useNavigate hook
-  const location = useLocation();
-  const qParams = new URLSearchParams(location.search);
-  const id = qParams.get('id')
-  const [data, setData] = useState(null);
-  const [formData, setFormData] = useState({
-    user_name: '',
-    email: '',
-    mobile: '',
-    address: '',
-  });
+  //   console.log(id);
+  //     try {
+  //       const response = await apiClinet.get(api.edituser + id);
 
+        
+  //       // const resData = await response.json()
+  //       setData(response.data);
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
+
+
+  // useEffect(() => {
+  //   console.log("gg");
+  //   fetchData();
+  // }, [id]);
   useEffect(() => {
+    console.log("kjlksad")
+    async function fetchData() {
+      const result = await axios.get(
+        api.edituser + id,
+        // { headers: headers() }
+      );
+      const resultResp = result.data;
+      setData(resultResp);
+      // setResetGetValues(resultResp);
+      console.log("result31124", result);
+      // dstype = resultResp.dtype;
+      // setLoading(false);
+    }
     fetchData();
-  }, []);
-
-  const fetchData = () => {
-    axios.get(`/api/user/${id}`)
-      .then(response => {
-        setData(response.data);
-        setFormData({
-          name: response.data.user_name || '',
-          email: response.data.email || '',
-          mobile: response.data.mobile || '',
-          address: response.data.address || '',
-        });
-      })
-      .catch(error => console.error('Error fetching data:', error));
-  };
-
-  const handleUpdate = () => {
-    const newData = {
-      name: formData.user_name,
-      email: formData.email,
-      mobile: formData.mobile,
-      address: formData.address,
-    };
-
-    axios.put(`/api/user/${id}`, newData)
-      .then(() => fetchData())
-      .catch(error => console.error('Error updating data:', error));
-  };
-
-  const handleDelete = () => {
-    axios.delete(`/api/user/${id}`)
-      .then(() => {
-        setData(null);
-        setFormData({
-          user_name: '',
-          email: '',
-          mobile: '',
-          address: '',
-        });
-        navigate('/users'); // Use the navigate function to redirect
-      })
-      .catch(error => console.error('Error deleting data:', error));
-  };
-
-  const handleFormChange = (event) => {
-    const { name, value } = event.target;
-    setFormData(prevData => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-// debugger;
+  }, [id]);
+  console.log(data);
+  //const user = data[0];
+  //  console.log(data[0].user_name)
   return (
     <>
       <div>
@@ -94,34 +69,23 @@ export function Registration({ param }) {
                         <Form>
                           <Form.Group className="mb-3" controlId="Name">
                             <Form.Label className="text-center">Name</Form.Label>
-                            <Form.Control type="text" name="user_name" placeholder="Enter Name" value={id} onChange={handleFormChange} />
+                            <Form.Control type="text" name="user_name" value={data[0].user_name} />
                           </Form.Group>
-
+                          {console.log(data.user_name)}
                           <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label className="text-center">
                               Email
                             </Form.Label>
-                            <Form.Control type="email" name="email" placeholder="Enter email" value={formData.email} onChange={handleFormChange} />
+                            <Form.Control type="email" name="email" value={data[0].user_email} readOnly />
                           </Form.Group>
-
                           <Form.Group className="mb-3" controlId="Mobile">
                             <Form.Label className="text-center">Mobile</Form.Label>
-                            <Form.Control type="text" name="mobile" placeholder="Enter Mobile No" value={formData.mobile} onChange={handleFormChange} />
+                            <Form.Control type="text" name="mobile" value={data[0].user_mobile_no} readOnly />
                           </Form.Group>
-
                           <Form.Group className="mb-3" controlId="Address">
                             <Form.Label className="text-center">Address</Form.Label>
-                            <Form.Control type="text" name="address" placeholder="Enter Address" value={formData.address} onChange={handleFormChange} />
+                            <Form.Control type="text" name="address" value={data[0].user_address}  />
                           </Form.Group>
-                          <Form.Group className="mb-3" controlId="formBasicCheckbox"></Form.Group>
-                          <div id="button" className=" d-flex">
-                            <Button variant="primary" type="button" onClick={handleUpdate} style={{ width: 100 }}>
-                              Update
-                            </Button>
-                            <Button variant="primary" type="button" onClick={handleDelete} style={{ width: 100, marginLeft: 5 }}>
-                              Delete
-                            </Button>
-                          </div>
                         </Form>
                       </div>
                     </div>
@@ -135,5 +99,4 @@ export function Registration({ param }) {
     </>
   );
 }
-
-export default Registration;
+export default Single;

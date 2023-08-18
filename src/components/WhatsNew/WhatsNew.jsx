@@ -1,358 +1,339 @@
-import React, { useState, useEffect } from "react";
-import * as yup from "yup";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import classNames from "classnames";
-// import AxiosApi, { headers } from "../../../../AxiosApi";
-import { css } from "@emotion/react";
-import axios from "axios";
-export const WhatsNewValidation = yup.object({
-    whatsNewText: yup.string().required("Enter what's new text"),
-  });
-  
-const Whats_New = () => {
-  const [state, setstate] = useState([]);
-  const [states, setstates] = useState([]);
-  const [loadingButton, setLoadingButton] = useState(false);
-  const [messageShow, setMessageShow] = useState(false);
-  const [messageText, setMessageText] = useState("");
-  const [messageActive, setMessageActive] = useState(false);
-  const [whatsNewData, setWhatsNewData] = useState([]);
-  const [loadData, setLoadData] = useState(false);
-  const {
-    reset,
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    mode: "onTouched",
-    resolver: yupResolver(WhatsNewValidation),
-  });
-  const inputEvent = (event) => {
-    const { name, value } = event.target;
-    setstate((preValue) => {
-      return {
-        ...preValue,
-        [name]: value,
-      };
-    });
-  };
-  useEffect(() => {
-    async function fetchData() {
-      // Get REGISTRATION DETAILS ====================>
-      const WhatsNewResult = await axios.get(`/Department/WhatsnewList`, {
-        // headers: headers(),
-      });
-      const WhatsNewResp = WhatsNewResult?.data;
-      console.log("cvgja", WhatsNewResp);
-      setWhatsNewData(WhatsNewResp);
-      setLoadData(false);
-    }
-    fetchData();
-  }, [loadData === true]);
+import React, { useState } from 'react';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+// import { DatePicker } from '@mui/lab';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { WhatsNewTable } from './WhatsNewTable';
 
-  const onSubmit = () => {
-    const jsonPost = {
-      text: state.whatsNewText,
-    };
-    if (state.whatsNewText !== "") {
-      const confirmationButton = window.confirm(
-        `Do you really want to Add What's New ?`
-      );
-      if (confirmationButton === true) {
-        //setLoadingButton(true);
-        async function ApiPostfetchData() {
-          const result = axios.post(`/Department/InsertWhatsnew`, jsonPost, {
-            // headers: headers(),
-          }).then(function (result) {
-            const resp = result?.data;
-            if (resp === "success") {
-              setMessageShow(true);
-              setMessageActive(true);
-              setMessageText(
-                `"${state.whatsNewText}" has been Added Successfully.`
-              );
-              setstate({ whatsNewText: "" });
-              setstates({ ...state });
-              reset();
-              setLoadingButton(false);
-              setLoadData(true);
-            }
-          });
-        }
-        ApiPostfetchData();
-      }
-    }
-  };
-  const onReset = () => {
-    reset();
-    setMessageShow(false);
-  };
-  const Deactive = (id, text) => {
-    const confirmationButton = window.confirm(
-      `Do you really want to Deactive "${text}"   ?`
-    );
-    if (confirmationButton === true) {
-      async function ApiPostfetchData() {
-        const result = axios.get(
-          `/Department/DeactiveWhatsnew?Id=${id}`,
-          null,
-          {
-            // headers: headers(),
-          }
-        ).then(function (result) {
-          const resp = result?.data;
-          // alert(resp);
-          if (resp === "success") {
-            setMessageText(`"${text}" has been Deactivated Successfully.`);
-            //alert(`"${text}" has been Deactivated Successfully.`);
-            setLoadData(true);
-            setMessageShow(true);
-            setMessageActive(false);
-          }
-        });
-      }
-      ApiPostfetchData();
-    }
-  };
-
-  const Active = (id, text) => {
-    const confirmationButton = window.confirm(
-      `Do you really want to Active "${text}"  ?`
-    );
-    if (confirmationButton === true) {
-      //setLoadingButton(true);
-      async function ApiPostfetchData() {
-        const result = axios.get(
-          `/Department/ActiveWhatsnew?Id=${id}`,
-          null,
-          {
-            // headers: headers(),
-          }
-        ).then(function (result) {
-          const resp = result?.data;
-
-          if (resp === "success") {
-            //alert(`"${text}" has been Activated Successfully.`);
-            setLoadData(true);
-            setMessageShow(true);
-            setMessageActive(true);
-            setMessageText(`"${text}" has been Activated Successfully.`);
-          }
-        });
-      }
-      ApiPostfetchData();
-    }
-  };
-  const Delete = (id, text) => {
-    const confirmationButton = window.confirm(
-      `Do you really want to Delete "${text}"?`
-    );
-    if (confirmationButton === true) {
-      //setLoadingButton(true);
-      async function ApiPostfetchData() {
-        const result = axios.get(
-          `/Department/DeleteWhatsnew?Id=${id}`,
-          null,
-          {
-            // headers: headers(),
-          }
-        ).then(function (result) {
-          const resp = result?.data;
-
-          if (resp === "success") {
-            //alert(`"${text}" has been Deleted Successfully.`);
-            setMessageText(`"${text}" has been Deleted Successfully.`);
-            setLoadData(true);
-            setMessageShow(true);
-            setMessageActive(false);
-          }
-        });
-      }
-      ApiPostfetchData();
-    }
-  };
-  return (
-    <>
-      <body>
-        <div className="container-scroller">
-       
-          <div className="container-fluid page-body-wrapper">
-         
-            <div className="main-panel">
-              <div className="content-wrapper">
-                <div className="page-header">
-                  <h3 className="page-title">
-                    <span className="page-title-icon bg-gradient-primary text-white mr-2">
-                      <i className="mdi mdi-earth"></i>
-                    </span>
-                    What's New
-                  </h3>
-                </div>
-
-                <>
-             
-                  <div className="row">
-                    <div className="col-12 grid-margin">
-                      <div className="card">
-                        <div
-                          className="card-body"
-                          style={{ background: "#ffffff" }}
-                        >
-                          <form
-                            className="pt-2 forms-sample"
-                            onSubmit={handleSubmit(onSubmit)}
-                            autoComplete="off"
-                          >
-                            <div className="form-group row">
-                              <label className="col-sm-2 col-form-label">
-                                Enter Text :
-                                <span style={{ color: "#FF0000" }}>
-                                  <b>*</b>
-                                </span>
-                              </label>
-                              <div className="col-sm-3">
-                                <textarea
-                                  className={classNames("form-control", {
-                                    "is-invalid": errors.whatsNewText,
-                                  })}
-                                  {...register("whatsNewText")}
-                                  onChange={inputEvent}
-                                  placeholder="Enter What's New Text"
-                                  name="whatsNewText"
-                                  maxLength={100}
-                                />
-
-                                <small className="invalid-feedback">
-                                  {errors.whatsNewText?.message}
-                                </small>
-                              </div>
-                            </div>
-
-                            <div className="form-group row">
-                              <div className="col-sm-2"></div>
-                              <div className="col-sm-10">
-                                {loadingButton === false ? (
-                                  <button
-                                    type="submit"
-                                    className="btn btn-outline-success btn-icon-text btn-sm"
-                                  >
-                                    <i className="mdi mdi-file-check btn-icon-prepend"></i>
-                                    Submit
-                                  </button>
-                                ) : (
-                                  <button
-                                    type="button"
-                                    className="btn btn-outline-success btn-sm  buttonload"
-                                  >
-                                    <i class="fa fa-refresh fa-spin mr-2"></i>
-                                    Loading
-                                  </button>
-                                )}
-
-                                <button
-                                  type="button"
-                                  className="btn btn-outline-danger btn-sm"
-                                  style={{ marginLeft: "10px" }}
-                                  onClick={onReset}
-                                >
-                                  <i className="mdi mdi-refresh"></i>
-                                  Reset
-                                </button>
-                              </div>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {/* <div className="row">
-                    <div className="col-12 grid-margin">
-                      <div className="card">
-                        <div
-                          className="card-body"
-                          style={{ background: "#ffffff" }}
-                        >
-                          <h4 className="card-title text-info ">
-                            What's New Details
-                          </h4>
-                          <div className="table-responsive">
-                            <table className="table table-bordered">
-                              <thead>
-                                <tr>
-                                  <th> Sr No. </th>
-                                  <th> What's New </th>
-                                  <th>Create Date</th>
-                                  <th> Status </th>
-                                  <th> Action </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {whatsNewData?.map((value, index) => {
-                                  const [month, day, year] =
-                                    value?.cdate.split("/");
-                                  const yr = year.split(" ")[0];
-                                  const DD = `${day}/${month}/${yr}`;
-                                  return (
-                                    <tr key={index}>
-                                      <td> {index + 1}</td>
-                                      <td style={{ textAlign: "left" }}>
-                                        {value.text}
-                                      </td>
-                                      <td> {DD} </td>
-                                      <td>
-                                        {value.active === "1" ? (
-                                          <button
-                                            type="submit"
-                                            className="btn btn-outline-danger btn-icon-text btn-sm"
-                                            onClick={() =>
-                                              Deactive(value.id, value.text)
-                                            }
-                                          >
-                                            Deactive
-                                          </button>
-                                        ) : (
-                                          <button
-                                            type="submit"
-                                            className="btn btn-outline-success btn-icon-text btn-sm"
-                                            onClick={() =>
-                                              Active(value.id, value.text)
-                                            }
-                                          >
-                                            Active
-                                          </button>
-                                        )}
-                                      </td>
-                                      <td>
-                                        <button
-                                          type="submit"
-                                          className="btn btn-danger btn-icon-text btn-sm"
-                                          onClick={() =>
-                                            Delete(value.id, value.text)
-                                          }
-                                        >
-                                          Delete
-                                        </button>
-                                      </td>
-                                    </tr>
-                                  );
-                                })}
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div> */}
-                </>
-          
-              </div>
-            </div>
-          </div>
-        </div>
-      </body>
-    </>
-  );
+const containerStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  padding: '16px'
 };
 
-export default Whats_New;
+const buttonStyle = {
+  marginTop: '16px'
+};
+
+const errorTextStyle = {
+  color: 'red',
+  marginTop: '8px'
+};
+
+const fileInputStyle = {
+  display: 'none'
+};
+
+const fileInputLabelStyle = {
+  display: 'block',
+  marginBottom: '8px'
+};
+
+const selectedFileNameStyle = {
+  fontWeight: 'bold',
+  marginBottom: '8px'
+};
+
+async function postDataToApi(data) {
+  try {
+    const response = await axios.post('https://jsonplaceholder.typicode.com/posts', data);
+    return response.data;
+  } catch (error) {
+    console.error('Error posting data:', error);
+    throw error;
+  }
+}
+
+function WhatsNew() {
+  const [name, setName] = useState('');
+  const [text, setText] = useState('');
+  const [fileType, setFileType] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [formatError, setFormatError] = useState(false);
+  const [fileName, setFileName] = useState('');
+  const [url, setUrl] = useState('');
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
+  const handleStartDateChange = (date) => {
+    setStartDate(date);
+  };
+
+  const handleEndDateChange = (date) => {
+    setEndDate(date);
+  };
+
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
+
+  const handleTextChange = (event) => {
+    setText(event.target.value);
+  };
+
+  const handleFileTypeChange = (event) => {
+    setFileType(event.target.value);
+    setUrl('');
+  };
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+    setFileName(event.target.files[0].name);
+  };
+
+  const handleUrlChange = (event) => {
+    setUrl(event.target.value);
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+
+  const handlePostData = async (event) => {
+    event.preventDefault();
+
+    if (name && text && fileType) {
+      let isFormatValid = true;
+
+      if (fileType === 'pdf' && selectedFile?.type !== 'application/pdf') {
+        isFormatValid = false;
+      } else if (fileType === 'image' && selectedFile && !selectedFile.type.startsWith('image')) {
+        isFormatValid = false;
+      } else if (fileType === 'video' && selectedFile && !selectedFile.type.startsWith('video')) {
+        isFormatValid = false;
+      } else if (fileType === 'link' && !isUrlValid(url)) {
+        isFormatValid = false;
+      }
+
+      if (!isFormatValid) {
+        setFormatError(true);
+        return;
+      }
+
+      const postData = {
+        name,
+        text,
+        fileType,
+        fileName,
+        url,
+        startDate,
+        endDate
+      };
+
+      try {
+        await postDataToApi(postData);
+
+        toast.success('Data posted successfully!', {
+          position: 'top-center',
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        });
+
+        setName('');
+        setText('');
+        setFileType('');
+        setSelectedFile(null);
+        setFileName('');
+        setUrl('');
+        setStartDate(new Date());
+        setEndDate(new Date());
+        setDialogOpen(true);
+      } catch (error) {
+        toast.error('An error occurred while posting data.', {
+          position: 'top-center',
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        });
+      }
+    } else {
+      toast.error('Please fill all fields and select a file!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      });
+    }
+  };
+
+  const isUrlValid = (inputUrl) => {
+    // Implement your URL validation logic here
+    return true;
+  };
+
+  return (
+    <div style={containerStyle}>
+      <div style={{'display':'flex'}}>
+     <Link Link to='/cms' style={{ textDecoration: "none" }}>
+              <div className="viewButton" >View</div>
+            </Link>
+      </div> 
+      <h1>What's New Page</h1>
+     
+      <form onSubmit={handlePostData}>
+        <TextField
+          label="Name"
+          variant="outlined"
+          value={name}
+          onChange={handleNameChange}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Add Text"
+          variant="outlined"
+          multiline
+          rows={4}
+          value={text}
+          onChange={handleTextChange}
+          fullWidth
+          margin="normal"
+        />
+        <FormControl variant="outlined" fullWidth margin="normal">
+          <InputLabel>Select File Type</InputLabel>
+          <Select value={fileType} onChange={handleFileTypeChange} label="Select File Type">
+            <MenuItem value="link">Link</MenuItem>
+            <MenuItem value="pdf">PDF</MenuItem>
+            <MenuItem value="image">Image</MenuItem>
+            <MenuItem value="video">Video</MenuItem>
+          </Select>
+        </FormControl>
+
+        {fileType === 'link' && (
+          <TextField
+            label="Enter URL"
+            variant="outlined"
+            value={url}
+            onChange={handleUrlChange}
+          
+            margin="normal"
+          />
+          
+        )}
+
+        {fileType !== 'link' && (
+          <>
+            <input
+              type="file"
+              accept="application/pdf, image/*, video/*"
+              onChange={handleFileChange}
+              style={fileInputStyle}
+              id="fileInput"
+            />
+            <label htmlFor="fileInput" style={fileInputLabelStyle}>
+              Choose File
+            </label>
+            {selectedFile && (
+              <div style={selectedFileNameStyle}>{selectedFile.name}</div>
+            )}
+            {selectedFile && (
+              <Button
+                variant="outlined"
+                color="secondary"
+                
+                startIcon={<DeleteIcon />}
+                onClick={() => setSelectedFile(null)}
+              >
+                Delete File
+              </Button>
+            )}
+          </>
+        )}
+
+        {formatError && (
+          <p style={errorTextStyle}>
+            Please choose the correct format based on the selected option.
+          </p>
+        )}
+
+        {/* <DatePicker
+          label="Start Date"
+          value={startDate}
+          onChange={handleStartDateChange}
+          fullWidth
+          margin="normal"
+          format="MM/dd/yyyy"
+        />
+        <DatePicker
+          label="End Date"
+          value={endDate}
+          onChange={handleEndDateChange}
+          fullWidth
+          margin="normal"
+          format="MM/dd/yyyy"
+        /> */}
+          <TextField
+          label="Start Date"
+          type="date"
+          value={startDate.toISOString().split('T')[0]} // Convert to ISO string and format for input
+          onChange={(e) => handleStartDateChange(new Date(e.target.value))}
+          fullWidth
+          margin="normal"
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        <TextField
+          label="End Date"
+          type="date"
+          value={endDate.toISOString().split('T')[0]} // Convert to ISO string and format for input
+          onChange={(e) => handleEndDateChange(new Date(e.target.value))}
+          fullWidth
+          margin="normal"
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          style={buttonStyle}
+        >
+          Post Data
+        </Button>
+      </form>
+
+      <Dialog open={dialogOpen} onClose={handleDialogClose}>
+        <DialogTitle>Data Posted Successfully</DialogTitle>
+        <DialogContent>Your data has been successfully posted to the database.</DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <ToastContainer />
+    </div>
+  );
+}
+
+export default WhatsNew;

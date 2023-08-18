@@ -13,8 +13,8 @@ import MenuItem from '@mui/material/MenuItem';
 export function New() {
   const [age, setAge] = React.useState('');
   const roles = [
-    { label: 'Admin', value: "1" },
-    { label: 'DEO', value: "2" }
+    { label: 'Admin', value: "admin" },
+    { label: 'DEO', value: "deo" }
   ]
   const [selectedRole, setSelectedRole] = useState('')
   const handleRoleChange = (event) => {
@@ -30,8 +30,8 @@ export function New() {
     email: '',
     mobile_no: '',
     address: '',
-    usertype: '',
-    createdby: 'admin',
+    usertype: 0,
+    createdby: 'value',
     password: '',
     ip_address: '192.168.0.1'
   });
@@ -59,8 +59,8 @@ export function New() {
           email: '',
           mobile_no: '',
           address: '',
-          usertype: '',
-          createdby: 'admin',
+          usertype: 0,
+          createdby: '',
           password: '',
           ip_address: '192.168.0.1'
         });

@@ -53,16 +53,18 @@ const Sidebar = () => {
               <span>Extra</span>
             </li>
           </Link>
-          <Link to="/products" style={{ textDecoration: "none" }}>
+          <Link to="/whatsnew" style={{ textDecoration: "none" }}>
             <li>
               <StoreIcon className="icon" />
-              <span>Products</span>
+              <span>What's New</span>
             </li>
           </Link>
-          <li>
-            <CreditCardIcon className="icon" />
-            <span>Orders</span>
-          </li>
+          <Link to="/banner" style={{ textDecoration: "none" }}>
+            <li>
+              <StoreIcon className="icon" />
+              <span>Banner</span>
+            </li>
+          </Link>
           <li>
             <LocalShippingIcon className="icon" />
             <span>Delivery</span>
@@ -95,8 +97,10 @@ const Sidebar = () => {
             <span>Profile</span>
           </li>
           <li>
+          <Link to="/login" style={{ textDecoration: "none" }}>
             <ExitToAppIcon className="icon" />
             <span>Logout</span>
+            </Link>
           </li>
         </ul>
       </div>
