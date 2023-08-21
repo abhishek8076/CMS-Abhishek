@@ -14,6 +14,7 @@ import { Cms } from "./pages/CMS/Cms";
 import { Extra } from "./pages/extra/Extra";
 import { IndexWhatsNew } from "./components/WhatsNew/IndexWhatsNew";
 import { IndexBanner } from "./components/Banner/IndexBanner";
+import { WhatsNewTable } from "./components/WhatsNew/WhatsNewTable";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -27,7 +28,12 @@ function App() {
          
             <Route path="/" element={<Home />} />
             <Route path="cms" element={<Cms />} />
-            <Route path="whatsnew" element={<IndexWhatsNew />} />
+            <Route path="whatsnew"  >
+              <Route index element={<IndexWhatsNew />}/>
+              <Route path="whatsnewtable" element={<WhatsNewTable />}/>
+              
+
+            </Route>
             <Route path="Banner" element={<IndexBanner />} />
             <Route path="extra" element={<Extra />} />
             <Route path="users">
@@ -46,9 +52,6 @@ function App() {
                 element={<New/>}
               />
             </Route>
-         
-          {/* Add a catch-all route for 404 */}
-          {/* <Route path='*' element={<NotFoundComponent />} /> */}
         </Routes>
       </BrowserRouter>
     </div>
