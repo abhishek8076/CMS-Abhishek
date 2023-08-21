@@ -1,4 +1,4 @@
-import React ,{useState}from 'react';
+import React ,{useState,useEffect}from 'react';
 // import React, { useState } from 'react';
 // import Sidebar from '../../components/sidebar/Sidebar';
 // import Navbar from '../../components/navbar/Navbar';
@@ -15,20 +15,21 @@ import { Form } from 'react-bootstrap';
 import FileUploadPage from '../content/fileUpload/Fileupload';
 
 
+
 export const Submenu = () => {
     const options = ['Select','File' ,'Link', 'HTML']; // Options for the dropdown
     const [selectedOption, setSelectedOption] = useState(options[0]); // Initial selected option
   
-    const handleOptionChange = (event) => {
+   const handleOptionChange = (event) => {
       setSelectedOption(event.target.value);
     };
-    const options1 = ['Select','Home' ,'About us', 'Login']; // Options for the dropdown
-    const [selectedOption1, setSelectedOption1] = useState(
-      [0]); // Initial selected option
-  
+      const options1= ['Select','Home' ,'About us', 'Login']; // Options for the dropdown
+    const [selectedOption1, setSelectedOption1] = useState(options1[0]); // Initial selected option
     const handleOptionChange1 = (event) => {
       setSelectedOption1(event.target.value);
     };
+    
+ 
   return (
     <div><div className='MainMenuOption'>
     <Container>
@@ -37,7 +38,7 @@ export const Submenu = () => {
         <Form.Group className="mb-3" controlId="Menulist">
           <Form.Label className="text-center">Menulist</Form.Label>
         
-              <select value={selectedOption} onChange={handleOptionChange1}>
+              <select value={selectedOption1} onChange={handleOptionChange1}>
                       {options1.map((option, index) => (
                         <option key={index} value={option}>
                           {option}
@@ -47,6 +48,7 @@ export const Submenu = () => {
                     </select>
         </Form.Group>
       </Form>
+      
       
       <Form >
         <Form.Group className="mb-3" controlId="name">
@@ -91,7 +93,11 @@ export const Submenu = () => {
       </Form.Group>
     </Container>
 
-  </div></div>
+  </div>
+  <div>
+ 
+  </div>
+  </div>
   )
 }
 export default Submenu;

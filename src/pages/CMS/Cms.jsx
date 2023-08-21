@@ -13,14 +13,15 @@ import FormControl from '@mui/material/FormControl';
 import { Form } from 'react-bootstrap';
 import New from '../../pages/new/New'
 import { Menu } from '../../components/NavMenu/menu';
-import Submenu, { Subsubmenu } from '../../components/NavMenu/sub-submenu';
+import { Subsubmenu } from '../../components/NavMenu/sub-submenu';
+import {Submenu} from '../../components/NavMenu/submenu';
 
 export const Cms = () => {
   const [menu, setMenu] = React.useState('');
   const [showDiv, setShowDiv] = useState(false);
   const [showDiv1, setShowDiv1] = useState(false);
   const contentType = [
-    { label: 'Select'},
+    { label: 'Select' },
     { label: 'File', value: "1" },
     { label: 'Link', value: "demo" },
     { label: 'HTML', value: "3" },
@@ -48,7 +49,7 @@ export const Cms = () => {
     setShowDiv(selectedValue === 'option1' || "demo")
     // setShowDiv(if);
   };
-  const options = ['Select','Menu', 'Submenu', 'Subsubmenu']; // Options for the dropdown
+  const options = ['Select', 'Menu', 'Submenu', 'Subsubmenu']; // Options for the dropdown
   const [selectedOption, setSelectedOption] = useState(options[0]); // Initial selected option
 
   const handleOptionChange = (event) => {
@@ -79,11 +80,11 @@ export const Cms = () => {
 
                     </select>
                     <div>
-                {selectedOption === 'Select'}
-                {selectedOption === 'Menu' && <Menu />}
-                {selectedOption === 'Submenu' && <Submenu />}
-                {selectedOption === 'Subsubmenu' && <Subsubmenu/>}
-              </div>
+                      {selectedOption === 'Select'}
+                      {selectedOption === 'Menu' && <Menu />}
+                      {selectedOption === 'Submenu' && <Submenu />}
+                      {selectedOption === 'Subsubmenu' && <Subsubmenu />}
+                    </div>
                     {/* </Select>  */}
                     <div>
 
