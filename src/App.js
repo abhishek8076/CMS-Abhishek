@@ -25,33 +25,33 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
 
-         
-            <Route path="/" element={<Home />} />
-            <Route path="cms" element={<Cms />} />
-            <Route path="whatsnew"  >
-              <Route index element={<IndexWhatsNew />}/>
-              <Route path="whatsnewtable" element={<WhatsNewTable />}/>
-              
 
-            </Route>
-            <Route path="Banner" element={<IndexBanner />} />
-            <Route path="extra" element={<Extra />} />
-            <Route path="users">
-              <Route index element={<List />} />
-              <Route path="single/:id" element={<Single />} />
-              <Route
-                path="new"
-                element={<New/>}
-              />
-            </Route>
-            <Route path="products">
-              <Route index element={<List />} />
-              <Route path=":productId" element={<Single />} />
-              <Route
-                path="new"
-                element={<New/>}
-              />
-            </Route>
+          <Route path="/" element={<Home />} />
+          <Route path="cms" element={<Cms />} />
+          <Route path="whatsnew"  >
+            <Route index element={<IndexWhatsNew />} />
+            <Route path="whatsnewtable" element={<WhatsNewTable />} />
+
+
+          </Route>
+          <Route path="Banner" element={<IndexBanner />} />
+          <Route path="extra" element={<Extra />} />
+          <Route path="users">
+            <Route index element={<List />} />
+            <Route path="single/:id" element={<Single />} />
+            <Route
+              path="new"
+              element={<New />}
+            />
+          </Route>
+          <Route path="products">
+            <Route index element={<List />} />
+            <Route path=":productId" element={<Single />} />
+            <Route
+              path="new"
+              element={<New />}
+            />
+          </Route>
         </Routes>
       </BrowserRouter>
     </div>

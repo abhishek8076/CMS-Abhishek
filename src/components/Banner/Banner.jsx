@@ -55,6 +55,8 @@ const ImageUploader = ({ id, onDelete }) => {
   };
 
   return (
+    <>
+    
     <Paper elevation={3} sx={{ padding: 2, position: 'relative' }}>
       {selectedImage && (
         <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
@@ -99,6 +101,7 @@ const ImageUploader = ({ id, onDelete }) => {
         Upload Image
       </Button>
     </Paper>
+    </>
   );
 };
 
@@ -119,6 +122,7 @@ const ImageUploader = ({ id, onDelete }) => {
 
   return (
     <div>
+      <h1 className="main-heading">Banner</h1>
       <Button variant="contained" color="primary" onClick={handleAddImage}>
         Add Image
       </Button>

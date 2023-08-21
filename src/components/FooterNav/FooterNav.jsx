@@ -60,6 +60,7 @@ const Footer = () => {
 
   return (
     <footer>
+      <h1 className="main-heading">Footer</h1>
       <div className="footer-container">
         <TextField
           label="Name"

@@ -188,7 +188,19 @@ function WhatsNew() {
     }
   };
   
+const fileTypeOptions = [
+  { value: 'link', label: 'Link' },
+  { value: 'pdf', label: 'PDF' },
+  { value: 'image', label: 'Image' },
+  { value: 'video', label: 'Video' },
+];
+const YourComponent = () => {
+  const [fileType, setFileType] = useState('');
 
+  const handleFileTypeChange = (event) => {
+    setFileType(event.target.value);
+  };
+}
   return (
     <>
      <div>
@@ -229,7 +241,7 @@ function WhatsNew() {
           className="mb-3"
         />
 
-        <FormControl variant="outlined" fullWidth margin="normal" className="mb-3">
+        {/* <FormControl variant="outlined" fullWidth margin="normal" className="mb-3">
           <InputLabel>Select File Type</InputLabel>
           <Select value={fileType} onChange={handleFileTypeChange} label="Select File Type">
             <MenuItem value="link">Link</MenuItem>
@@ -237,7 +249,17 @@ function WhatsNew() {
             <MenuItem value="image">Image</MenuItem>
             <MenuItem value="video">Video</MenuItem>
           </Select>
-        </FormControl>
+        </FormControl> */}
+         <FormControl variant="outlined" fullWidth margin="normal" className="mb-3">
+      <InputLabel>Select File Type</InputLabel>
+      <Select value={fileType} onChange={handleFileTypeChange} label="Select File Type">
+        {fileTypeOptions.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
 
         {fileType === 'link' ? (
           <TextField
