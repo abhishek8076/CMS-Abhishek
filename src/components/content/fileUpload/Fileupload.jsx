@@ -35,6 +35,8 @@ function FileUploadPage() {
         <div>
             <input type="file" name="file"  />
 
+
+
           
             <div>
                 <button >Submit</button>

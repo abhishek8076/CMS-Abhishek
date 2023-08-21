@@ -23,7 +23,8 @@ export const Submenu = () => {
       setSelectedOption(event.target.value);
     };
     const options1 = ['Select','Home' ,'About us', 'Login']; // Options for the dropdown
-    const [selectedOption1, setSelectedOption1] = useState(options1[0]); // Initial selected option
+    const [selectedOption1, setSelectedOption1] = useState(
+      [0]); // Initial selected option
   
     const handleOptionChange1 = (event) => {
       setSelectedOption1(event.target.value);
