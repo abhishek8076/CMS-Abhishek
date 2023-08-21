@@ -6,47 +6,94 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import api from '../../utils/apiUrl.json';
 
-const ImageUploader = ({ id, onDelete }) => {
+export const Banner = ({ id, onDelete }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageName, setImageName] = useState('');
 
+  // const handleImageUpload = async () => {
+  //   if (!selectedImage) return;
+
+  //   const formData = new FormData();
+  //   formData.append('imgsrc', selectedImage);
+  //   formData.append('content', imageName);
+
+  //   try {
+  //     const response = await axios.post(api.imageAdd, formData, {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     });
+
+  //     const imagePath = response.data.imgpath;
+
+  //     console.log('Image uploaded successfully!', response.data);
+
+  //     // Show a success toast notification
+  //     toast.success('Image uploaded successfully!', {
+  //       position: toast.POSITION.TOP_CENTER,
+  //     });
+
+  //     // You can update your images state or perform other actions
+
+  //   } catch (error) {
+  //     console.error('Error uploading image:', error);
+
+  //     // Show an error toast notification
+  //     toast.error('Error uploading image', {
+  //       position: toast.POSITION.TOP_CENTER,
+  //     });
+  //   }
+  // };
   const handleImageUpload = async () => {
     if (!selectedImage) return;
-
+  
     const formData = new FormData();
-    formData.append('image', selectedImage);
-    formData.append('name', imageName);
-
+    formData.append('imgsrc', selectedImage);
+    formData.append('content', imageName);
+  
     try {
       const response = await axios.post(api.imageAdd, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-        }
+        },
       });
+  
+      const imagePath = response.data.imgpath;
+  
       console.log('Image uploaded successfully!', response.data);
-
+  
       // Show a success toast notification
       toast.success('Image uploaded successfully!', {
-        position: toast.POSITION.TOP_CENTER
+        position: toast.POSITION.TOP_CENTER,
       });
-
-      // You can update your images state or perform other actions
+  
+      // Clear the form fields and reset state after successful upload
+      setSelectedImage(null);
+      setImageName('');
+  
+      // Reset the input file element to allow selecting a new image
+      const inputFile = document.getElementById(`upload-input-${id}`);
+      if (inputFile) {
+        inputFile.value = ''; // Clear the selected file
+      }
+  
     } catch (error) {
       console.error('Error uploading image:', error);
-
+  
       // Show an error toast notification
       toast.error('Error uploading image', {
-        position: toast.POSITION.TOP_CENTER
+        position: toast.POSITION.TOP_CENTER,
       });
     }
   };
+  
 
   const handleImageChange = (event) => {
     const imageFile = event.target.files[0];
     setSelectedImage(imageFile);
   };
 
-  const handleNameChange = (event) => {
+  const handleContentChange = (event) => {
     setImageName(event.target.value);
   };
 
@@ -55,8 +102,7 @@ const ImageUploader = ({ id, onDelete }) => {
   };
 
   return (
-    <>
-    
+    <form>
     <Paper elevation={3} sx={{ padding: 2, position: 'relative' }}>
       {selectedImage && (
         <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
@@ -67,6 +113,8 @@ const ImageUploader = ({ id, onDelete }) => {
           />
         </Box>
       )}
+
+      {/* Input for uploading image */}
       <input
         type="file"
         accept="image/*"
@@ -79,18 +127,23 @@ const ImageUploader = ({ id, onDelete }) => {
           Choose Image
         </Button>
       </label>
+
       {selectedImage && (
         <IconButton onClick={handleDelete} sx={{ position: 'absolute', top: 5, right: 5 }}>
           <DeleteIcon />
         </IconButton>
       )}
+
+      {/* Text field for image name */}
       <TextField
         label="Image Name"
         value={imageName}
-        onChange={handleNameChange}
+        onChange={handleContentChange}
         fullWidth
         sx={{ marginTop: 2 }}
       />
+
+      {/* Upload button */}
       <Button
         variant="contained"
         color="primary"
@@ -100,46 +153,9 @@ const ImageUploader = ({ id, onDelete }) => {
       >
         Upload Image
       </Button>
+
+      <ToastContainer /> {/* Place this component wherever you want the toast notifications */}
     </Paper>
-    </>
+    </form>
   );
 };
-
- export const Banner = () => {
-  const [imageComponents, setImageComponents] = useState([]);
-
-  const handleAddImage = () => {
-    const newImageComponent = {
-      id: imageComponents.length + 1,
-    };
-    setImageComponents([...imageComponents, newImageComponent]);
-  };
-
-  const handleDeleteImage = (id) => {
-    const updatedComponents = imageComponents.filter((component) => component.id !== id);
-    setImageComponents(updatedComponents);
-  };
-
-  return (
-    <div>
-      <h1 className="main-heading">Banner</h1>
-      <Button variant="contained" color="primary" onClick={handleAddImage}>
-        Add Image
-      </Button>
-      <Grid container spacing={2}>
-        {imageComponents.map((component) => (
-          <Grid key={component.id} item xs={12} sm={6} md={4}>
-            <ImageUploader
-              id={component.id}
-              onDelete={handleDeleteImage}
-            />
-          </Grid>
-        ))}
-      </Grid>
-      <ToastContainer />
-    </div>
-  );
-};
-
-// export default ImageUploadComponent;
- 

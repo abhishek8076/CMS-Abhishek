@@ -55,7 +55,7 @@ export function New() {
 
         // Optionally, reset the form after successful submission
         setFormData({
-          name: '',
+          name_admin: '',
           email: '',
           mobile_no: '',
           address: '',
@@ -99,7 +99,7 @@ export function New() {
                             <Form.Control type="text"
                               placeholder="Enter Name"
                               name="name"
-                              value={formData.name}
+                              value={formData.name_admin}
                               onChange={handleChange} />
                           </Form.Group>
 
