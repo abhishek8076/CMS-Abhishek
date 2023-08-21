@@ -1,0 +1,74 @@
+/* WhatsNew.scss */
+.container1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    
+  }
+  .containertable{
+    width : auto ;
+    margin: 20px;
+  }
+  
+  .view-button {
+    display: flex;
+  
+    align-items: center;
+    
+    align-items:right;
+    justify-content: right;
+    text-decoration: none;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: auto;
+    
+  }
+  
+  .view-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .main-heading {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  .form {
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  .form .mb-3 {
+    margin-bottom: 1.5rem;
+  }
+  
+  .file-input-label {
+    display: block;
+    margin-top: 0.5rem;
+    cursor: pointer;
+  }
+  
+  .selected-file-name {
+    font-weight: bold;
+    margin-top: 0.5rem;
+  }
+  
+  .delete-file-button {
+    margin-top: 0.5rem;
+  }
+  
+  .error-text {
+    color: red;
+    margin-top: 0.5rem;
+  }
+  
+  .submit-button {
+    margin-top: 1.5rem;
+  }
+  

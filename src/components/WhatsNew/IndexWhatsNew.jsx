@@ -13,7 +13,7 @@ export const IndexWhatsNew = () => {
       <Navbar />
       <div className="container">
           <WhatsNew />
-          <WhatsNewTable/>
+        
       </div>
      
     </div>
