@@ -74,24 +74,14 @@ import {
           <TableCell>ID</TableCell>
           <TableCell>Image</TableCell>
             <TableCell>Name</TableCell>
-           
-            {/* <TableCell>Delete</TableCell> */}
-            {/* Add more table header cells for other properties */}
           </TableRow>
         </TableHead>
         <TableBody>
           {data.map((item,i) => (
-            
             <TableRow key={item.users_id}>
                <TableCell>{i+1}</TableCell>
-              <TableCell><img src={item.u_imgsrc } style={{"height":"60px","width":"60px"}}/></TableCell>
+              <TableCell><img className='getImage' src={item.imgpath} alt={item.u_content}/></TableCell>
               <TableCell>{item.u_content}</TableCell>
-           
-              
-              
-              {/* <TableCell>{item.name}</TableCell> */}
-              
-              {/* Add more table cells for other properties */}
             </TableRow>
           ))}
         </TableBody>
