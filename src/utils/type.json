@@ -1,0 +1,64 @@
+{
+    "request": {
+        "POST": "POST",
+        "PUT": "PUT",
+        "GET": "GET",
+        "DELETE": "DELETE"
+    },
+    "headerContent": {
+        "appJson": "application/json; charset=utf-8",
+        "accept": "application/json; charset=utf-8",
+        "accessControlAllowOrigin": "*"
+    },
+    "tagsTypes": {
+        "input": "input",
+        "select": "select",
+        "textarea": "textarea",
+        "inputFieldType": {
+            "file": "file",
+            "text": "text",
+            "date": "date",
+            "number": "number",
+            "hashTags": "hashTags",
+            "checkbox": "checkbox",
+            "hidden": "hidden"
+        },
+        "heading": "heading"
+    },
+    "validationsType": {
+        "isNumber": "isNumber",
+        "isEmail": "isEmail",
+        "isMobile": "isMobile",
+        "isRequired": "isRequired",
+        "isDate": "isDate",
+        "checkMinLenght": "checkMinLenght",
+        "checkMaxLength": "checkMaxLength",
+        "isGST": "isGST",
+        "isPanNo": "isPanNo",
+        "isURL": "isURL",
+        "isFileSize": "isFileSize",
+        "isFileTypes": "isFileTypes"
+    },
+    "formTypes": {
+        "update": "update"
+    },
+    "s3BucketConfig": {
+        "bucketName": "",
+        "dirName": "Uploads",
+        "region": "",
+        "accessKeyId": "",
+        "secretAccessKey": ""
+    },
+    "keyCodes": {
+        "comma": 188,
+        "enter": 13,
+        "space": 32
+    },
+    "ApiSecret": [
+        {
+            "id": "1",
+            "secretName": "orante_ems_01",
+            "password": "ADMIN"
+        }
+    ]
+}
