@@ -13,6 +13,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import { Form } from 'react-bootstrap';
 import FileUploadPage from '../content/fileUpload/Fileupload';
+import AddLink from '../content/link/link1';
+import {HtmlEdit} from '../../components/content/HtmlContent/HtmlContent'
 
 
 
@@ -85,8 +87,8 @@ export const Submenu = () => {
       </select>
 
       {selectedOption === 'File' && <div><FileUploadPage/> </div>}
-      {selectedOption === 'Link' && <div>This is Div 2 content.</div>}
-      {selectedOption === 'HTML' && <div>This is Div 3 content.</div>}
+      {selectedOption === 'Link' && <div><AddLink/></div>}
+      {selectedOption === 'HTML' && <div><HtmlEdit/></div>}
     </div>
 
         </div>
