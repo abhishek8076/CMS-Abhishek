@@ -74,6 +74,8 @@ function App() {
         
         <Route path="/" element={<Login />} />
         <Route path="/dashboard" element={<Home />} />
+        <Route path="/user" element={<New />} />
+        <Route path="/cms" element={<Cms />} />
         {/* {role === "2" && (
           <Protected path="/dashboard" element={<Home />} />
         )} */}
