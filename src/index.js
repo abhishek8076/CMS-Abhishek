@@ -12,15 +12,9 @@ ReactDOM.render(
   
   <React.StrictMode>
     <DarkModeContextProvider>
-<<<<<<< HEAD
-    
-      <App />
-      
-=======
  
       <App />
      
->>>>>>> 6e16e2578788b6383a775f19c90d71462582911e
     </DarkModeContextProvider>
   </React.StrictMode>
   ,
