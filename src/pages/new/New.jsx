@@ -8,6 +8,7 @@ import apiClient from '../../services/AxiosApi'
 import api from '../../utils/apiUrl.json';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+// import apis from '../../Apis/apis';
 
 export function New() {
   const [dropdownOptions, setDropdownOptions] = useState([]);
@@ -99,10 +100,11 @@ export function New() {
   };
 
   useEffect(() => {
-    const fetchRoles = async () => {
+    const fetchRoles = async (data) => {
       try {
         const response = await apiClient.get(api.getUserType); // Replace with your API endpoint for roles
         setDropdownOptions(response.data);
+
       } catch (error) {
         console.error('Error fetching roles:', error);
       }
