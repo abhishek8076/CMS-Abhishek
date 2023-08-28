@@ -14,6 +14,7 @@ import { Table,
       TableRow, 
       Paper,
      } from '@mui/material';
+     import apiClient from "../../services/AxiosApi";
 
 const Datatable = () => {
   const [data, setData] = useState([]);
@@ -22,7 +23,7 @@ const Datatable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(api.newuser);
+        const response = await apiClient.get(api.newuser);
         setData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);

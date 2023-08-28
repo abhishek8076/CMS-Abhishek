@@ -20,8 +20,8 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <div className="top">
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <span className="logo">lamadmin</span>
+        <Link to="/dashboard" style={{ textDecoration: "none" }}>
+          <span className="logo">CMS PANEL</span>
         </Link>
       </div>
       <hr />
@@ -29,7 +29,7 @@ const Sidebar = () => {
         <ul>
           <p className="title">MAIN</p>
           <li>
-          <Link to="/" style={{ textDecoration: "none" }}>
+          <Link to="/dashboard" style={{ textDecoration: "none" }}>
             <DashboardIcon className="icon" />
             <span>Dashboard</span>
             </Link>
@@ -97,7 +97,7 @@ const Sidebar = () => {
             <span>Profile</span>
           </li>
           <li>
-          <Link to="/login" style={{ textDecoration: "none" }}>
+          <Link to="/" style={{ textDecoration: "none" }}>
             <ExitToAppIcon className="icon" />
             <span>Logout</span>
             </Link>

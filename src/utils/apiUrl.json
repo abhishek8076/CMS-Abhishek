@@ -4,9 +4,12 @@
     "url": "http://localhost:3000",
     "proxyTargetUrl": "http://localhost:8800/",
     "newuser":"/api/user",  
-    "edituser":"/user/",
-    "imageAdd":"/api/Slider",     
+    "edituser":"api/user/",
+    "getUserType":"/api/user/usertype",
+    "imageAdd":"/api/Slider/postslider_data", 
+    "getimage":"/api/Slider", 
+     "deleteImg" :"/api/Slider/",
     "getApiToken":"/auth/getApiToken",
-    "login": "/auth/api/login"
+    "login": "/api/Login"
     
 }

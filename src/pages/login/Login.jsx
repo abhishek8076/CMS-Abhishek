@@ -1,74 +1,56 @@
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import { Link } from "react-router-dom";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { useState } from "react";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import apiClient from '../../services/AxiosApi'; // Adjust the import path
+import { useNavigate } from "react-router-dom";
+// import apis from "../../Apis/apis";
+import api from '../../utils/apiUrl.json'
 import axios from "axios";
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useNavigate } from 'react-router-dom';
-
-import apis from '../../utils/apiUrl.json'
-
-
 
 export default function Login() {
-  let navigate = useNavigate();
-  //  function loginView (){
+  const navigate = useNavigate();
   const [user, setUser] = useState({
-      userName: "",
-      password: ""
+    email: "",
+    password: ""
   });
-  const [validation, setValidation] =useState([])
+const jsonData= { // Adjust the endpoint
+  email: user.email,
+  password: user.password
+}
+const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  function handleChange(event) {
-      const { name, value } = event.target;
-      setUser({ ...user, [name]: value });
-      console.log(user, name)
-  }
-  const handleSubmit = async (user) => {
-      // api.login(user);
+    const response = await apiClient.post(api.login ,jsonData);
 
-      let validationArr = [];
+    if (response && response.data) {
+      const  token  = response.data.token;
+      const  data = response.data.user
+      
+      if (token) {
+        localStorage.setItem("token",token );
+        localStorage.setItem("userData", data); // Assuming your user data is in `response.data.user`
+        alert("You are logged in successfully.");
+        navigate("/dashboard");
+        // Redirect to the dashboard or any other page
+      } else {
+        alert("Invalid email or password.");
+      }
+    } else {
+      alert("Something went wrong.");
+    }
+  };
 
-      if (!user.userName || user.userName == '') {
-          validationArr.push("UserName Required");
-      }
-      if (!user.password || user.password == '') {
-          validationArr.push("Password Required");
-      }
-      if (validationArr.length > 0) {
-          setValidation(validationArr);
-          return false;
-      }
-      else {
-          setValidation([]);
-          console.log(user, 'submitted')
-          let response = await apis.login(user)
-          if (response && response.data) {
-              if (response.data.statusCode == 200) {
-                  let dt = response.data.data
-                  if (dt) {
-                      sessionStorage.setItem("user", JSON.stringify(dt.user))
-                      sessionStorage.setItem("apiToken", dt.token)
-                      //  window['setUserFunc'](getUserProfile());
-                      navigate("/")
-                      alert("done");
-                  }
-              }
-              else if (response.data.statusCode == 401) {
-                  setValidation(["UserName or Password Not Matched"])
-              }
-          }
-          else {
-              alert("Unauthorised User")
-          }
-      }
-  }
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setUser((prevUser) => ({
+      ...prevUser,
+      [name]: value
+    }));
+  };
+
   return (
     <Container component="main" maxWidth="sm">
       <Box
@@ -86,55 +68,35 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form  >
-        <Box  noValidate sx={{ mt: 1 }}>
+        <form onSubmit={handleSubmit}>
           <TextField
             margin="normal"
-            
             fullWidth
             id="email"
             label="Email Address"
             name="email"
             autoComplete="email"
             autoFocus
-            placeholder="Username"
-            onChange={(e) => { handleChange(e) }}
-            
+            onChange={handleChange}
           />
           <TextField
             margin="normal"
-            
             fullWidth
             name="password"
             label="Password"
             type="password"
-            onChange={(e) => { handleChange(e) }}
-          
+            onChange={handleChange}
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          
           <Button
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            onClick={(e) => { handleSubmit(user) }}
-           
           >
             Sign In
           </Button>
-         
-          <Grid container>
-           
-           
-          </Grid>
-        </Box>
         </form>
       </Box>
-     
     </Container>
   );
 }
