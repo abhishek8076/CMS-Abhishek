@@ -15,6 +15,7 @@ import New from '../../pages/new/New'
 import { Menu } from '../../components/NavMenu/menu';
 import { Subsubmenu } from '../../components/NavMenu/sub-submenu';
 import {Submenu} from '../../components/NavMenu/submenu';
+import './Cms.scss'
 
 export const Cms = () => {
   const [menu, setMenu] = React.useState('');
@@ -60,18 +61,19 @@ export const Cms = () => {
       <div className="home">
         <Sidebar className='nav' style={{}} />
         <div className="homeContainer">
+        <div className="backgroundcontainer">
           <Navbar />
-          <h1>CMS</h1>
+        
 
           <div className='mainContainer'>
             <Container>
               <Grid container spacing={2}>
                 <Grid >
-                  <h4>Menu List</h4>
+                  <h4 style={{textAlign:"center"}}>Create your own content here</h4>
                 </Grid>
                 <Grid >
                   <FormControl sx={{ minWidth: 200 }} size="small">
-                    <select value={selectedOption} onChange={handleOptionChange}>
+                    <select  className='selectmenu' value={selectedOption} onChange={handleOptionChange}>
                       {options.map((option, index) => (
                         <option key={index} value={option}>
                           {option}
@@ -79,7 +81,7 @@ export const Cms = () => {
                       ))}
 
                     </select>
-                    <div>
+                    <div  >
                       {selectedOption === 'Select'}
                       {selectedOption === 'Menu' && <Menu />}
                       {selectedOption === 'Submenu' && <Submenu />}
@@ -106,7 +108,8 @@ export const Cms = () => {
                               name="name"
                               value={formData.name}
                               onChange={handleChange} />
-                          </Form.Group>
+                          </Form.Group
+                          >
                         </Form>
                         <Form >
                           <Form.Group className="mb-3" controlId="name">
@@ -141,6 +144,7 @@ export const Cms = () => {
             </Container>
           </div>
         </div>
+      </div>
       </div>
     </div>
   )

@@ -13,7 +13,9 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import { Form } from 'react-bootstrap';
 import FileUploadPage from '../content/fileUpload/Fileupload';
-
+import AddLink from '../content/link/link1';
+import {HtmlEdit} from '../../components/content/HtmlContent/HtmlContent'
+import './Menu.scss'
 
 export const Menu = () => {
     const options = ['Select','File' ,'Link', 'HTML']; // Options for the dropdown
@@ -28,7 +30,7 @@ export const Menu = () => {
 
       <Form >
         <Form.Group className="mb-3" controlId="name">
-          <Form.Label className="text-center">Name</Form.Label>
+          <Form.Label className="text-center" style={{color:"white"}}>Name</Form.Label>
           <Form.Control type="text"
             placeholder="Enter Name"
             name="name"
@@ -39,7 +41,7 @@ export const Menu = () => {
       </Form>
       <Form >
         <Form.Group className="mb-3" controlId="name">
-          <Form.Label className="text-center">URL</Form.Label>
+          <Form.Label className="text-center" style={{color:"white"}}>URL</Form.Label>
           <Form.Control type="text"
             placeholder="Enter URL"
             name="url"
@@ -50,7 +52,7 @@ export const Menu = () => {
       </Form>
       <Form.Group className="mb-3" controlId="Address">
         <div className="mb-12">
-          <Form.Label className="text-center">Content Type</Form.Label>
+          <Form.Label className="text-center" style={{color:"white"}}>Content Type</Form.Label>
           <div>
       <select value={selectedOption} onChange={handleOptionChange}>
         {options.map((option, index) => (
@@ -61,8 +63,8 @@ export const Menu = () => {
       </select>
 
       {selectedOption === 'File' && <div><FileUploadPage/> </div>}
-      {selectedOption === 'Link' && <div>This is Div 2 content.</div>}
-      {selectedOption === 'HTML' && <div>This is Div 3 content.</div>}
+      {selectedOption === 'Link' && <div><AddLink/></div>}
+      {selectedOption === 'HTML' && <div><HtmlEdit/></div>}
     </div>
 
         </div>
