@@ -100,8 +100,8 @@ const Datatable = () => {
               <TableCell>{item.user_email}</TableCell>
               <TableCell>{item.user_mobile_no}</TableCell>
               <TableCell>{item.user_address}</TableCell>
-              <TableCell> <Link Link to={`/users/single/${item.users_id}`} onClick={() => handleButtonClick(item.user_id)} style={{ textDecoration: "none" }}>
-        <Button variant="contained"><EditIcon/>View</Button>
+              <TableCell> <Link Link to={`/users/single/${item.users_id}`} style={{ textDecoration: "none" }}>
+        <Button variant="contained"  onClick={() => handleButtonClick(item.user_id)}><EditIcon/>View</Button>
         </Link>
         {/* <Link to="/users/new" className="link"></Link>
         <Button variant="outlined" >Delete</Button> */}

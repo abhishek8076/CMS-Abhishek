@@ -23,6 +23,7 @@ import { IndexWhatsNew } from "./components/WhatsNew/IndexWhatsNew";
 import { IndexBanner } from "./components/Banner/IndexBanner";
 import { WhatsNewTable } from "./components/WhatsNew/WhatsNewTable";
 import { Banner } from "./components/Banner/Banner";
+import Profile from "./pages/profile/Profile";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -74,8 +75,18 @@ function App() {
         
         <Route path="/" element={<Login />} />
         <Route path="/dashboard" element={<Home />} />
-        <Route path="/users" element={<List />} />
+        {/* <Route path="/users" element={<List />} /> */}
         <Route path="/cms" element={<Cms />} />
+       
+        <Route path="users">
+            <Route index element={<List />} />
+          <Route path="single/:id" element={<Single />} />
+        <Route
+             path="new"
+           element={<New />}
+            />
+       </Route>
+       <Route path="/profile" element={<Profile/>} />
         {/* {role === "2" && (
           <Protected path="/dashboard" element={<Home />} />
         )} */}

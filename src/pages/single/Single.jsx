@@ -33,7 +33,7 @@ export function Single() {
   useEffect(() => {
     console.log("kjlksad")
     async function fetchData() {
-      const result = await axios.get(
+      const result = await apiClinet.get(
         api.edituser + id,
         // { headers: headers() }
       );
@@ -69,22 +69,23 @@ export function Single() {
                         <Form>
                           <Form.Group className="mb-3" controlId="Name">
                             <Form.Label className="text-center">Name</Form.Label>
-                            <Form.Control type="text" name="user_name" value={data[0].user_name} />
+                            <Form.Control type="text" name="user_name" value={data.user_name} />
                           </Form.Group>
                           {console.log(data.user_name)}
                           <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label className="text-center">
                               Email
                             </Form.Label>
-                            <Form.Control type="email" name="email" value={data[0].user_email} readOnly />
+                            
+                            <Form.Control type="email" name="user_email" value={data.user_email} readOnly />
                           </Form.Group>
                           <Form.Group className="mb-3" controlId="Mobile">
                             <Form.Label className="text-center">Mobile</Form.Label>
-                            <Form.Control type="text" name="mobile" value={data[0].user_mobile_no} readOnly />
+                            <Form.Control type="text" name="mobile" value={data.user_mobile_no} readOnly />
                           </Form.Group>
                           <Form.Group className="mb-3" controlId="Address">
                             <Form.Label className="text-center">Address</Form.Label>
-                            <Form.Control type="text" name="address" value={data[0].user_address}  />
+                            <Form.Control type="text" name="address" value={data.user_address}  />
                           </Form.Group>
                         </Form>
                       </div>
