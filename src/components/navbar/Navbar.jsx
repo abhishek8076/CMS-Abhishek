@@ -1,81 +1,79 @@
-import "./navbar.scss";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import FullscreenExitOutlinedIcon from "@mui/icons-material/FullscreenExitOutlined";
-import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
-import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ListOutlinedIcon from "@mui/icons-material/ListOutlined";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import IconButton from "@mui/material/IconButton";
+import Avatar from "@mui/material/Avatar";
+import logo from "../../assets/logo.jpg";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
-import logo from "../../assets/logo.jpg"
-import { Link } from "react-router-dom";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+
+import "./navbar.scss";
 
 const Navbar = () => {
+  const [anchorEl, setAnchorEl] = useState(null);
   const { dispatch } = useContext(DarkModeContext);
-  const storedUserString = localStorage.getItem('user');
-  const user = JSON.parse(storedUserString)
-  // const user = JSON.parse( localStorage.getItem('user'))
-  // console.log(user);
+  const storedUserString = localStorage.getItem("user");
+  const user = JSON.parse(storedUserString);
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <div className="navbar">
       <div className="wrapper">
         <div className="search">
-          {/* <input type="text" placeholder="Search..." />
-          <SearchOutlinedIcon /> */}
+          {/* <SearchOutlinedIcon /> */}
           <p className="name">Ornate TechnoServices Pvt Ltd</p>
         </div>
-        {/* <p>{a.r_name}</p> */}
 
         <div className="items">
-
-          {/* <div className="item">
-            <LanguageOutlinedIcon className="icon" />
-            English
-          </div> */}
           <div className="item">
-            <DarkModeOutlinedIcon
-              className="icon"
-              onClick={() => dispatch({ type: "TOGGLE" })}
-            />
+            <IconButton onClick={() => dispatch({ type: "TOGGLE" })}>
+              <DarkModeOutlinedIcon className="icon" />
+            </IconButton>
           </div>
-          {/* <div className="item">
-            <FullscreenExitOutlinedIcon className="icon" />
-          </div> */}
-          {/* <div className="item">
-            <NotificationsNoneOutlinedIcon className="icon" />
-            <div className="counter">1</div>
-          </div> */}
-          {/* <div className="item">
-            <ChatBubbleOutlineOutlinedIcon className="icon" />
-            <div className="counter">2</div>
-          </div> */}
-          {/* <div className="item">
-            <ListOutlinedIcon className="icon" />
-          </div> */}
 
           <div className="item">
-            <div className='profile'>
-              <img
-                src={logo}
-                alt=""
-                className="avatar"
-              />
-              <div className="options">
-              <Link to='/profile' style={{textDecoration: 'none'}}>
-                  <span>Profile</span>
+            <IconButton onClick={handleMenuOpen}>
+              <Avatar src={logo} alt="Profile" className="avatar" />
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+            >
+              <MenuItem onClick={handleMenuClose}>
+                <Link to="/profile" className="link" style={{textDecoration:"none"}}>
+                  Profile
                 </Link>
-                <Link to='/' style={{textDecoration: 'none'}}>
-                  <span>Logout</span>
+              </MenuItem>
+              <MenuItem onClick={handleMenuClose}>
+                <Link to="/" className="link" style={{textDecoration:"none"}}>
+                  Logout
                 </Link>
-              </div>
-            </div>
+              </MenuItem>
+            </Menu>
           </div>
+
           <div className="item">
             <p className="username">{user.r_name}</p>
           </div>
-
         </div>
       </div>
     </div>

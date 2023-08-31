@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router";
-import Protected from "./Apis/PrivateRoute";
+import {Protected} from "./Apis/PrivateRoute";
 // import { useHistory } from 'react-router';
 
 
@@ -28,9 +28,10 @@ import Profile from "./pages/profile/Profile";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
   // const LocalStorageData = localStorage.getItem("token");
-  const LocalStorageData =localStorage.getItem("token");
-  const userData = localStorage.getItem("userData");
-  const role = userData ? userData.role : null;
+ 
+  // const storedUserString = localStorage.getItem('user');
+  // const user = JSON.parse(storedUserString)
+  // const role = user ? user.r_usertype : null;
 
   return (
     // <div className={darkMode ? "app dark" : "app"}>
@@ -87,8 +88,10 @@ function App() {
             />
        </Route>
        <Route path="/profile" element={<Profile/>} />
-        {/* {role === "2" && (
+        {/* {role === 1  && (
+          <Routes>
           <Protected path="/dashboard" element={<Home />} />
+          </Routes>
         )} */}
         {/* {role === "user" && (
           <Protected path="/user" element={<UserDashboard />} />

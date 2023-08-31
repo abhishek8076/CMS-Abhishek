@@ -12,9 +12,9 @@ ReactDOM.render(
   
   <React.StrictMode>
     <DarkModeContextProvider>
- 
+   
       <App />
-     
+      
     </DarkModeContextProvider>
   </React.StrictMode>
   ,

@@ -51,10 +51,11 @@ const handleSubmit = async (event) => {
           let dt = response.data;
           let user = dt.user;
           let token = dt.token
+          localStorage.setItem("user",  JSON.stringify(user))
+          const storedUserString = localStorage.getItem('user');
+          const u = JSON.parse(storedUserString)
          
-          if (dt) {
-            localStorage.setItem("user",  JSON.stringify(user))
-            
+          if (dt && u.r_usertype===1) {
             localStorage.setItem("token", token)
               alert("login Sucess!!")
               navigate("/dashboard")
