@@ -8,6 +8,7 @@ import Navbar from '../../components/navbar/Navbar';
 const Profile = () => {
     const storedUserString = localStorage.getItem('user');
     const user = JSON.parse(storedUserString)
+    console.log(user)
     return (
         <>
          <div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Col, Row, Container, Card, Form, Button, Spinner } from 'react-bootstrap';
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
@@ -54,6 +54,9 @@ export function Single() {
       [name]: value,
     }));
   };
+  const storedUserString = localStorage.getItem("user");
+  const user = JSON.parse(storedUserString);
+  console.log(user)
 
   return (
     <>
@@ -89,7 +92,7 @@ export function Single() {
                             <Form.Control
                               type="email"
                               name="user_email"
-                              value={data.user_email}
+                              value={data.email}
                               onChange={handleInputChange}
                             />
                           </Form.Group>
@@ -98,7 +101,7 @@ export function Single() {
                             <Form.Control
                               type="text"
                               name="user_mobile_no"
-                              value={data.user_mobile_no}
+                              value={data.mobile_no}
                               onChange={handleInputChange}
                             />
                           </Form.Group>
@@ -107,7 +110,7 @@ export function Single() {
                             <Form.Control
                               type="text"
                               name="user_address"
-                              value={data.user_address}
+                              value={data.address}
                               onChange={handleInputChange}
                             />
                           </Form.Group>
@@ -125,9 +128,20 @@ export function Single() {
                                   {updateError}
                                 </div>
                               )}
-                              <Button variant="primary" onClick={handleUpdateClick}>
-                                Update User Data
+                              <div style={{display:"flex",flexDirection:"column",justifyContent:"end",marginTop:"5px"}}>
+                             
+                              <Button style={{width: "fit-content"}} onClick={handleUpdateClick}>
+                                Update User
                               </Button>
+                            
+
+                              <Link to='/users'>
+                                <Button variant="primary"  style={{marginTop:"5px",alignContent:"right"}}>
+                                  Back
+                                </Button>
+                              </Link>
+
+                              </div>
                             </>
                           )}
                         </Form>

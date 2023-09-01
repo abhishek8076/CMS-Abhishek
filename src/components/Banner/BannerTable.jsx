@@ -59,6 +59,8 @@ export const BannerTable = () => {
     setPostIdToDelete(null);
     setShowPopup(false);
   };
+  const storedUserString = localStorage.getItem("user");
+  const user = JSON.parse(storedUserString);
 
   return (
     <>
@@ -75,7 +77,9 @@ export const BannerTable = () => {
                 <TableCell>ID</TableCell>
                 <TableCell>Image</TableCell>
                 <TableCell>Name</TableCell>
+                {user.r_usertype==2 &&(
                 <TableCell>Action</TableCell>
+                )}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -84,12 +88,16 @@ export const BannerTable = () => {
                   <TableCell>{i + 1}</TableCell>
                   <TableCell><img className='getImage' src={item.imgpath} alt={item.u_content} /></TableCell>
                   <TableCell>{item.u_content}</TableCell>
+                  {user.r_usertype==2 &&(
                   <TableCell>
+                    
                     <Button  onClick={() => handleDeleteClick(item.u_id)}>
                     <DeleteIcon/>
                       Delete
                     </Button>
+                    
                   </TableCell>
+                  )}
                 </TableRow>
               ))}
             </TableBody>

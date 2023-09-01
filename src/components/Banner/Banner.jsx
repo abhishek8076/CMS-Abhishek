@@ -144,6 +144,7 @@ export const Banner = ({ id, onDelete }) => {
         onChange={handleContentChange}
         fullWidth
         sx={{ marginTop: 2 }}
+        required="true"
       />
 
       {/* Upload button */}
