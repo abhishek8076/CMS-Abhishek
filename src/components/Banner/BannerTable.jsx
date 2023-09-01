@@ -85,7 +85,8 @@ export const BannerTable = () => {
                   <TableCell><img className='getImage' src={item.imgpath} alt={item.u_content} /></TableCell>
                   <TableCell>{item.u_content}</TableCell>
                   <TableCell>
-                    <Button variant="danger" onClick={() => handleDeleteClick(item.u_id)}>
+                    <Button  onClick={() => handleDeleteClick(item.u_id)}>
+                    <DeleteIcon/>
                       Delete
                     </Button>
                   </TableCell>

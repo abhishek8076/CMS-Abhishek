@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
@@ -9,10 +9,13 @@ import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import LogoutIcon from '@mui/icons-material/Logout';
+import PersonIcon from '@mui/icons-material/Person';
 
 import "./navbar.scss";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const { dispatch } = useContext(DarkModeContext);
   const storedUserString = localStorage.getItem("user");
@@ -25,7 +28,13 @@ const Navbar = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+  const handleLogout = () => {
+    // Clear localStorage
+    localStorage.clear();
 
+    // Navigate to the login page
+    navigate('/login');
+  };
   return (
     <div className="navbar">
       <div className="wrapper">
@@ -60,13 +69,15 @@ const Navbar = () => {
             >
               <MenuItem onClick={handleMenuClose}>
                 <Link to="/profile" className="link" style={{textDecoration:"none"}}>
+                  <PersonIcon/>
                   Profile
                 </Link>
               </MenuItem>
               <MenuItem onClick={handleMenuClose}>
-                <Link to="/" className="link" style={{textDecoration:"none"}}>
+                {/* <Link onClick={handleLogout} style={{textDecoration:"none"}}>
                   Logout
-                </Link>
+                </Link> */}
+                <button  className="btn btn-link" style={{textDecoration:"none",alignContent:"left"}} onClick={handleLogout}><LogoutIcon/>Logout</button>
               </MenuItem>
             </Menu>
           </div>

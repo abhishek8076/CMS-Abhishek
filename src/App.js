@@ -88,6 +88,8 @@ function App() {
             />
        </Route>
        <Route path="/profile" element={<Profile/>} />
+       <Route path="/banner" element={<IndexBanner/>} />
+       {/* <Protected path="/dashboard" element={<Home />}/> */}
         {/* {role === 1  && (
           <Routes>
           <Protected path="/dashboard" element={<Home />} />

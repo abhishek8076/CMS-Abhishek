@@ -5,6 +5,8 @@ import { Delete as DeleteIcon } from '@mui/icons-material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import api from '../../utils/apiUrl.json';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 
 export const Banner = ({ id, onDelete }) => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -124,6 +126,7 @@ export const Banner = ({ id, onDelete }) => {
       />
       <label htmlFor={`upload-input-${id}`}>
         <Button variant="outlined" component="span">
+          <AddPhotoAlternateIcon/>
           Choose Image
         </Button>
       </label>
@@ -151,6 +154,7 @@ export const Banner = ({ id, onDelete }) => {
         disabled={!selectedImage}
         sx={{ marginTop: 2 }}
       >
+        <UploadFileIcon/>
         Upload Image
       </Button>
 

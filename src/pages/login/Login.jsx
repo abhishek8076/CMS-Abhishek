@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
@@ -86,6 +86,9 @@ console.log(u);
 // const storedUser = JSON.parse(storedUserString)
 // console.log(localStorage.setItem('user', JSON.stringify(use)))
 // console.log(storedUser);
+useEffect(() => {
+  localStorage.clear();
+}, []);
   return (
     <>  
       <Container component="main" maxWidth="sm">
