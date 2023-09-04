@@ -4,7 +4,7 @@ import React ,{useState}from 'react';
 // import Navbar from '../../components/navbar/Navbar';
 // import NoteViewer from '../../components/Edit/Edit';
 // import Whats_New from '../../components/WhatsNew/WhatsNew';
-// import  './Cms.scss';
+// import './Cms.scss';
 import { Container } from 'react-bootstrap';
 import Grid from '@mui/material/Grid';
 // import {Item}  from '@mui/material';
@@ -70,9 +70,9 @@ export const Menu = (props) => {
         ))}
       </select>
 
-      {selectedOption === 'File' && <div><FileUploadPage  props={value}/> </div>}
-      {selectedOption === 'Link' && <div><AddLink props={value}/></div>}
-      {selectedOption === 'HTML' && <div><HtmlEdit props={value}/></div>}
+      {selectedOption === 'File' && <div><FileUploadPage  /> </div>}
+      {selectedOption === 'Link' && <div><AddLink /></div>}
+      {selectedOption === 'HTML' && <div><HtmlEdit /></div>}
     </div>
 
         </div>
