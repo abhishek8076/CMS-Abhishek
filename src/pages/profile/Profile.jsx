@@ -4,6 +4,7 @@ import Card from "@mui/material/Card";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Sidebar from '../../components/sidebar/Sidebar';
 import Navbar from '../../components/navbar/Navbar';
+import avtar from '../../assets/avtar.png'
 
 const Profile = () => {
     const storedUserString = localStorage.getItem('user');
@@ -21,10 +22,13 @@ const Profile = () => {
                     <div className="col-lg-4">
                         <div className="card mb-4">
                             <div className="card-body text-center">
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+                                <img 
+                                // src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+                                        src={avtar}
+                                        alt='avtar'
                                     className="rounded-circle img-fluid" style={{ "width": "150px" }} />
                                 <h5 className="my-3">{user.r_name}</h5>
-                                <p className="text-muted mb-1">Full Stack Developer</p>
+                                <p className="text-muted mb-1">{user.usertype}</p>
                                 <p className="text-muted mb-4">{user.r_email}</p>
                             </div>
                         </div>

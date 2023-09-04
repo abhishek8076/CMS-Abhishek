@@ -91,7 +91,7 @@ export function Single() {
                             </Form.Label>
                             <Form.Control
                               type="email"
-                              name="user_email"
+                              name="email"
                               value={data.email}
                               onChange={handleInputChange}
                             />
@@ -100,7 +100,7 @@ export function Single() {
                             <Form.Label className="text-center">Mobile</Form.Label>
                             <Form.Control
                               type="text"
-                              name="user_mobile_no"
+                              name="mobile_no"
                               value={data.mobile_no}
                               onChange={handleInputChange}
                             />
@@ -109,7 +109,7 @@ export function Single() {
                             <Form.Label className="text-center">Address</Form.Label>
                             <Form.Control
                               type="text"
-                              name="user_address"
+                              name="address"
                               value={data.address}
                               onChange={handleInputChange}
                             />
