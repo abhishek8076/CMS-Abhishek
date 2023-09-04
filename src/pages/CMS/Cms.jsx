@@ -23,7 +23,7 @@ export const Cms = () => {
   const [showDiv1, setShowDiv1] = useState(false);
   const contentType = [
     { label: 'Select' },
-    { label: 'File', value: "1" },
+    { label: 'File', value: "1" }, 
     { label: 'Link', value: "demo" },
     { label: 'HTML', value: "3" },
   ]

@@ -4,7 +4,7 @@ import React ,{useState}from 'react';
 // import Navbar from '../../components/navbar/Navbar';
 // import NoteViewer from '../../components/Edit/Edit';
 // import Whats_New from '../../components/WhatsNew/WhatsNew';
-// import './Cms.scss';
+// import  './Cms.scss';
 import { Container } from 'react-bootstrap';
 import Grid from '@mui/material/Grid';
 // import {Item}  from '@mui/material';
@@ -15,15 +15,23 @@ import { Form } from 'react-bootstrap';
 import FileUploadPage from '../content/fileUpload/Fileupload';
 import AddLink from '../content/link/link1';
 import {HtmlEdit} from '../../components/content/HtmlContent/HtmlContent'
-import './Menu.scss'
+import './Menu.scss';
+import APi from '../../services/AxiosApi';
 
-export const Menu = () => {
+export const Menu = (props) => {
+
     const options = ['Select','File' ,'Link', 'HTML']; // Options for the dropdown
     const [selectedOption, setSelectedOption] = useState(options[0]); // Initial selected option
   
     const handleOptionChange = (event) => {
       setSelectedOption(event.target.value);
     };
+
+  const  handleSubmit= async()=>{
+        const res = await APi.post()
+  }
+
+
   return (
     <div><div className='MainMenuOption'>
     <Container>
@@ -62,13 +70,16 @@ export const Menu = () => {
         ))}
       </select>
 
-      {selectedOption === 'File' && <div><FileUploadPage/> </div>}
-      {selectedOption === 'Link' && <div><AddLink/></div>}
-      {selectedOption === 'HTML' && <div><HtmlEdit/></div>}
+      {selectedOption === 'File' && <div><FileUploadPage  props={value}/> </div>}
+      {selectedOption === 'Link' && <div><AddLink props={value}/></div>}
+      {selectedOption === 'HTML' && <div><HtmlEdit props={value}/></div>}
     </div>
 
         </div>
       </Form.Group>
+      <div>
+                <button type='submit' >Submit</button>
+            </div>
     </Container>
 
   </div></div>
