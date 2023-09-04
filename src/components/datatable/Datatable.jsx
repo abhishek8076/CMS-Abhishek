@@ -4,8 +4,11 @@ import {Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
 import api from '../../utils/apiUrl.json'
 import './datatable.scss'
+
 import { Table,
    TableBody, 
    TableCell,
@@ -32,37 +35,16 @@ const Datatable = () => {
     fetchData();
   }, []);
 
-  const handleButtonClick = (users_id) => {
-    // Find the item with the clicked ID
-    const selectedItem = data.find(item => item.users_id === users_id);
-    
-    if (selectedItem) {
-      // Do something with the selected item data
-      console.log('Selected item:', selectedItem);
-    }
-  };
-  const actionColumn = [
-    {
-      field: "action",
-      headerName: "Action",
-      width: 200,
-      renderCell: (params) => {
-        return (
-          <div className="cellAction">
-            <Link Link to={`/users/single/?id=${data.users_id}`} style={{ textDecoration: "none" }}>
-              <div className="viewButton" ><EditIcon/>View</div>
-            </Link>
-            <div
-              className="deleteButton"
-              // onClick={() => handleDelete(params.row.id)}
-            >
-              Delete
-            </div>
-          </div>
-        );
-      },
-    },
-  ];
+    const handleButtonClick = (users_id) => {
+      // Find the item with the clicked ID
+      const selectedItem = data.find(item => item.users_id === users_id);
+      
+      if (selectedItem) {
+        // Do something with the selected item data
+        console.log('Selected item:', selectedItem);
+      }
+    };
+
 // debugger;
   return (
     <>
@@ -71,7 +53,7 @@ const Datatable = () => {
       <div className="datatableTitle"style={{paddingTop: 20, paddingLeft: 10}}>
         <h2>Add New User</h2>
         <Link to="/users/new" className="link">
-        <Button  id="btn" variant="contained">Add New</Button>
+        <Button  id="btn" variant="contained"><AddIcon/>Add New</Button>
         </Link>
       </div>
       </div>
@@ -100,9 +82,10 @@ const Datatable = () => {
               <TableCell>{item.user_email}</TableCell>
               <TableCell>{item.user_mobile_no}</TableCell>
               <TableCell>{item.user_address}</TableCell>
-              <TableCell> <Link Link to={`/users/single/${item.users_id}`} onClick={() => handleButtonClick(item.user_id)} style={{ textDecoration: "none" }}>
-        <Button variant="contained"><EditIcon/>View</Button>
+              <TableCell> <Link Link to={`/users/single/${item.users_id}`} style={{ textDecoration: "none" }}>
+        <Button variant="contained"  onClick={() => handleButtonClick(item.user_id)}><EditIcon/></Button>
         </Link>
+        <Button variant="contained"  onClick={() => handleButtonClick(item.user_id)}><DeleteIcon/></Button>
         {/* <Link to="/users/new" className="link"></Link>
         <Button variant="outlined" >Delete</Button> */}
         </TableCell>

@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router";
-import Protected from "./Apis/PrivateRoute";
+import {Protected} from "./Apis/PrivateRoute";
 // import { useHistory } from 'react-router';
 
 
@@ -23,13 +23,15 @@ import { IndexWhatsNew } from "./components/WhatsNew/IndexWhatsNew";
 import { IndexBanner } from "./components/Banner/IndexBanner";
 import { WhatsNewTable } from "./components/WhatsNew/WhatsNewTable";
 import { Banner } from "./components/Banner/Banner";
+import Profile from "./pages/profile/Profile";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
   // const LocalStorageData = localStorage.getItem("token");
-  const LocalStorageData =localStorage.getItem("token");
-  const userData = localStorage.getItem("userData");
-  const role = userData ? userData.role : null;
+ 
+  // const storedUserString = localStorage.getItem('user');
+  // const user = JSON.parse(storedUserString)
+  // const role = user ? user.r_usertype : null;
 
   return (
     // <div className={darkMode ? "app dark" : "app"}>
@@ -74,10 +76,24 @@ function App() {
         
         <Route path="/" element={<Login />} />
         <Route path="/dashboard" element={<Home />} />
-        <Route path="/users" element={<List />} />
+        {/* <Route path="/users" element={<List />} /> */}
         <Route path="/cms" element={<Cms />} />
-        {/* {role === "2" && (
+       
+        <Route path="users">
+            <Route index element={<List />} />
+          <Route path="single/:id" element={<Single />} />
+        <Route
+             path="new"
+           element={<New />}
+            />
+       </Route>
+       <Route path="/profile" element={<Profile/>} />
+       <Route path="/banner" element={<IndexBanner/>} />
+       {/* <Protected path="/dashboard" element={<Home />}/> */}
+        {/* {role === 1  && (
+          <Routes>
           <Protected path="/dashboard" element={<Home />} />
+          </Routes>
         )} */}
         {/* {role === "user" && (
           <Protected path="/user" element={<UserDashboard />} />

@@ -1,8 +1,9 @@
 import React from "react";
-import { Navigate, Route } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
-const Protected = ({ component: Component, ...rest }) => {
+export const Protected = ({ component: Component, ...rest }) => {
   return (
+    
     <Route
       {...rest}
       render={(props) => {
@@ -13,7 +14,8 @@ const Protected = ({ component: Component, ...rest }) => {
         }
       }}
     />
+    
   );
 };
 
-export default Protected;
+ ;

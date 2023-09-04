@@ -1,54 +1,63 @@
 import React, { useState, useEffect } from 'react';
-import {useParams } from 'react-router-dom';
-import { Col, Row, Container, Card, Form } from 'react-bootstrap';
+import { Link, useParams } from 'react-router-dom';
+import { Col, Row, Container, Card, Form, Button, Spinner } from 'react-bootstrap';
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import 'bootstrap/dist/css/bootstrap.css';
 import apiClinet from '../../services/AxiosApi';
-import axios from 'axios';
-import api from '../../utils/apiUrl.json'
+import api from '../../utils/apiUrl.json';
+
 export function Single() {
   const { id } = useParams();
-  const [data, setData] = useState([]);
-  // console.log(id);
-  // const fetchData = async () => {
+  const [data, setData] = useState({
+    name: '',
+    email: '',
+    mobile_no: '',
+    address: '',
+  });
+  const [loading, setLoading] = useState(false);
+  const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [updateError, setUpdateError] = useState('');
 
-  //   console.log(id);
-  //     try {
-  //       const response = await apiClinet.get(api.edituser + id);
-
-        
-  //       // const resData = await response.json()
-  //       setData(response.data);
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
-
-
-  // useEffect(() => {
-  //   console.log("gg");
-  //   fetchData();
-  // }, [id]);
   useEffect(() => {
-    console.log("kjlksad")
     async function fetchData() {
-      const result = await axios.get(
-        api.edituser + id,
-        // { headers: headers() }
-      );
-      const resultResp = result.data;
-      setData(resultResp);
-      // setResetGetValues(resultResp);
-      console.log("result31124", result);
-      // dstype = resultResp.dtype;
-      // setLoading(false);
+      try {
+        setLoading(true);
+        const response = await apiClinet.get(api.edituser + id);
+        setData(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        setLoading(false);
+      }
     }
     fetchData();
   }, [id]);
-  console.log(data);
-  //const user = data[0];
-  //  console.log(data[0].user_name)
+
+  const handleUpdateClick = async () => {
+    try {
+      setLoading(true);
+      await apiClinet.put(api.edituser + id, data);
+      setUpdateSuccess(true);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error updating user data:', error);
+      setUpdateError('Failed to update user data');
+      setLoading(false);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+  const storedUserString = localStorage.getItem("user");
+  const user = JSON.parse(storedUserString);
+  console.log(user)
+
   return (
     <>
       <div>
@@ -62,30 +71,79 @@ export function Single() {
                 <Col md={10} lg={6} xs={12}>
                   <Card.Body>
                     <div className="mb-3 mt-md-4">
-                      <h2 className="fw-bold mb-4 text-center text-uppercase ">
+                      <h2 className="fw-bold mb-4 text-center text-uppercase">
                         User Details
                       </h2>
                       <div className="mb-3">
                         <Form>
                           <Form.Group className="mb-3" controlId="Name">
                             <Form.Label className="text-center">Name</Form.Label>
-                            <Form.Control type="text" name="user_name" value={data[0].user_name} />
+                            <Form.Control
+                              type="text"
+                              name="name"
+                              value={data.name}
+                              onChange={handleInputChange}
+                            />
                           </Form.Group>
-                          {console.log(data.user_name)}
                           <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label className="text-center">
                               Email
                             </Form.Label>
-                            <Form.Control type="email" name="email" value={data[0].user_email} readOnly />
+                            <Form.Control
+                              type="email"
+                              name="user_email"
+                              value={data.email}
+                              onChange={handleInputChange}
+                            />
                           </Form.Group>
                           <Form.Group className="mb-3" controlId="Mobile">
                             <Form.Label className="text-center">Mobile</Form.Label>
-                            <Form.Control type="text" name="mobile" value={data[0].user_mobile_no} readOnly />
+                            <Form.Control
+                              type="text"
+                              name="user_mobile_no"
+                              value={data.mobile_no}
+                              onChange={handleInputChange}
+                            />
                           </Form.Group>
                           <Form.Group className="mb-3" controlId="Address">
                             <Form.Label className="text-center">Address</Form.Label>
-                            <Form.Control type="text" name="address" value={data[0].user_address}  />
+                            <Form.Control
+                              type="text"
+                              name="user_address"
+                              value={data.address}
+                              onChange={handleInputChange}
+                            />
                           </Form.Group>
+                          {loading ? (
+                            <Spinner animation="border" variant="primary" />
+                          ) : (
+                            <>
+                              {updateSuccess && (
+                                <div className="alert alert-success">
+                                  User data updated successfully.
+                                </div>
+                              )}
+                              {updateError && (
+                                <div className="alert alert-danger">
+                                  {updateError}
+                                </div>
+                              )}
+                              <div style={{display:"flex",flexDirection:"column",justifyContent:"end",marginTop:"5px"}}>
+                             
+                              <Button style={{width: "fit-content"}} onClick={handleUpdateClick}>
+                                Update User
+                              </Button>
+                            
+
+                              <Link to='/users'>
+                                <Button variant="primary"  style={{marginTop:"5px",alignContent:"right"}}>
+                                  Back
+                                </Button>
+                              </Link>
+
+                              </div>
+                            </>
+                          )}
                         </Form>
                       </div>
                     </div>
@@ -99,4 +157,5 @@ export function Single() {
     </>
   );
 }
+
 export default Single;
