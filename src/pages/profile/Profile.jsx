@@ -71,7 +71,7 @@ const Profile = () => {
                                         <p className="mb-0">Mobile</p>
                                     </div>
                                     <div className="col-sm-9">
-                                        <p className="text-muted mb-0">{user.r_name}</p>
+                                        <p className="text-muted mb-0">{user.r_mobile_no}</p>
                                     </div>
                                 </div>
                                 <hr />
@@ -80,7 +80,7 @@ const Profile = () => {
                                         <p className="mb-0">Address</p>
                                     </div>
                                     <div className="col-sm-9">
-                                        <p className="text-muted mb-0">{user.r_name}</p>
+                                        <p className="text-muted mb-0">{user.r_address}</p>
                                     </div>
                                 </div>
                                
