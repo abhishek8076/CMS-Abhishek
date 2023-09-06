@@ -43,7 +43,7 @@ export const Subsubmenu = () => {
 
     <Form >
         <Form.Group className="mb-3" controlId="Menulist">
-          <Form.Label className="text-center">Menulist</Form.Label>
+          <Form.Label className="text-center" style={{color:"white"}}>Menu</Form.Label>
         
               <select value={selectedOption1} onChange={handleOptionChange1}>
                       {options1.map((option, index) => (
@@ -58,7 +58,7 @@ export const Subsubmenu = () => {
       
       <Form >
         <Form.Group className="mb-3" controlId="submenulist">
-          <Form.Label className="text-center">Submenulist</Form.Label>
+          <Form.Label className="text-center"style={{color:"white"}}>Submenu</Form.Label>
         
               <select value={selectedOption2} onChange={handleOptionChange2}>
                       {options2.map((option, index) => (
@@ -72,7 +72,7 @@ export const Subsubmenu = () => {
       </Form>
       <Form >
         <Form.Group className="mb-3" controlId="name">
-          <Form.Label className="text-center">Name</Form.Label>
+          <Form.Label className="text-center"style={{color:"white"}}>Name</Form.Label>
           <Form.Control type="text"
             placeholder="Enter Name"
             name="name"
@@ -81,20 +81,10 @@ export const Subsubmenu = () => {
              />
         </Form.Group>
       </Form>
-      <Form >
-        <Form.Group className="mb-3" controlId="name">
-          <Form.Label className="text-center">URL</Form.Label>
-          <Form.Control type="text"
-            placeholder="Enter URL"
-            name="url"
-            // value={formData.url}
-            // onChange={handleChange}
-             />
-        </Form.Group>
-      </Form>
+    
       <Form.Group className="mb-3" controlId="Address">
         <div className="mb-12">
-          <Form.Label className="text-center">Content Type</Form.Label>
+          <Form.Label className="text-center" style={{color:"white"}}>Content Type</Form.Label>
           <div>
       <select value={selectedOption} onChange={handleOptionChange}>
         {options.map((option, index) => (

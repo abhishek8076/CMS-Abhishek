@@ -63,17 +63,7 @@ export const Submenu = () => {
              />
         </Form.Group>
       </Form>
-      <Form >
-        <Form.Group className="mb-3" controlId="name">
-          <Form.Label className="text-center">URL</Form.Label>
-          <Form.Control type="text"
-            placeholder="Enter URL"
-            name="url"
-            // value={formData.url}
-            // onChange={handleChange}
-             />
-        </Form.Group>
-      </Form>
+  
       <Form.Group className="mb-3" controlId="Address">
         <div className="mb-12">
           <Form.Label className="text-center">Content Type</Form.Label>
