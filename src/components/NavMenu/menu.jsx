@@ -39,6 +39,7 @@ export const Menu = (props) => {
   // Handle input changes
   const handleChange = (event) => {
     const { name, value } = event.target;
+    setSelectedOption(event.target.value)
     setdatamenu((prevFormData) => ({
       ...prevFormData,
       [name]: value,
@@ -46,41 +47,20 @@ export const Menu = (props) => {
   };
 
   // Handle option selection changes
-  const handleOptionChange = (event) => {
-    debugger
-    setSelectedOption(event.target.value);
-  };
+  // const handleOptionChange = (event) => {
+  //   debugger
+  //   setSelectedOption(event.target.value);
+  // };
 
   // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      // Initialize formDataToSend with common fields
-      const formDataToSend = new FormData();
-      formDataToSend.append('menuName', datamenu.menuName);
-      formDataToSend.append('usertype', parseInt(selectedOption, 10));
-   
-
-
-      // Set contentType and relevant data field based on the selected option
-      switch (selectedOption) {
-        case 'File':
-          formDataToSend.append('contentType', 2); // Assuming 2 represents 'File' in your database
-          formDataToSend.append('uploadFile', datamenu.uploadFile);
-          break;
-        case 'Link':
-          formDataToSend.append('contentType', 3); // Assuming 3 represents 'Link' in your database
-          formDataToSend.append('uploadLink', datamenu.uploadLink);
-          break;
-        case 'HTML':
-          formDataToSend.append('contentType', 4); // Assuming 4 represents 'HTML' in your database
-          formDataToSend.append('uploadHtml', datamenu.uploadHtml);
-          break;
-        default:
-          break;
-      }
-      // Send the formDataToSend to the API
+      const formDataToSend ={
+        ...datamenu,
+        contentType: parseInt(selectedOption, 10),
+      };
       const response = await apiClient.post('/demo', formDataToSend,{ headers: {
         'Content-Type': 'multipart/form-data', // Set the content type to handle file uploads
       },});
@@ -132,7 +112,7 @@ export const Menu = (props) => {
                   className='form-control'
                   name='contentType'
                   value={selectedOption}
-                  onChange={handleOptionChange}>
+                  onChange={handleChange}>
                   <option value=''>Select a content type</option>
                   {options.map((data) => (
                     <option key={data.id} value={data.id}>
@@ -141,7 +121,7 @@ export const Menu = (props) => {
                   ))}
                 </select>
 
-                {selectedOption === 'File' && (
+                {selectedOption === '2' && (
                   <div>
                     <input
                       type='file'
@@ -151,7 +131,7 @@ export const Menu = (props) => {
                     />
                   </div>
                 )}
-                {selectedOption === 'Link' && (
+                {selectedOption === '3' && (
                   <div>
                     <input
                       type='text'
@@ -161,7 +141,7 @@ export const Menu = (props) => {
                     />
                   </div>
                 )}
-                {selectedOption === 'HTML' && (
+                {selectedOption === '4' && (
                   <div>
                     <HtmlEdit
                       name='uploadHtml'
