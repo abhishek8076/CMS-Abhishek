@@ -12,15 +12,15 @@ export const Menu = (props) => {
   // Options for the dropdown
   const options = [
     {
-      id: 2,
+      id: 1,
       name: 'File',
     },
     {
-      id: 3,
+      id: 2,
       name: 'Link',
     },
     {
-      id: 4,
+      id: 3,
       name: 'HTML',
     },
   ];
@@ -121,7 +121,7 @@ export const Menu = (props) => {
                   ))}
                 </select>
 
-                {selectedOption === '2' && (
+                {selectedOption === '1' && (
                   <div>
                     <input
                       type='file'
@@ -131,7 +131,7 @@ export const Menu = (props) => {
                     />
                   </div>
                 )}
-                {selectedOption === '3' && (
+                {selectedOption === '2' && (
                   <div>
                     <input
                       type='text'
@@ -141,7 +141,7 @@ export const Menu = (props) => {
                     />
                   </div>
                 )}
-                {selectedOption === '4' && (
+                {selectedOption === '3' && (
                   <div>
                     <HtmlEdit
                       name='uploadHtml'
