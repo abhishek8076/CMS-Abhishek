@@ -59,7 +59,9 @@ export const Menu = (props) => {
       // Initialize formDataToSend with common fields
       const formDataToSend = new FormData();
       formDataToSend.append('menuName', datamenu.menuName);
-      ;
+      formDataToSend.append('usertype', parseInt(selectedOption, 10));
+   
+
 
       // Set contentType and relevant data field based on the selected option
       switch (selectedOption) {
