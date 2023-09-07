@@ -47,6 +47,7 @@ export const Menu = (props) => {
 
   // Handle option selection changes
   const handleOptionChange = (event) => {
+    debugger
     setSelectedOption(event.target.value);
   };
 
@@ -56,28 +57,27 @@ export const Menu = (props) => {
 
     try {
       // Initialize formDataToSend with common fields
-      const formDataToSend = {
-        menuName: datamenu.menuName,
-      };
+      const formDataToSend = new FormData();
+      formDataToSend.append('menuName', datamenu.menuName);
+      ;
 
       // Set contentType and relevant data field based on the selected option
       switch (selectedOption) {
         case 'File':
-          formDataToSend.contentType = 2; // Assuming 2 represents 'File' in your database
-          formDataToSend.uploadFile = datamenu.uploadFile;
+          formDataToSend.append('contentType', 2); // Assuming 2 represents 'File' in your database
+          formDataToSend.append('uploadFile', datamenu.uploadFile);
           break;
         case 'Link':
-          formDataToSend.contentType = 3; // Assuming 3 represents 'Link' in your database
-          formDataToSend.uploadLink = datamenu.uploadLink;
+          formDataToSend.append('contentType', 3); // Assuming 3 represents 'Link' in your database
+          formDataToSend.append('uploadLink', datamenu.uploadLink);
           break;
         case 'HTML':
-          formDataToSend.contentType = 4; // Assuming 4 represents 'HTML' in your database
-          formDataToSend.uploadHtml = datamenu.uploadHtml;
+          formDataToSend.append('contentType', 4); // Assuming 4 represents 'HTML' in your database
+          formDataToSend.append('uploadHtml', datamenu.uploadHtml);
           break;
         default:
           break;
       }
-
       // Send the formDataToSend to the API
       const response = await apiClient.post('/demo', formDataToSend,{ headers: {
         'Content-Type': 'multipart/form-data', // Set the content type to handle file uploads
@@ -130,11 +130,10 @@ export const Menu = (props) => {
                   className='form-control'
                   name='contentType'
                   value={selectedOption}
-                  onChange={handleOptionChange}
-                >
+                  onChange={handleOptionChange}>
                   <option value=''>Select a content type</option>
                   {options.map((data) => (
-                    <option key={data.id} value={data.name}>
+                    <option key={data.id} value={data.id}>
                       {data.name}
                     </option>
                   ))}
