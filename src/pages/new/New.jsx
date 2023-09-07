@@ -15,9 +15,9 @@ export function New() {
   const [selectedRole, setSelectedRole] = useState('');
   const [formErrors, setFormErrors] = useState({});
 
-  const handleRoleChange = (event) => {
-    setSelectedRole(event.target.value);
-  };
+  // const handleRoleChange = (event) => {
+  //   setSelectedRole(event.target.value);
+  // };
 
   const [formData, setFormData] = useState({
     name: '',
@@ -29,6 +29,7 @@ export function New() {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
+    setSelectedRole(event.target.value);
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
@@ -192,7 +193,7 @@ export function New() {
                               className='form-control'
                               name='usertype'
                               value={selectedRole}
-                              onChange={handleRoleChange}
+                              onChange={handleChange}
                               isInvalid={!!formErrors.usertype}
                             >
                               <option value=''>Select a role</option>
