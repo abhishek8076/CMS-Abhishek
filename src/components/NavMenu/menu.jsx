@@ -10,6 +10,7 @@ import 'froala-editor/js/plugins.pkgd.min.js';
 import apiClient from '../../services/AxiosApi';
 import './Menu.scss';
 import { option } from '../../datatablesource';
+import apis from '../../utils/apiUrl.json'
 
 export const Menu = (props) => {
 
@@ -22,7 +23,7 @@ export const Menu = (props) => {
     menuName: '',
     contentType: '',
     uploadFile: '',
-    uploadLink: '',
+    menuUrl: '',
     uploadHtml: '',
   });
 
@@ -43,12 +44,12 @@ export const Menu = (props) => {
       const formDataToSend = {
         ...datamenu,
         contentType: parseInt(selectedOption, 10),
-        uploadHtml: editorContent,
+        contentType: editorContent,
         // Add the content from the FroalaEditorComponent
         
       };
 
-      const response = await apiClient.post('/demo', formDataToSend, {
+      const response = await apiClient.post(apis.navmenu, formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -61,7 +62,7 @@ export const Menu = (props) => {
           menuName: '',
           contentType: '',
           uploadFile: '',
-          uploadLink: '',
+          menuUrl: '',
           uploadHtml: '',
         });
         setSelectedOption('');
@@ -136,8 +137,8 @@ console.log(editorContent)
                   <div>
                     <input
                       type='text'
-                      name='uploadLink'
-                      value={datamenu.uploadLink}
+                      name='menuUrl'
+                      value={datamenu.menuUrl}
                       onChange={handleChange}
                     />
                   </div>

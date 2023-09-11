@@ -10,6 +10,6 @@
     "getimage":"/api/Slider", 
      "deleteImg" :"/api/Slider/",
     "getApiToken":"/auth/getApiToken",
-    "login": "/api/Login"
-    
+    "login": "/api/Login",
+     "navmenu":"/Api/TopMenu"
 }
