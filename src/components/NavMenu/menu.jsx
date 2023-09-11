@@ -1,167 +1,170 @@
 import React, { useState } from 'react';
-import { Card, Container } from 'react-bootstrap';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { Form } from 'react-bootstrap';
-import FroalaEditorComponent from 'react-froala-wysiwyg';
+import Axios from 'axios';
+import './Menu.scss'; // Import your custom SCSS file for additional styling
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
-import 'froala-editor/js/plugins.pkgd.min.js';
+import FroalaEditorComponent from 'react-froala-wysiwyg';
 import apiClient from '../../services/AxiosApi';
-import './Menu.scss';
-import { option } from '../../datatablesource';
-import apis from '../../utils/apiUrl.json'
 
-export const Menu = (props) => {
-
-  // Initialize state for selected option and form data
-  const [selectedOption, setSelectedOption] = useState('');
+export const Menu = () => {
+  // State to manage form data
   const [editorContent, setEditorContent] = useState('');
-
-  const [datamenu, setdatamenu] = useState({
-    id: 1,
-    menuName: '',
-    contentType: '',
-    uploadFile: '',
-    menuUrl: '',
-    uploadHtml: '',
+  const [formData, setFormData] = useState({
+    name: '',
+    option: '', // Initialize with an empty string
+    linkValue: '',
+    fileValue: null,
+    htmlValue: '',
   });
 
-  // Handle input changes
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setSelectedOption(event.target.value);
-    setdatamenu((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+  // JSON data for dropdown options
+  const optionsData = [
+    { id:1,value: 'link', label: 'Link' },
+    {  id:2,value: 'file', label: 'File' },
+    {  id:3,value: 'html', label: 'HTML' },
+  ];
+
+  // Handle input field changes
+  const handleEditorChange = (content) => {
+    setEditorContent(content);
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
+  // Handle file input change
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setFormData({
+      ...formData,
+      fileValue: file,
+    });
+  };
+
+  // Handle form submission
+  const handleSubmit = async () => {
     try {
-      const formDataToSend = {
-        ...datamenu,
-        contentType: parseInt(selectedOption, 10),
-        contentType: editorContent,
-        // Add the content from the FroalaEditorComponent
-        
-      };
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('option', formData.option);
 
-      const response = await apiClient.post(apis.navmenu, formDataToSend, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      if (response.status === 200) {
-        toast.success('Data submitted successfully!');
-        // Clear form fields and selected option on success
-        setdatamenu({
-          menuName: '',
-          contentType: '',
-          uploadFile: '',
-          menuUrl: '',
-          uploadHtml: '',
-        });
-        setSelectedOption('');
-        setEditorContent('');
-      } else {
-        toast.error('Something went wrong');
+      if (formData.option === '1') {
+        formDataToSend.append('data', formData.linkValue);
+      } else if (formData.option === '2') {
+        formDataToSend.append('data', formData.fileValue);
+      } else if (formData.option === '3') {
+        formDataToSend.append('data', formData.htmlValue);
       }
+
+      const response = await apiClient.post('/api/save-data', formDataToSend);
+      console.log('Data saved:', response.data);
     } catch (error) {
-      console.error('Error submitting data:', error);
-      toast.error('Something went wrong');
+      console.error('Error saving data:', error);
     }
   };
 
   const config = {
     heightMin: 300,
-    innerWidth:300,
-    outerWidth:300,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
   };
-console.log(datamenu)
-console.log(editorContent)
-  return (
-    <div className='MainMenuOption'>
-      <Container>
-      
-        <form onSubmit={handleSubmit}>
-          <Form.Group className='mb-3' controlId='name'>
-            <Form.Label className='text-center' style={{ color: 'white' }}>
-              Name
-            </Form.Label>
-            <Form.Control
-              type='text'
-              placeholder='Enter Name'
-              name='menuName'
-              value={datamenu.menuName}
-              onChange={handleChange}
-            />
-          </Form.Group>
+   console.log(editorContent);
+   console.log(formData);
 
-          <Form.Group className='mb-3' controlId='ContentType'>
-            <div className='mb-12'>
-              <Form.Label className='text-center' style={{ color: 'white' }}>
-                Content Type
-              </Form.Label>
-              <div>
+  return (
+    <div className="container">
+      <div className="row">
+        <div className="col-md-6 offset-md-3">
+          <div className="card">
+            <div className="card-body">
+              {/* Name input field */}
+              <div className="mb-3">
+                <label className="form-label">Name</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  placeholder="Name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              {/* Dropdown to select an option */}
+              <div className="mb-3">
+                <label className="form-label">Select an option</label>
                 <select
-                  className='form-control'
-                  name='contentType'
-                  value={selectedOption}
-                  onChange={handleChange}
+                  className="form-select"
+                  name="option"
+                  value={formData.option}
+                  onChange={handleInputChange}
                 >
-                  <option value=''>Select a content type</option>
-                  {option.map((data) => (
-                    <option key={data.id} value={data.id}>
-                      {data.name}
+                  <option value="">Select an option</option>
+                  {optionsData.map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.value}
                     </option>
                   ))}
                 </select>
+              </div>
 
-                {selectedOption === '1' && (
-                  <div>
-                    <input
-                      type='file'
-                      name='uploadFile'
-                      value={datamenu.uploadFile}
-                      onChange={handleChange}
-                    />
-                  </div>
-                )}
-                {selectedOption === '2' && (
-                  <div>
-                    <input
-                      type='text'
-                      name='menuUrl'
-                      value={datamenu.menuUrl}
-                      onChange={handleChange}
-                    />
-                  </div>
-                )}
-                {selectedOption === '3' && (
+              {/* Conditional input fields based on selected option */}
+              {formData.option === '1' && (
+                <div className="mb-3">
+                  <label className="form-label">Enter Link</label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    placeholder="Enter Link"
+                    name="linkValue"
+                    value={formData.linkValue}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              )}
+
+              {formData.option === '2' && (
+                <div className="mb-3">
+                  <label className="form-label">Choose File</label>
+                  <input
+                    className="form-control"
+                    type="file"
+                    accept="application/pdf" // Change the file type as needed
+                    onChange={handleFileChange}
+                  />
+                </div>
+              )}
+
+              {formData.option === '3' && (
+                <div className="mb-3">
+                  <label className="form-label">HTML Editor</label>
                   <div>
                     <FroalaEditorComponent
                       tag="textarea"
                       config={config}
-                      model={editorContent} // Set the content
-  onModelChange={(content) => setEditorContent(content)}
+                      onModelChange={handleEditorChange} // Handle Froala editor content changes
+                      model={editorContent} // Pass the editor content to the component
                     />
                   </div>
-                )}
-              </div>
+                </div>
+              )}
+
+              {/* Submit button */}
+              <button
+                className="btn btn-primary"
+                onClick={handleSubmit}
+              >
+                Submit
+              </button>
             </div>
-          </Form.Group>
-          <div>
-            <button type='submit'>Submit</button>
           </div>
-        </form>
-        
-      </Container>
+        </div>
+      </div>
     </div>
   );
-};
+}
