@@ -76,6 +76,7 @@ function App() {
         
         <Route path="/" element={<Login />} />
         <Route path="/dashboard" element={<Home />} />
+        <Route path="extra" element={<Extra />} />
         {/* <Route path="/users" element={<List />} /> */}
         <Route path="/cms" element={<Cms />} />
        
@@ -89,6 +90,12 @@ function App() {
        </Route>
        <Route path="/profile" element={<Profile/>} />
        <Route path="/banner" element={<IndexBanner/>} />
+       <Route path="whatsnew"  >
+           <Route index element={<IndexWhatsNew />} />
+            <Route path="whatsnewtable" element={<WhatsNewTable />} />
+
+
+          </Route>
        {/* <Protected path="/dashboard" element={<Home />}/> */}
         {/* {role === 1  && (
           <Routes>

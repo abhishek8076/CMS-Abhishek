@@ -121,3 +121,32 @@ export const userRows = [
     age: 65,
   },
 ];
+export const option = [
+  {
+    id: 1,
+    name: 'File',
+  },
+  {
+    id: 2,
+    name: 'Link',
+  },
+  {
+    id: 3,
+    name: 'HTML',
+  },
+];
+export const option2 = [
+  {
+    id: 1,
+    name: 'File',
+  },
+  {
+    id: 2,
+    name: 'Link',
+  },
+  {
+    id: 3,
+    name: 'HTML',
+  },
+  
+];

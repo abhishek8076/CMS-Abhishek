@@ -10,9 +10,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import apiClient from '../../services/AxiosApi';
 import './Footer.scss';
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import 'froala-editor/js/plugins.pkgd.min.js';
+import FroalaEditorComponent from 'react-froala-wysiwyg';
 
 const Footer = () => {
   const [newName, setNewName] = useState('');
+  const [editorContent, setEditorContent] = useState('');
   const [newRoute, setNewRoute] = useState('');
   const [newFieldType, setNewFieldType] = useState('link');
 
@@ -51,6 +56,7 @@ const Footer = () => {
       // Replace 'htmlContent' with the actual way you're retrieving the HTML content
       // const htmlContent = getHtmlContent(); // Implement this function
       // data.htmlContent = htmlContent;
+     
     }
 
     try {
@@ -78,6 +84,7 @@ const Footer = () => {
         <TextField
           label="Link URL"
           variant="outlined"
+          fullWidth="100"
           value={newRoute}
           onChange={(e) => setNewRoute(e.target.value)}
           error={routeError}
@@ -90,11 +97,20 @@ const Footer = () => {
           value={newRoute}
           onChange={(e) => setNewRoute(e.target.value)}
           className="form-control"
+          rows="5" cols="10"
+        
         />
       );
     } else if (newFieldType === 'html') {
       return (
-        <div className="html-editor">HTML Editor Goes Here</div>
+        <div className="html-editor">
+          <FroalaEditorComponent
+                      tag="textarea"
+                      config={config}
+                      model={editorContent} // Set the content
+  onModelChange={(content) => setEditorContent(content)}
+                    />
+        </div>
       );
     } else if (newFieldType === 'file') {
       return (
@@ -105,6 +121,13 @@ const Footer = () => {
         />
       );
     }
+  };
+  const config = {
+    heightMin: 300,
+    innerWidth:300,
+    outerWidth:300,
+    placeholderText: 'Edit Your Content Here!',
+    charCounterCount: false,
   };
 
   return (

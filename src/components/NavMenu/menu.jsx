@@ -1,34 +1,24 @@
-import React, { useState,useEffect } from 'react';
-import { Container } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Card, Container } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import FormControl from '@mui/material/FormControl';
 import { Form } from 'react-bootstrap';
-import { HtmlEdit } from '../../components/content/HtmlContent/HtmlContent';
-import './Menu.scss';
+import FroalaEditorComponent from 'react-froala-wysiwyg';
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import 'froala-editor/js/plugins.pkgd.min.js';
 import apiClient from '../../services/AxiosApi';
+import './Menu.scss';
+import { option } from '../../datatablesource';
 
 export const Menu = (props) => {
-  // Options for the dropdown
-  const options = [
-    {
-      id: 1,
-      name: 'File',
-    },
-    {
-      id: 2,
-      name: 'Link',
-    },
-    {
-      id: 3,
-      name: 'HTML',
-    },
-  ];
 
   // Initialize state for selected option and form data
   const [selectedOption, setSelectedOption] = useState('');
+  const [editorContent, setEditorContent] = useState('');
+
   const [datamenu, setdatamenu] = useState({
-    id:1,
+    id: 1,
     menuName: '',
     contentType: '',
     uploadFile: '',
@@ -39,31 +29,30 @@ export const Menu = (props) => {
   // Handle input changes
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setSelectedOption(event.target.value)
+    setSelectedOption(event.target.value);
     setdatamenu((prevFormData) => ({
       ...prevFormData,
       [name]: value,
     }));
   };
 
-  // Handle option selection changes
-  // const handleOptionChange = (event) => {
-  //   debugger
-  //   setSelectedOption(event.target.value);
-  // };
-
-  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const formDataToSend ={
+      const formDataToSend = {
         ...datamenu,
         contentType: parseInt(selectedOption, 10),
+        uploadHtml: editorContent,
+        // Add the content from the FroalaEditorComponent
+        
       };
-      const response = await apiClient.post('/demo', formDataToSend,{ headers: {
-        'Content-Type': 'multipart/form-data', // Set the content type to handle file uploads
-      },});
+
+      const response = await apiClient.post('/demo', formDataToSend, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
       if (response.status === 200) {
         toast.success('Data submitted successfully!');
@@ -76,6 +65,7 @@ export const Menu = (props) => {
           uploadHtml: '',
         });
         setSelectedOption('');
+        setEditorContent('');
       } else {
         toast.error('Something went wrong');
       }
@@ -84,10 +74,20 @@ export const Menu = (props) => {
       toast.error('Something went wrong');
     }
   };
-  console.log(datamenu)
+
+  const config = {
+    heightMin: 300,
+    innerWidth:300,
+    outerWidth:300,
+    placeholderText: 'Edit Your Content Here!',
+    charCounterCount: false,
+  };
+console.log(datamenu)
+console.log(editorContent)
   return (
     <div className='MainMenuOption'>
       <Container>
+      
         <form onSubmit={handleSubmit}>
           <Form.Group className='mb-3' controlId='name'>
             <Form.Label className='text-center' style={{ color: 'white' }}>
@@ -112,9 +112,10 @@ export const Menu = (props) => {
                   className='form-control'
                   name='contentType'
                   value={selectedOption}
-                  onChange={handleChange}>
+                  onChange={handleChange}
+                >
                   <option value=''>Select a content type</option>
-                  {options.map((data) => (
+                  {option.map((data) => (
                     <option key={data.id} value={data.id}>
                       {data.name}
                     </option>
@@ -125,7 +126,7 @@ export const Menu = (props) => {
                   <div>
                     <input
                       type='file'
-                       name='uploadFile'
+                      name='uploadFile'
                       value={datamenu.uploadFile}
                       onChange={handleChange}
                     />
@@ -143,20 +144,22 @@ export const Menu = (props) => {
                 )}
                 {selectedOption === '3' && (
                   <div>
-                    <HtmlEdit
-                      name='uploadHtml'
-                      value={datamenu.uploadHtml}
-                      onChange={handleChange}
+                    <FroalaEditorComponent
+                      tag="textarea"
+                      config={config}
+                      model={editorContent} // Set the content
+  onModelChange={(content) => setEditorContent(content)}
                     />
                   </div>
                 )}
               </div>
-            </div> 
+            </div>
           </Form.Group>
           <div>
             <button type='submit'>Submit</button>
           </div>
         </form>
+        
       </Container>
     </div>
   );
