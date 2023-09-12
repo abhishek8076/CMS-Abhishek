@@ -78,10 +78,8 @@ export const Menu = () => {
 
   return (
     <div className="container">
-      <div className="row">
-        <div className="col-md-6 offset-md-3">
-          <div className="card">
-            <div className="card-body">
+      <div>
+        
               {/* Name input field */}
               <div className="mb-3">
                 <label className="form-label">Name</label>
@@ -95,7 +93,8 @@ export const Menu = () => {
                 />
               </div>
 
-              {/* Dropdown to select an option */}
+              {/* Dropdown to select an option */} 
+              
               <div className="mb-3">
                 <label className="form-label">Select an option</label>
                 <select
@@ -134,7 +133,7 @@ export const Menu = () => {
                   <input
                     className="form-control"
                     type="file"
-                    accept="application/pdf" // Change the file type as needed
+                    // Change the file type as needed
                     onChange={handleFileChange}
                   />
                 </div>
@@ -163,8 +162,7 @@ export const Menu = () => {
               </button>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+
+
   );
 }

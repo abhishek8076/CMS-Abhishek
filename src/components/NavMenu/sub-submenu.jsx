@@ -1,237 +1,240 @@
-import React, { useState,useEffect } from 'react';
-import { Container } from 'react-bootstrap';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import FormControl from '@mui/material/FormControl';
-import { Form } from 'react-bootstrap';
-import { HtmlEdit } from '../../components/content/HtmlContent/HtmlContent';
-import './Menu.scss';
+import React, { useState } from 'react';
+import Axios from 'axios';
+import './Menu.scss'; // Import your custom SCSS file for additional styling
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import FroalaEditorComponent from 'react-froala-wysiwyg';
 import apiClient from '../../services/AxiosApi';
 
-export const Subsubmenu = (props) => {
-  // Options for the dropdown
-  const options = [
-    {
-      id: 1,
-      name: 'File',
-    },
-    {
-      id: 2,
-      name: 'Link',
-    },
-    {
-      id: 3,
-      name: 'HTML',
-    },
-  ];
-  const Menuoptions = [
-    {
-      id: 1,
-      name: 'Home',
-    },
-    {
-      id: 2,
-      name: 'General',
-    },
-    {
-      id: 3,
-      name: 'About Us',
-    },
-  ];
-  const SubMenuoptions = [
-    {
-      id: 1,
-      name: 'A',
-    },
-    {
-      id: 2,
-      name: 'B',
-    },
-    {
-      id: 3,
-      name: 'C',
-    },
-  ];
-
-  // Initialize state for selected option and form data
- 
-  const [selectedOption, setSelectedOption] = useState('');
-  const [selectedMenuOption, setSelectedMenuOption] = useState('');
-  const [selectedSubMenuOption, setSelectedSubMenuOption] = useState('');
-  const [datamenu, setdatamenu] = useState({
-    id:3,
-    menuName: '',
-    contentType: '',
-    uploadFile: '',
-    uploadLink: '',
-    uploadHtml: '',
-    Menutype:'',
-    SubmenuType:''
+export const Subsubmenu = () => {
+  // State to manage form data
+  const [editorContent, setEditorContent] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    option: '', // Initialize with an empty string
+    linkValue: '',
+    fileValue: null,
+    htmlValue: '',
+    selectedOptionId: '',
+    SubMenuoptions: ''
   });
 
-  // Handle input changes
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setSelectedOption(event.target.value)
-    setSelectedMenuOption(event.target.value)
-    setSelectedSubMenuOption(event.target.value)
-    setdatamenu((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+  // JSON data for dropdown options
+
+  const optionsData = [
+    { id: 1, value: 'link', label: 'Link' },
+    { id: 2, value: 'file', label: 'File' },
+    { id: 3, value: 'html', label: 'HTML' },
+  ];
+  const [selectedOptionId, setSelectedOptionId] = useState('');
+  const optionsForFirstDropdown=[
+    { id: 1, name: 'Option 1' },
+    { id: 2, name: 'Option 2' },
+    { id: 3, name: 'Option 3' },
+  ];
+  const [optionsForSecondDropdown, setOptionsForSecondDropdown] = useState([]);
+
+  const fetchOptionsForSecondDropdown = (selectedId) => {
+    // Simulated data based on selectedId
+    const dummyData = {
+      1: [{ id: 11, name: 'Suboption 1.1' }, { id: 12, name: 'Suboption 1.2' }],
+      2: [{ id: 21, name: 'Suboption 2.1' }, { id: 22, name: 'Suboption 2.2' }],
+      3: [{ id: 31, name: 'Suboption 3.1' }, { id: 32, name: 'Suboption 3.2' }],
+    };
+
+    const options = dummyData[selectedId] || [];
+    setOptionsForSecondDropdown(options);
+  };
+  // Handle changes in the first dropdown
+  const handleFirstDropdownChange = (event) => {
+    const selectedId = event.target.value;
+    setSelectedOptionId(selectedId);
+    fetchOptionsForSecondDropdown(selectedId);
   };
 
-  // Handle option selection changes
-  // const handleOptionChange = (event) => {
-  //   debugger
-  //   setSelectedOption(event.target.value);
-  // };
+  // Handle input field changes
+  const handleEditorChange = (content) => {
+    setEditorContent(content);
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  // Handle file input change
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setFormData({
+      ...formData,
+      fileValue: file,
+    });
+  };
 
   // Handle form submission
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
+  const handleSubmit = async () => {
     try {
-      const formDataToSend ={
-        ...datamenu,
-        contentType: parseInt(selectedOption, 10),
-        Menutype:parseInt(selectedMenuOption, 10),
-        SubmenuType:parseInt(selectedSubMenuOption, 10),
-
-      };
-      const response = await apiClient.post('/demo', formDataToSend,{ headers: {
-        'Content-Type': 'multipart/form-data', // Set the content type to handle file uploads
-      },});
-
-      if (response.status === 200) {
-        toast.success('Data submitted successfully!');
-        // Clear form fields and selected option on success
-        setdatamenu({
-          menuName: '',
-          contentType: '',
-          uploadFile: '',
-          uploadLink: '',
-          uploadHtml: '',
-          Menutype:'',
-          SubmenuType:''
-        });
-        setSelectedOption('');
-        setSelectedMenuOption('');
-        setSelectedSubMenuOption('');
-      } else {
-        toast.error('Something went wrong');
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('option', formData.option);
+      formDataToSend.append('selectedOptionId', selectedOptionId);
+      formDataToSend.append('SubMenuoptions', formData.SubMenuoptions)
+      if (formData.option === '1') {
+        formDataToSend.append('data', formData.linkValue);
+      } else if (formData.option === '2') {
+        formDataToSend.append('data', formData.fileValue);
+      } else if (formData.option === '3') {
+        formDataToSend.append('data', formData.htmlValue);
       }
+
+      const response = await apiClient.post('/api/save-data', formDataToSend);
+      console.log('Data saved:', response.data);
     } catch (error) {
-      console.error('Error submitting data:', error);
-      toast.error('Something went wrong');
+      console.error('Error saving data:', error);
     }
   };
-  console.log(datamenu)
+
+  const config = {
+    heightMin: 300,
+    placeholderText: 'Edit Your Content Here!',
+    charCounterCount: false,
+  };
+  console.log(editorContent);
+  console.log(formData);
+
   return (
-    <div className='MainMenuOption'>
-      <Container>
-        <form onSubmit={handleSubmit}>
-        <Form >
-        <Form.Group className="mb-3" controlId="Menulist">
-          <Form.Label className="text-center">Menulist</Form.Label>
-        
-          <select
-                  className='form-control'
-                  name='Menutype'
-                  value={selectedMenuOption}
-                  onChange={handleChange}>
-                  <option value=''>Menu List</option>
-                  {Menuoptions.map((data) => (
-                    <option key={data.id} value={data.id}>
-                      {data.name}
-                    </option>
-                  ))}
-                </select>
-        </Form.Group>
-      </Form>
-      <Form >
-        <Form.Group className="mb-3" controlId="submenulist">
-          <Form.Label className="text-center"style={{color:"white"}}>Submenu</Form.Label>
-        
-              <select value={selectedSubMenuOption} name='SubmenuType' onChange={handleChange}>
-                      {SubMenuoptions.map((data) => (
-                        <option key={data.id} value={data.id}>
-                          {data.name}
-                        </option>
-                      ))}
-
-                    </select>
-        </Form.Group>
-      </Form>
-          <Form.Group className='mb-3' controlId='name'>
-            <Form.Label className='text-center' style={{ color: 'white' }}>
-              Name
-            </Form.Label>
-            <Form.Control
-              type='text'
-              placeholder='Enter Name'
-              name='menuName'
-              value={datamenu.menuName}
-              onChange={handleChange}
-            />
-          </Form.Group>
-
-          <Form.Group className='mb-3' controlId='ContentType'>
-            <div className='mb-12'>
-              <Form.Label className='text-center' style={{ color: 'white' }}>
-                Content Type
-              </Form.Label>
-              <div>
+    <div className="container">
+      <div>
+        <div className="mb-3">
+          {/* <label className="form-label">Select Menu</label>
                 <select
-                  className='form-control'
-                  name='contentType'
-                  value={selectedOption}
-                  onChange={handleChange}>
-                  <option value=''>Select a content type</option>
-                  {options.map((data) => (
-                    <option key={data.id} value={data.id}>
-                      {data.name}
+                  className="form-select"
+                  name="menuoption"
+                  value={formData.menuoption}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select Menu</option>
+                  {Menuoptions.map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.value}
                     </option>
                   ))}
-                </select>
+                </select> */}
+          <label htmlFor="firstDropdown">Select Option:</label>
+          <select id="firstDropdown" className="form-select" 
+          value={selectedOptionId} 
+          onChange={handleFirstDropdownChange}>
+            <option value="">Select...</option>
+            {optionsForFirstDropdown.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="secondDropdown">Select Suboption:</label>
+          <select id="secondDropdown" 
+          className="form-select"
+          name="SubMenuoptions"
+            value={formData.SubMenuoptions}
+            onChange={handleInputChange}
+          
+          >
+            <option value="">Select...</option>
+            {optionsForSecondDropdown.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        {/* Name input field */}
+        <div className="mb-3">
+          <label className="form-label">Name</label>
+          <input
+            className="form-control"
+            type="text"
+            placeholder="Name"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+          />
+        </div>
 
-                {selectedOption === '1' && (
-                  <div>
-                    <input
-                      type='file'
-                       name='uploadFile'
-                      value={datamenu.uploadFile}
-                      onChange={handleChange}
-                    />
-                  </div>
-                )}
-                {selectedOption === '2' && (
-                  <div>
-                    <input
-                      type='text'
-                      name='uploadLink'
-                      value={datamenu.uploadLink}
-                      onChange={handleChange}
-                    />
-                  </div>
-                )}
-                {selectedOption === '3' && (
-                  <div>
-                    <HtmlEdit
-                      name='uploadHtml'
-                      value={datamenu.uploadHtml}
-                      onChange={handleChange}
-                    />
-                  </div>
-                )}
-              </div>
-            </div> 
-          </Form.Group>
-          <div>
-            <button type='submit'>Submit</button>
+        {/* Dropdown to select an option */}
+
+        <div className="mb-3">
+          <label className="form-label">Select an option</label>
+          <select
+            className="form-select"
+            name="option"
+            value={formData.option}
+            onChange={handleInputChange}
+          >
+            <option value="">Select an option</option>
+            {optionsData.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.value}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Conditional input fields based on selected option */}
+        {formData.option === '1' && (
+          <div className="mb-3">
+            <label className="form-label">Enter Link</label>
+            <input
+              className="form-control"
+              type="text"
+              placeholder="Enter Link"
+              name="linkValue"
+              value={formData.linkValue}
+              onChange={handleInputChange}
+            />
           </div>
-        </form>
-      </Container>
+        )}
+
+        {formData.option === '2' && (
+          <div className="mb-3">
+            <label className="form-label">Choose File</label>
+            <input
+              className="form-control"
+              type="file"
+              // Change the file type as needed
+              onChange={handleFileChange}
+            />
+          </div>
+        )}
+
+        {formData.option === '3' && (
+          <div className="mb-3">
+            <label className="form-label">HTML Editor</label>
+            <div>
+              <FroalaEditorComponent
+                tag="textarea"
+                config={config}
+                onModelChange={handleEditorChange} // Handle Froala editor content changes
+                model={editorContent} // Pass the editor content to the component
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Submit button */}
+        <button
+          className="btn btn-primary"
+          onClick={handleSubmit}
+        >
+          Submit
+        </button>
+      </div>
     </div>
+
+
   );
-};
+}
