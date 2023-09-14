@@ -1,7 +1,14 @@
 /* Footer.scss */
 .bgimg{
-  background-image: url('../../img/newuserimg-transformed.jpeg'), ;
+  background-image: url('../../img/newuserimg-transformed.jpeg') ;
   background-repeat: no-repeat;
   background-size: cover;
   height: 100vh; 
 } 
+#headingfooter{
+margin-top:70px ;
+font-size: 500px;
+margin-top: 30px;
+font-weight: bold;
+
+}

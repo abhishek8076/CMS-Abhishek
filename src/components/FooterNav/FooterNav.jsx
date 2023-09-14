@@ -3,7 +3,8 @@ import axios from 'axios';
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
-import { Container, Typography, TextField, Button, FormControl, InputLabel, Select, MenuItem, Snackbar } from '@mui/material';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function FooterPage() {
   const [footerType, setFooterType] = useState('');
@@ -57,88 +58,95 @@ function FooterPage() {
   };
 
   return (
-    <>
-<div className='bgimg' style={{height:'100vh'}}>
-    <Container maxWidth="md" style={{ paddingTop: '20px' }}>
-      <Typography variant="h4" align="center" gutterBottom>
-        Footer
-      </Typography>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          fullWidth
-          label="Footer Name"
-          value={footerName}
-          onChange={(e) => setFooterName(e.target.value)}
-          margin="normal"
-          variant="outlined"
-        />
-        <FormControl fullWidth variant="outlined" margin="normal">
-          <InputLabel>Footer Type</InputLabel>
-          <Select
-            label="Footer Type"
-            value={footerType}
-            onChange={(e) => setFooterType(e.target.value)}
-          >
-            <MenuItem value="">Select an option</MenuItem>
-            <MenuItem value="file">File</MenuItem>
-            <MenuItem value="link">Link</MenuItem>
-            <MenuItem value="html-editor">HTML Editor</MenuItem>
-          </Select>
-        </FormControl>
-        {footerType === 'file' && (
-          <div>
-            <input
-              type="file"
-              accept=".pdf,.doc,.docx,.txt,.jpg,.png,.jpeg"
-              onChange={handleFileChange}
-            />
+    <div className='bgimg' style={{ height: '100vh' }}>
+      <div className='headingdiv'>
+    
+      </div>
+      <div className='container'>
+      
+        <div className='row justify-content-end'>
+        
+          <div className='col-md-6'>
+            <div className='headingdiv'>
+      <p className='text-center' style={{color:"black" }} id='headingfooter'>Footer</p>
+      </div>
+           
+            <form onSubmit={handleSubmit}>
+              <div className='mb-3'>
+                <label>Footer Name</label>
+                <input
+                  type='text'
+                  className='form-control'
+                  value={footerName}
+                  onChange={(e) => setFooterName(e.target.value)}
+                />
+              </div>
+              <div className='mb-3'>
+                <label>Footer Type</label>
+                <select
+                  className='form-select'
+                  value={footerType}
+                  onChange={(e) => setFooterType(e.target.value)}
+                >
+                  <option value=''>Select an option</option>
+                  <option value='file'>File</option>
+                  <option value='link'>Link</option>
+                  <option value='html-editor'>HTML Editor</option>
+                </select>
+              </div>
+              {footerType === 'file' && (
+                <div className='mb-3'>
+                  <input
+                    type='file'
+                    accept='.pdf,.doc,.docx,.txt,.jpg,.png,.jpeg'
+                    onChange={handleFileChange}
+                  />
+                </div>
+              )}
+              {footerType === 'link' && (
+                <div className='mb-3'>
+                  <input
+                    type='text'
+                    className='form-control'
+                    placeholder='Upload link'
+                    onChange={handleFileChange}
+                  />
+                </div>
+              )}
+              {footerType === 'html-editor' && (
+                <div className='mb-3'>
+                  <label>Editor:</label>
+                  <FroalaEditorComponent tag='textarea' config={config} />
+                </div>
+              )}
+              <button type='submit' className='btn btn-primary'>
+                Submit
+              </button>
+            </form>
+            {error && (
+              <div
+                className='alert alert-danger mt-3'
+                role='alert'
+                show={openSnackbar}
+                onClose={handleSnackbarClose}
+              >
+                {error}
+              </div>
+            )}
+            {success && (
+              <div
+                className='alert alert-success mt-3'
+                role='alert'
+                show={openSnackbar}
+                onClose={handleSnackbarClose}
+              >
+                {success}
+              </div>
+            )}
           </div>
-        )}
-        {footerType === 'link' && (
-          <TextField
-            fullWidth
-            label="Upload link"
-            onChange={handleFileChange}
-            margin="normal"
-            variant="outlined"
-          />
-        )}
-        {footerType === 'html-editor' && (
-          <div>
-            <label>Editor:</label>
-            <FroalaEditorComponent tag="textarea" config={config} />
-          </div>
-        )}
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          style={{ marginTop: '10px' }}
-        >
-          Submit
-        </Button>
-      </form>
-      {error && (
-        <Snackbar
-          open={openSnackbar}
-          autoHideDuration={6000}
-          onClose={handleSnackbarClose}
-          message={error}
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        />
-      )}
-      {success && (
-        <Snackbar
-          open={openSnackbar}
-          autoHideDuration={6000}
-          onClose={handleSnackbarClose}
-          message={success}
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        />
-      )}
-    </Container>
+        </div>
+      </div>
     </div>
-    </>
   );
 }
 
