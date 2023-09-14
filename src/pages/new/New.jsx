@@ -123,7 +123,7 @@ export function New() {
           <Navbar />
           <div className='bgimg'>
           <Container>
-            <Row className="vh-100 d-flex justify-content-center align-items-center">
+            <Row className="vh-100 d-flex justify-content-end align-items-left">
               <Col md={10} lg={6} xs={12}>
                 <Card.Body>
                   <div className="mb-3 mt-md-4">

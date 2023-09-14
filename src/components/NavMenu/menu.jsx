@@ -145,7 +145,7 @@ export const Menu = () => {
                 <div className="mb-3">
                   <label className="form-label">HTML Editor</label>
                   <div>
-                    <FroalaEditorComponent
+                  <FroalaEditorComponent
                       tag="textarea"
                       config={config}
                       onModelChange={handleEditorChange} // Handle Froala editor content changes

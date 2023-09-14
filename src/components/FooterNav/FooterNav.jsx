@@ -1,184 +1,145 @@
 import React, { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import apiClient from '../../services/AxiosApi';
-import './Footer.scss';
+import axios from 'axios';
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
-import 'froala-editor/js/plugins.pkgd.min.js';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
+import { Container, Typography, TextField, Button, FormControl, InputLabel, Select, MenuItem, Snackbar } from '@mui/material';
 
-const Footer = () => {
-  const [newName, setNewName] = useState('');
-  const [editorContent, setEditorContent] = useState('');
-  const [newRoute, setNewRoute] = useState('');
-  const [newFieldType, setNewFieldType] = useState('link');
+function FooterPage() {
+  const [footerType, setFooterType] = useState('');
+  const [footerName, setFooterName] = useState('');
+  const [fileData, setFileData] = useState(null);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
-  const [nameError, setNameError] = useState(false);
-  const [routeError, setRouteError] = useState(false);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  const openDialog = () => {
-    if (!newName || !newRoute) {
-      setNameError(!newName);
-      setRouteError(!newRoute);
-    } else {
-      setIsDialogOpen(true);
-    }
-  };
-
-  const closeDialog = () => {
-    setIsDialogOpen(false);
-  };
-
-  const handleConfirm = async () => {
-    closeDialog();
-
-    let data = { name: newName, route: '/' + newRoute, type: newFieldType };
-
-    if (newFieldType === 'file') {
-      // Get the selected file from the input field
-      const selectedFile = document.getElementById('fileInput').files[0];
-      // You might need to process the file before sending it, such as converting it to base64
-      // For now, let's assume it's already processed
-      data.file = selectedFile;
+    // Validate the fields
+    if (!footerType || !footerName) {
+      setError('All fields are required.');
+      return;
     }
 
-    if (newFieldType === 'html') {
-      // Replace 'htmlContent' with the actual way you're retrieving the HTML content
-      // const htmlContent = getHtmlContent(); // Implement this function
-      // data.htmlContent = htmlContent;
-     
+    // Prepare the data based on the selected type
+    let formData = new FormData();
+    formData.append('footerType', footerType);
+    formData.append('footerName', footerName);
+
+    if (footerType === 'file' && fileData) {
+      formData.append('file', fileData);
     }
 
+    // Send data to the API using Axios
     try {
-      const response = await apiClient.post('/api/addLink', data);
-
-      if (response.status === 200) {
-        console.log('Link added successfully');
-        setNewName('');
-        setNewRoute('');
-        setNewFieldType('link');
-        toast.success('Link added successfully!', { position: 'top-right' });
-      } else {
-        console.error('Failed to add link');
-        toast.error('Failed to add link', { position: 'top-right' });
-      }
+      const response = await axios.post('YOUR_API_URL_HERE', formData);
+      setSuccess('Data sent successfully!');
+      setError('');
+      setOpenSnackbar(true);
     } catch (error) {
-      console.error('Error:', error);
-      toast.error('An error occurred', { position: 'top-right' });
+      setError('An error occurred while sending data.');
+      setOpenSnackbar(true);
     }
   };
 
-  const renderAdditionalInput = () => {
-    if (newFieldType === 'link') {
-      return (
-        <TextField
-          label="Link URL"
-          variant="outlined"
-          fullWidth="100"
-          value={newRoute}
-          onChange={(e) => setNewRoute(e.target.value)}
-          error={routeError}
-          helperText={routeError && 'Link URL is required'}
-        />
-      );
-    } else if (newFieldType === 'text') {
-      return (
-        <textarea
-          value={newRoute}
-          onChange={(e) => setNewRoute(e.target.value)}
-          className="form-control"
-          rows="5" cols="10"
-        
-        />
-      );
-    } else if (newFieldType === 'html') {
-      return (
-        <div className="html-editor">
-          <FroalaEditorComponent
-                      tag="textarea"
-                      config={config}
-                      model={editorContent} // Set the content
-  onModelChange={(content) => setEditorContent(content)}
-                    />
-        </div>
-      );
-    } else if (newFieldType === 'file') {
-      return (
-        <input
-          type="file"
-          className="form-control-file"
-          id="fileInput"
-        />
-      );
-    }
+  const handleFileChange = (e) => {
+    setFileData(e.target.files[0]);
   };
+
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  };
+
   const config = {
-    heightMin: 300,
-    innerWidth:300,
-    outerWidth:300,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
   };
 
   return (
-    <footer>
-      <h1 className="main-heading">Footer</h1>
-      <div className="footer-container">
+    <>
+<div className='bgimg' style={{height:'100vh'}}>
+    <Container maxWidth="md" style={{ paddingTop: '20px' }}>
+      <Typography variant="h4" align="center" gutterBottom>
+        Footer
+      </Typography>
+      <form onSubmit={handleSubmit}>
         <TextField
-          label="Name"
+          fullWidth
+          label="Footer Name"
+          value={footerName}
+          onChange={(e) => setFooterName(e.target.value)}
+          margin="normal"
           variant="outlined"
-          value={newName}
-          onChange={(e) => {
-            setNewName(e.target.value);
-            setNameError(false);
-          }}
-          error={nameError}
-          helperText={nameError && 'Name is required'}
         />
-        <div className="dropdown-container">
-          <select
-            value={newFieldType}
-            onChange={(e) => setNewFieldType(e.target.value)}
-            className="form-select"
+        <FormControl fullWidth variant="outlined" margin="normal">
+          <InputLabel>Footer Type</InputLabel>
+          <Select
+            label="Footer Type"
+            value={footerType}
+            onChange={(e) => setFooterType(e.target.value)}
           >
-            <option value="link">Link</option>
-            <option value="text">Text</option>
-            <option value="html">HTML Content</option>
-            <option value="file">File Upload</option>
-          </select>
-        </div>
-        {renderAdditionalInput()}
-        <Button variant="contained" color="primary" onClick={openDialog}>
-          Add Link
+            <MenuItem value="">Select an option</MenuItem>
+            <MenuItem value="file">File</MenuItem>
+            <MenuItem value="link">Link</MenuItem>
+            <MenuItem value="html-editor">HTML Editor</MenuItem>
+          </Select>
+        </FormControl>
+        {footerType === 'file' && (
+          <div>
+            <input
+              type="file"
+              accept=".pdf,.doc,.docx,.txt,.jpg,.png,.jpeg"
+              onChange={handleFileChange}
+            />
+          </div>
+        )}
+        {footerType === 'link' && (
+          <TextField
+            fullWidth
+            label="Upload link"
+            onChange={handleFileChange}
+            margin="normal"
+            variant="outlined"
+          />
+        )}
+        {footerType === 'html-editor' && (
+          <div>
+            <label>Editor:</label>
+            <FroalaEditorComponent tag="textarea" config={config} />
+          </div>
+        )}
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          style={{ marginTop: '10px' }}
+        >
+          Submit
         </Button>
-        <Dialog open={isDialogOpen} onClose={closeDialog}>
-          <DialogTitle>Confirm Save</DialogTitle>
-          <DialogContent>
-            <DialogContentText>Do you want to save this link?</DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={closeDialog} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={handleConfirm} color="primary" autoFocus>
-              Save
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
-      <ToastContainer />
-    </footer>
+      </form>
+      {error && (
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+          message={error}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        />
+      )}
+      {success && (
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+          message={success}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        />
+      )}
+    </Container>
+    </div>
+    </>
   );
-};
+}
 
-export default Footer;
+export default FooterPage;
