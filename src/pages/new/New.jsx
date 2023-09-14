@@ -9,7 +9,8 @@ import api from '../../utils/apiUrl.json';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // import apis from '../../Apis/apis';
-
+// import './'
+import './new.scss';
 export function New() {
   const [dropdownOptions, setDropdownOptions] = useState([]);
   const [selectedRole, setSelectedRole] = useState('');
@@ -120,6 +121,7 @@ export function New() {
         <Sidebar className='nav' style={{}} />
         <div className="homeContainer">
           <Navbar />
+          <div className='bgimg'>
           <Container>
             <Row className="vh-100 d-flex justify-content-center align-items-center">
               <Col md={10} lg={6} xs={12}>
@@ -221,6 +223,7 @@ export function New() {
               </Col>
             </Row>
           </Container>
+          </div>
         </div>
       </div>
       </div>

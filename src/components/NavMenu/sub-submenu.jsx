@@ -5,6 +5,7 @@ import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
 import apiClient from '../../services/AxiosApi';
+import { withTheme } from '@emotion/react';
 
 export const Subsubmenu = () => {
   // State to manage form data
@@ -109,21 +110,7 @@ export const Subsubmenu = () => {
     <div className="container">
       <div>
         <div className="mb-3">
-          {/* <label className="form-label">Select Menu</label>
-                <select
-                  className="form-select"
-                  name="menuoption"
-                  value={formData.menuoption}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Select Menu</option>
-                  {Menuoptions.map((option) => (
-                    <option key={option.id} value={option.id}>
-                      {option.value}
-                    </option>
-                  ))}
-                </select> */}
-          <label htmlFor="firstDropdown">Select Option:</label>
+          <label htmlFor="firstDropdown" style={{color:"white", fontWeight:"bold"}}>Select Menu Option:</label>
           <select id="firstDropdown" className="form-select" 
           value={selectedOptionId} 
           onChange={handleFirstDropdownChange}>
@@ -136,12 +123,12 @@ export const Subsubmenu = () => {
           </select>
         </div>
         <div className="mb-3">
-          <label htmlFor="secondDropdown">Select Suboption:</label>
+          <label htmlFor="secondDropdown" style={{color:"white", fontWeight:"bold"}}>Select Submenu option:</label>
           <select id="secondDropdown" 
           className="form-select"
           name="SubMenuoptions"
-            value={formData.SubMenuoptions}
-            onChange={handleInputChange}
+          value={formData.SubMenuoptions}
+          onChange={handleInputChange}
           
           >
             <option value="">Select...</option>
@@ -158,7 +145,7 @@ export const Subsubmenu = () => {
           <input
             className="form-control"
             type="text"
-            placeholder="Name"
+            placeholder="Sub-submenu name"
             name="name"
             value={formData.name}
             onChange={handleInputChange}

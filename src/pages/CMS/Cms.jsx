@@ -15,7 +15,8 @@ import New from '../../pages/new/New'
 import { Menu } from '../../components/NavMenu/menu';
 import { Subsubmenu } from '../../components/NavMenu/sub-submenu';
 import {Submenu} from '../../components/NavMenu/submenu';
-import './Cms.scss'
+// import './Cms.scss'
+import { Row, Col,  Button } from 'react-bootstrap';
 
 export const Cms = () => {
   const [menu, setMenu] = React.useState('');
@@ -24,7 +25,7 @@ export const Cms = () => {
   const contentType = [
     { label: 'Select' },
     { label: 'File', value: "1" }, 
-    { label: 'Link', value: "demo" },
+    { label: 'Link', value: "2" },
     { label: 'HTML', value: "3" },
   ]
 
@@ -57,95 +58,141 @@ export const Cms = () => {
     setSelectedOption(event.target.value);
   };
   return (
-    <div>
-      <div className="home">
-        <Sidebar className='nav' style={{}} />
-        <div className="homeContainer">
-        <div className="backgroundcontainer">
-          <Navbar />
+    // <div>
+    //   <div className="home">
+    //     <Sidebar className='nav' style={{}} />
+    //     <div className="homeContainer">
+    //     <div className="backgroundcontainer">
+    //       <Navbar />
         
 
+    //       <div className='mainContainer'>
+    //         <Container>
+              
+                
+    //               <h4 style={{textAlign:"center", marginLeft:'235px'}}>Create your own content here</h4>
+                
+                
+    //               <FormControl style={{}}>
+    //                 <div className='selectcontainer' style={{display:"flex",justifyContent:"center"}}>
+    //                 <select  className='selectmenu' value={selectedOption} onChange={handleOptionChange}>
+    //                   {options.map((option, index) => (
+    //                     <option key={index} value={option}>
+    //                       {option}
+    //                     </option>
+    //                   ))}
+
+    //                 </select>
+    //                 </div>
+    //                 <div  >
+    //                   {selectedOption === 'Select' && <div style={{display:'flex',justifyContent:'center', maxWidth:'200px'}}></div>}
+    //                   {
+    //                   selectedOption === 'Menu' && <Menu />}
+    //                   {selectedOption === 'Submenu' && <Submenu />}
+    //                   {selectedOption === 'Subsubmenu' && <Subsubmenu />}
+    //                 </div>
+    //                 {/* </Select>  */}
+    //                 <div>
+
+
+    //                 </div>
+    //               </FormControl>  
+    //         </Container>
+    //       </div>
+    //     </div>
+    //   </div>
+    //   </div>
+    // </div>
+    // <div>
+    //   <div className="home">
+    //     <Sidebar className='nav' style={{}} />
+    //     <div className="homeContainer">
+    //       <div className="backgroundcontainer">
+    //         <Navbar />
+    //         <div className='mainContainer'>
+    //           <Container className="custom-container"> {/* Add a custom CSS class */}
+    //             <Row>
+    //               <Col xs={12} className="text-center mt-4">
+    //                 <h4>Create your own content here</h4>
+    //               </Col>
+    //             </Row>
+    //             <Row className="justify-content-left">
+    //               <Col xs={6}>
+    //                 <Form>
+    //                   <Form.Group controlId="exampleForm.ControlSelect1">
+    //                     <Form.Label>Select an Option</Form.Label>
+    //                     <Form.Control as="select" value={selectedOption} onChange={handleOptionChange}>
+    //                       {options.map((option, index) => (
+    //                         <option key={index} value={option}>
+    //                           {option}
+    //                         </option>
+    //                       ))}
+    //                     </Form.Control>
+    //                   </Form.Group>
+    //                 </Form>
+    //               </Col>
+    //             </Row>
+    //             <Row className="justify-content-left">
+    //               <Col xs={6}>
+    //                 {selectedOption === 'Menu' && <Menu />}
+    //                 {selectedOption === 'Submenu' && <Submenu />}
+    //                 {selectedOption === 'Subsubmenu' && <Subsubmenu />}
+    //               </Col>
+    //             </Row>
+    //           </Container>
+    //         </div>
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>
+    <div>
+    <div className="home">
+      <Sidebar className='nav' style={{}} />
+      <div className="homeContainer">
+        <div className="backgroundcontainer">
+          <Navbar />
           <div className='mainContainer'>
-            <Container>
-              <Grid container spacing={2}>
-                <Grid >
-                  <h4 style={{textAlign:"center"}}>Create your own content here</h4>
-                </Grid>
-                <Grid >
-                  <FormControl sx={{ minWidth: 200 }} size="small">
-                    <select  className='selectmenu' value={selectedOption} onChange={handleOptionChange}>
-                      {options.map((option, index) => (
-                        <option key={index} value={option}>
-                          {option}
-                        </option>
-                      ))}
-
-                    </select>
-                    <div  >
-                      {selectedOption === 'Select'}
-                      {selectedOption === 'Menu' && <Menu />}
-                      {selectedOption === 'Submenu' && <Submenu />}
-                      {selectedOption === 'Subsubmenu' && <Subsubmenu />}
-                    </div>
-                    {/* </Select>  */}
-                    <div>
-
-
-                    </div>
-                  </FormControl>
-                </Grid>
-                <Grid xs={6} md={4}>
-
-                  {/* {showDiv && (
-                    <div className='MainMenuOption'>
-                      <Container>
-
-                        <Form >
-                          <Form.Group className="mb-3" controlId="name">
-                            <Form.Label className="text-center">Name</Form.Label>
-                            <Form.Control type="text"
-                              placeholder="Enter Name"
-                              name="name"
-                              value={formData.name}
-                              onChange={handleChange} />
-                          </Form.Group
-                          >
-                        </Form>
-                        <Form >
-                          <Form.Group className="mb-3" controlId="name">
-                            <Form.Label className="text-center">URL</Form.Label>
-                            <Form.Control type="text"
-                              placeholder="Enter URL"
-                              name="url"
-                              value={formData.url}
-                              onChange={handleChange} />
-                          </Form.Group>
-                        </Form>
-                        <Form.Group className="mb-3" controlId="Address">
-                          <div className="mb-12">
-                            <Form.Label className="text-center">Content Type</Form.Label>
-                            <select className='form-control' name='usertype' value={selectedRole} onChange={handleRoleChange}>
-                              <option value={formData.usertype}>Select </option>
-                              {contentType.map((role) => (
-                                <option key={role.value} value={formData.usertype}>
-                                  {role.label}
-                                </option>
-                              ))}
-                            </select>
-
-                          </div>
-                        </Form.Group>
-                      </Container>
-
-                    </div>
-                  )} */}
-                </Grid>
-              </Grid>
+            <Container className="custom-container"> {/* Add a custom CSS class */}
+              <Row>
+                <Col xs={12} className="text-center mt-4">
+                  <h4>Create your own content here</h4>
+                </Col>
+              </Row>
+              <Row className="justify-content-left" style={{marginTop:'20px'}}>
+                <Col xs={6}>
+                  <Form>
+                    <Form.Group controlId="exampleForm.ControlSelect1">
+                    
+                      <Form.Control
+                        as="select" 
+                        value={selectedOption}
+                        onChange={handleOptionChange}
+                        className="float-left" // Set dropdown to the left
+                      >
+                        {options.map((option, index) => (
+                          <option key={index} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </Form.Control>
+                    </Form.Group>
+                  </Form>
+                </Col>
+              </Row>
+              <Row className="justify-content-left   
+              ">
+                <Col xs={6}>
+                  {/* Render different components based on the selected option */}
+                  {selectedOption === 'Menu' && <Menu />}
+                  {selectedOption === 'Submenu' && <Submenu />}
+                  {selectedOption === 'Subsubmenu' && <Subsubmenu />}
+                </Col>
+              </Row>
             </Container>
           </div>
         </div>
       </div>
-      </div>
     </div>
+  </div>
   )
 }

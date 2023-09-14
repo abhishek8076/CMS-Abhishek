@@ -5,6 +5,8 @@ import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
 import apiClient from '../../services/AxiosApi';
+import apis from '../../utils/apiUrl.json';
+import 'bootstrap/dist/css/bootstrap.css';
 
 export const Menu = () => {
   // State to manage form data
@@ -19,7 +21,7 @@ export const Menu = () => {
 
   // JSON data for dropdown options
   const optionsData = [
-    { id:1,value: 'link', label: 'Link' },
+    {  id:1,value: 'link', label: 'Link' },
     {  id:2,value: 'file', label: 'File' },
     {  id:3,value: 'html', label: 'HTML' },
   ];
@@ -61,7 +63,7 @@ export const Menu = () => {
         formDataToSend.append('data', formData.htmlValue);
       }
 
-      const response = await apiClient.post('/api/save-data', formDataToSend);
+      const response = await apiClient.post(apis.navmenu, formDataToSend);
       console.log('Data saved:', response.data);
     } catch (error) {
       console.error('Error saving data:', error);
@@ -69,7 +71,7 @@ export const Menu = () => {
   };
 
   const config = {
-    heightMin: 300,
+   
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
   };
@@ -81,7 +83,7 @@ export const Menu = () => {
       <div>
         
               {/* Name input field */}
-              <div className="mb-3">
+              <div className="mb-3" >
                 <label className="form-label">Name</label>
                 <input
                   className="form-control"
@@ -94,7 +96,7 @@ export const Menu = () => {
               </div>
 
               {/* Dropdown to select an option */} 
-              
+
               <div className="mb-3">
                 <label className="form-label">Select an option</label>
                 <select
@@ -154,12 +156,14 @@ export const Menu = () => {
               )}
 
               {/* Submit button */}
+              <div className='btnsubmit'>
               <button
                 className="btn btn-primary"
                 onClick={handleSubmit}
               >
                 Submit
               </button>
+              </div>
             </div>
           </div>
 
