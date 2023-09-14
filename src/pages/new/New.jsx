@@ -133,7 +133,7 @@ export function New() {
                     <div className="mb-3">
                       <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" controlId="Name">
-                          <Form.Label className="text-center">Name</Form.Label>
+                          <Form.Label className="text-center" style={{color:"black"}}>Name</Form.Label>
                           <Form.Control
                             type="text"
                             placeholder="Enter Name"
@@ -147,7 +147,7 @@ export function New() {
                           </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="Name">
-                          <Form.Label className="text-center">E-mail</Form.Label>
+                          <Form.Label className="text-center" style={{color:"black"}}>E-mail</Form.Label>
                           <Form.Control
                             type="text"
                             placeholder="Enter Email"
@@ -160,7 +160,7 @@ export function New() {
                             {formErrors.name}
                           </Form.Control.Feedback>
                         </Form.Group> <Form.Group className="mb-3" controlId="Name">
-                          <Form.Label className="text-center">Mobile No.</Form.Label>
+                          <Form.Label className="text-center" style={{color:"black"}}>Mobile No.</Form.Label>
                           <Form.Control
                             type="text"
                             placeholder="Enter Mobile No."
@@ -174,7 +174,7 @@ export function New() {
                           </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="Name">
-                          <Form.Label className="text-center">Address</Form.Label>
+                          <Form.Label className="text-center" style={{color:"black"}}>Address</Form.Label>
                           <Form.Control
                             type="text"
                             placeholder="Enter your address"
@@ -190,7 +190,7 @@ export function New() {
 
                         <Form.Group className="mb-3" controlId="Usertype">
                           <div className="mb-12">
-                            <Form.Label className="text-center">Role</Form.Label>
+                            <Form.Label className="text-center" style={{color:"black"}}>Role</Form.Label>
                             <select
                               className='form-control'
                               name='usertype'
@@ -198,7 +198,7 @@ export function New() {
                               onChange={handleChange}
                               isInvalid={!!formErrors.usertype}
                             >
-                              <option value=''>Select a role</option>
+                              <option value='' style={{color:"black"}}>Select a role</option>
                               {dropdownOptions.map((data) => (
                                 <option key={data.users_id} value={data.users_id}>
                                   {data.user_name}
