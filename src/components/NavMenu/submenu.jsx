@@ -55,9 +55,26 @@ export const Submenu = () => {
       "name": "Services1",
       "is_submenu": true,
       "menu_id": 4
+    },
+    {
+      id: 6,
+      "name": "Services2",
+      "is_submenu": true,
+      "menu_id": 4
+    },
+    {
+      id: 7,
+      "name": "Home1",
+      "is_submenu": true,
+      "menu_id": 1
+    },
+    {
+      id: 8,
+      "name": "Aboutus1",
+      "is_submenu": true,
+      "menu_id": 3
     }
   ]
-  
 
   // Handle input field changes
   const handleEditorChange = (content) => {
