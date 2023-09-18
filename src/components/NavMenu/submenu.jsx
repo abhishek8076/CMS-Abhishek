@@ -26,10 +26,38 @@ export const Submenu = () => {
     {  id:3,value: 'html', label: 'HTML' },
   ];
   const Menuoptions = [
-    { id:1,value: 'home', label: 'home' },
-    {  id:2,value: 'about', label: 'about' },
-    {  id:3,value: 'edit', label: 'edit' },
-  ];
+    {
+      "id": 1,
+      "name": "Home",
+      "is_submenu": false,
+      "menu_id": null
+    },
+    {
+      "id": 2,
+      "name": "Products",
+      "is_submenu": true,
+      "menu_id": 1
+    },
+    {
+      "id": 3,
+      "name": "About Us",
+      "is_submenu": false,
+      "menu_id": null
+    },
+    {
+      "id": 4,
+      "name": "Services",
+      "is_submenu": true,
+      "menu_id": 1
+    },
+    {
+      "id": 5,
+      "name": "Services1",
+      "is_submenu": true,
+      "menu_id": 4
+    }
+  ]
+  
 
   // Handle input field changes
   const handleEditorChange = (content) => {
