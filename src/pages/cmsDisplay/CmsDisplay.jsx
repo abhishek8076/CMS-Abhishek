@@ -10,8 +10,8 @@ const Menuoptions = [
   {
     id: 2,
     name: "Products",
-    is_submenu: true,
-    menu_id: 1,
+    is_submenu: false,
+    menu_id: null,
   },
   {
     id: 3,
@@ -22,8 +22,8 @@ const Menuoptions = [
   {
     id: 4,
     name: "Services",
-    is_submenu: true,
-    menu_id: 1,
+    is_submenu: false,
+    menu_id: null,
   },
   {
     id: 5,
@@ -49,9 +49,57 @@ const Menuoptions = [
     is_submenu: true,
     menu_id: 3,
   },
+  {
+    id: 9,
+    name: "Categories",
+    is_submenu: true,
+    menu_id: 2,
+  },
+  {
+    id: 10,
+    name: "Jackets",
+    is_submenu: true,
+    menu_id: 9,
+  },
+  {
+    id: 11,
+    name: "Tee",
+    is_submenu: true,
+    menu_id: 9,
+  },
+  {
+    id: 12,
+    name: "Jacket1",
+    is_submenu: true,
+    menu_id: 10,
+  },
+  {
+    id: 13,
+    name: "Jacket2",
+    is_submenu: true,
+    menu_id: 10,
+  },
+  {
+    id: 14,
+    name: "Tee1",
+    is_submenu: true,
+    menu_id: 11,
+  },
+  {
+    id: 15,
+    name: "Tee2",
+    is_submenu: true,
+    menu_id: 11,
+  },
+  {
+    id: 16,
+    name: "jeans",
+    is_submenu: true,
+    menu_id: 11,
+  },
 ];
 
- export const CmsDisplay = () => {
+export const CmsDisplay = () => {
   // Create a function to filter submenu items based on menu_id
   const getSubmenuItems = (menuId) => {
     return Menuoptions.filter((item) => item.menu_id === menuId);
@@ -59,30 +107,40 @@ const Menuoptions = [
 
   return (
     <>
-    <ul>
-      {Menuoptions.map((item) => {
-        if (!item.is_submenu) {
-          const submenuItems = getSubmenuItems(item.id);
-          return (
-            <li key={item.id}>
-              <a href="#">{item.name}</a>
-              {submenuItems.length > 0 && (
-                <ul>
-                  {submenuItems.map((submenuItem) => (
-                    <li key={submenuItem.id}>
-                      <a href="#">{submenuItem.name}</a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          );
-        }
-        return null;
-      })}
-    </ul>
+      <ul>
+        {Menuoptions.map((item) => {
+          if (!item.is_submenu) {
+            const submenuItems = getSubmenuItems(item.id);
+            return (
+              <li key={item.id}>
+                <a href="#">{item.name}</a>
+                {submenuItems.length > 0 && (
+                  <ul>
+                    {submenuItems.map((submenuItem) => (
+                      <li key={submenuItem.id}>
+                        <a href="#">{submenuItem.name}</a>
+                        {/* Check for sub-submenu items */}
+                        {submenuItem.is_submenu && (
+                          <ul>
+                            {getSubmenuItems(submenuItem.id).map(
+                              (subSubmenuItem) => (
+                                <li key={subSubmenuItem.id}>
+                                  <a href="#">{subSubmenuItem.name}</a>
+                                </li>
+                              )
+                            )}
+                          </ul>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            );
+          }
+          return null;
+        })}
+      </ul>
     </>
   );
 };
-
-// export default Navbar;
