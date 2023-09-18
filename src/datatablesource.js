@@ -150,3 +150,53 @@ export const option2 = [
   },
   
 ];
+ export const Menuoptions = [
+  {
+    id: 1,
+    "name": "Home",
+    "is_submenu": false,
+    "menu_id": null
+  },
+  {
+    id: 2,
+    "name": "Products",
+    "is_submenu": true,
+    "menu_id": 1
+  },
+  {
+    id: 3,
+    "name": "About Us",
+    "is_submenu": false,
+    "menu_id": null
+  },
+  {
+    id: 4,
+    "name": "Services",
+    "is_submenu": true,
+    "menu_id": 1
+  },
+  {
+    id: 5,
+    "name": "Services1",
+    "is_submenu": true,
+    "menu_id": 4
+  },
+  {
+    id: 6,
+    "name": "Services2",
+    "is_submenu": true,
+    "menu_id": 4
+  },
+  {
+    id: 7,
+    "name": "Home1",
+    "is_submenu": true,
+    "menu_id": 1
+  },
+  {
+    id: 8,
+    "name": "Aboutus1",
+    "is_submenu": true,
+    "menu_id": 3
+  }
+]

@@ -24,6 +24,7 @@ import { IndexBanner } from "./components/Banner/IndexBanner";
 import { WhatsNewTable } from "./components/WhatsNew/WhatsNewTable";
 import { Banner } from "./components/Banner/Banner";
 import Profile from "./pages/profile/Profile";
+import  {CmsDisplay}  from "./pages/cmsDisplay/CmsDisplay";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -89,6 +90,7 @@ function App() {
             />
        </Route>
        <Route path="/profile" element={<Profile/>} />
+       <Route path="/display" element={<CmsDisplay/>} />
        <Route path="/banner" element={<IndexBanner/>} />
        <Route path="whatsnew"  >
            <Route index element={<IndexWhatsNew />} />
