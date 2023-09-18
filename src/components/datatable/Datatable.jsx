@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress'; // Import CircularProgress for the loader
+import CircularProgress from '@mui/material/CircularProgress';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
@@ -18,19 +18,25 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 import apiClient from '../../services/AxiosApi';
 
 const Datatable = () => {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true); // State variable to control the loader visibility
+  const [loading, setLoading] = useState(true);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [deleteItemId, setDeleteItemId] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await apiClient.get(api.newuser);
         setData(response.data);
-        setLoading(false); // Set loading to false when data is fetched
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -46,6 +52,31 @@ const Datatable = () => {
     }
   };
 
+  const handleDeleteClick = (users_id) => {
+    setDeleteItemId(users_id);
+    setOpenDeleteDialog(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    try {
+      // Make a DELETE request to your API with the deleteItemId
+      await apiClient.delete(`/users/${deleteItemId}`);
+      
+      // Remove the deleted item from the data array
+      const updatedData = data.filter((item) => item.users_id !== deleteItemId);
+      setData(updatedData);
+      
+      // Close the dialog
+      setOpenDeleteDialog(false);
+    } catch (error) {
+      console.error('Error deleting item:', error);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setOpenDeleteDialog(false);
+  };
+
   return (
     <>
       <div className="datatable">
@@ -59,7 +90,7 @@ const Datatable = () => {
         </div>
       </div>
       <div className="container">
-        {loading ? ( // Display loader when loading is true
+        {loading ? (
           <CircularProgress style={{ margin: '20px auto', display: 'block' }} />
         ) : (
           <TableContainer component={Paper} className="table">
@@ -83,12 +114,15 @@ const Datatable = () => {
                     <TableCell>{item.user_mobile_no}</TableCell>
                     <TableCell>{item.user_address}</TableCell>
                     <TableCell>
-                      <Link Link to={`/users/single/${item.users_id}`} style={{ textDecoration: 'none' }}>
+                      <Link
+                        to={`/users/single/${item.users_id}`}
+                        style={{ textDecoration: 'none' }}
+                      >
                         <Button variant="contained" onClick={() => handleButtonClick(item.user_id)}>
                           <EditIcon />
                         </Button>
                       </Link>
-                      <Button variant="contained" onClick={() => handleButtonClick(item.user_id)}>
+                      <Button variant="contained" onClick={() => handleDeleteClick(item.users_id)}>
                         <DeleteIcon />
                       </Button>
                     </TableCell>
@@ -99,6 +133,20 @@ const Datatable = () => {
           </TableContainer>
         )}
       </div>
+      <Dialog open={openDeleteDialog} onClose={handleDeleteCancel}>
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          Are you sure you want to delete this item?
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="primary">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

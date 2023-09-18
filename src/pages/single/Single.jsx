@@ -18,6 +18,7 @@ export function Single() {
   const [loading, setLoading] = useState(false);
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [updateError, setUpdateError] = useState('');
+  const [validationErrors, setValidationErrors] = useState({});
 
   useEffect(() => {
     async function fetchData() {
@@ -35,34 +36,78 @@ export function Single() {
   }, [id]);
 
   const handleUpdateClick = async () => {
-    try {
-      setLoading(true);
-      await apiClinet.put(api.edituser + id, data);
-      setUpdateSuccess(true);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error updating user data:', error);
-      setUpdateError('Failed to update user data');
-      setLoading(false);
+    const errors = {};
+    
+    if (!data.name) {
+      errors.name = 'Name is required';
+    }
+    
+    if (!data.email) {
+      errors.email = 'Email is required';
+    } else if (!isValidEmail(data.email)) {
+      errors.email = 'Invalid email format';
+    }
+    
+    if (!data.mobile_no) {
+      errors.mobile_no = 'Mobile is required';
+    } else if (!isValidMobile(data.mobile_no)) {
+      errors.mobile_no = 'Invalid mobile format';
+    }
+    
+    if (!data.address) {
+      errors.address = 'Address is required';
+    }
+    
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
+    } else {
+      try {
+        setLoading(true);
+        await apiClinet.put(api.edituser + id, data);
+        setUpdateSuccess(true);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error updating user data:', error);
+        setUpdateError('Failed to update user data');
+        setLoading(false);
+      }
     }
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    setValidationErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: undefined,
+    }));
     setData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
-  const storedUserString = localStorage.getItem("user");
+
+  const isValidEmail = (email) => {
+    // You can implement your email validation logic here
+    // For a simple format check, you can use regular expressions
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const isValidMobile = (mobile) => {
+    // You can implement your mobile validation logic here
+    // For example, checking for a valid number format
+    const mobileRegex = /^[0-9]+$/;
+    return mobileRegex.test(mobile);
+  };
+
+  const storedUserString = localStorage.getItem('user');
   const user = JSON.parse(storedUserString);
-  console.log(user)
 
   return (
     <>
       <div>
         <div className="home">
-          <Sidebar className='nav' style={{}} />
+          <Sidebar className="nav" style={{}} />
           <div className="homeContainer">
             <Navbar />
             <div></div>
@@ -83,7 +128,11 @@ export function Single() {
                               name="name"
                               value={data.name}
                               onChange={handleInputChange}
+                              isInvalid={!!validationErrors.name}
                             />
+                            <Form.Control.Feedback type="invalid">
+                              {validationErrors.name}
+                            </Form.Control.Feedback>
                           </Form.Group>
                           <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label className="text-center">
@@ -94,7 +143,11 @@ export function Single() {
                               name="email"
                               value={data.email}
                               onChange={handleInputChange}
+                              isInvalid={!!validationErrors.email}
                             />
+                            <Form.Control.Feedback type="invalid">
+                              {validationErrors.email}
+                            </Form.Control.Feedback>
                           </Form.Group>
                           <Form.Group className="mb-3" controlId="Mobile">
                             <Form.Label className="text-center">Mobile</Form.Label>
@@ -103,7 +156,11 @@ export function Single() {
                               name="mobile_no"
                               value={data.mobile_no}
                               onChange={handleInputChange}
+                              isInvalid={!!validationErrors.mobile_no}
                             />
+                            <Form.Control.Feedback type="invalid">
+                              {validationErrors.mobile_no}
+                            </Form.Control.Feedback>
                           </Form.Group>
                           <Form.Group className="mb-3" controlId="Address">
                             <Form.Label className="text-center">Address</Form.Label>
@@ -112,7 +169,11 @@ export function Single() {
                               name="address"
                               value={data.address}
                               onChange={handleInputChange}
+                              isInvalid={!!validationErrors.address}
                             />
+                            <Form.Control.Feedback type="invalid">
+                              {validationErrors.address}
+                            </Form.Control.Feedback>
                           </Form.Group>
                           {loading ? (
                             <Spinner animation="border" variant="primary" />
@@ -128,19 +189,32 @@ export function Single() {
                                   {updateError}
                                 </div>
                               )}
-                              <div style={{display:"flex",flexDirection:"column",justifyContent:"end",marginTop:"5px"}}>
-                             
-                              <Button style={{width: "fit-content"}} onClick={handleUpdateClick}>
-                                Update User
-                              </Button>
-                            
-
-                              <Link to='/users'>
-                                <Button variant="primary"  style={{marginTop:"5px",alignContent:"right"}}>
-                                  Back
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  justifyContent: 'end',
+                                  marginTop: '5px',
+                                }}
+                              >
+                                <Button
+                                  style={{ width: 'fit-content' }}
+                                  onClick={handleUpdateClick}
+                                >
+                                  Update User
                                 </Button>
-                              </Link>
 
+                                <Link to="/users">
+                                  <Button
+                                    variant="primary"
+                                    style={{
+                                      marginTop: '5px',
+                                      alignContent: 'right',
+                                    }}
+                                  >
+                                    Back
+                                  </Button>
+                                </Link>
                               </div>
                             </>
                           )}
