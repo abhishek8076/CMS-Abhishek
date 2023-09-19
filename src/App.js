@@ -25,6 +25,7 @@ import { WhatsNewTable } from "./components/WhatsNew/WhatsNewTable";
 import { Banner } from "./components/Banner/Banner";
 import Profile from "./pages/profile/Profile";
 import  {CmsDisplay}  from "./pages/cmsDisplay/CmsDisplay";
+import { Menuoptions } from "./datatablesource";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -109,6 +110,7 @@ function App() {
         )} */}
         {/* Other routes */}
         <Route path="*" element={<Navigate to="/" />} />
+
       </Routes>
      
     </Router>
