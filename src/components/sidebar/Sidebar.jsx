@@ -50,7 +50,7 @@ const Sidebar = () => {
           <Link to="/extra" style={{ textDecoration: "none" }}>
             <li>
               <PersonOutlineIcon className="icon" />
-              <span>Extra</span>
+              <span>Footer</span>
             </li>
           </Link>
           <Link to="/whatsnew" style={{ textDecoration: "none" }}>
