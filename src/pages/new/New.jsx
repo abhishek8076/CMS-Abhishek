@@ -23,8 +23,13 @@ export function New() {
     usertype: '',
   });
 
+  const handleRoleChange = (event) => {
+    setSelectedRole(event.target.value);
+  };
+
   const handleChange = (event) => {
     const { name, value } = event.target;
+    setSelectedRole(event.target.value);
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,

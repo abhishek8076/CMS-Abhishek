@@ -22,6 +22,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  TextField, // Import TextField for filtering
 } from '@mui/material';
 import apiClient from '../../services/AxiosApi';
 
@@ -30,6 +31,10 @@ const Datatable = () => {
   const [loading, setLoading] = useState(true);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [deleteItemId, setDeleteItemId] = useState(null);
+
+  // Filter state for name and email
+  const [nameFilter, setNameFilter] = useState('');
+  const [emailFilter, setEmailFilter] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,11 +66,11 @@ const Datatable = () => {
     try {
       // Make a DELETE request to your API with the deleteItemId
       await apiClient.delete(`/users/${deleteItemId}`);
-      
+
       // Remove the deleted item from the data array
       const updatedData = data.filter((item) => item.users_id !== deleteItemId);
       setData(updatedData);
-      
+
       // Close the dialog
       setOpenDeleteDialog(false);
     } catch (error) {
@@ -76,6 +81,13 @@ const Datatable = () => {
   const handleDeleteCancel = () => {
     setOpenDeleteDialog(false);
   };
+
+  // Filter the table data based on name and email
+  const filteredData = data.filter(
+    (item) =>
+      item.user_name.toLowerCase().includes(nameFilter.toLowerCase()) &&
+      item.user_email.toLowerCase().includes(emailFilter.toLowerCase())
+  );
 
   return (
     <>
@@ -88,12 +100,16 @@ const Datatable = () => {
             </Button>
           </Link>
         </div>
+
+        {/* Filter inputs */}
+       
       </div>
+
       <div className="container">
         {loading ? (
           <CircularProgress style={{ margin: '20px auto', display: 'block' }} />
         ) : (
-          <TableContainer component={Paper} className="table">
+          <TableContainer component={Paper} className="table" style={{ maxHeight: '500px', overflow: 'auto' }}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
@@ -106,7 +122,7 @@ const Datatable = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.map((item, i) => (
+                {filteredData.map((item, i) => (
                   <TableRow key={item.users_id}>
                     <TableCell>{i + 1}</TableCell>
                     <TableCell>{item.user_name}</TableCell>
