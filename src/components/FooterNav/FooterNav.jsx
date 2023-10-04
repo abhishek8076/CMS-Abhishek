@@ -5,7 +5,6 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
 function FooterPage() {
   const [footerType, setFooterType] = useState('');
   const [footerName, setFooterName] = useState('');
@@ -18,8 +17,18 @@ function FooterPage() {
     e.preventDefault();
 
     // Validate the fields
-    if (!footerType || !footerName) {
-      setError('All fields are required.');
+    if (!footerName) {
+      setError('Footer Name is required.');
+      return;
+    }
+
+    if (!footerType) {
+      setError('Footer Type is required.');
+      return;
+    }
+
+    if (footerType === 'file' && !fileData) {
+      setError('File is required for File type.');
       return;
     }
 
@@ -53,24 +62,21 @@ function FooterPage() {
   };
 
   const config = {
-    placeholderText: 'Edit Your Content Here!',
+    placeholderText: 'Content Here!',
     charCounterCount: false,
   };
 
   return (
     <div className='bgimg' style={{ height: '100vh' }}>
-      <div className='headingdiv'>
-    
-      </div>
+      <div className='headingdiv'></div>
       <div className='container'>
-      
         <div className='row justify-content-center'>
-        
           <div className='col-md-6'>
             <div className='headingdiv'>
-      <p className='text-center' style={{color:"black" }} id='headingfooter'>Footer</p>
-      </div>
-           
+              <p className='text-center' style={{ color: 'black',fontSize:"40px", fontWeight:"bold"}} id='headingfooter'>
+                Footer
+              </p>
+            </div>
             <form onSubmit={handleSubmit}>
               <div className='mb-3'>
                 <label>Footer Name</label>

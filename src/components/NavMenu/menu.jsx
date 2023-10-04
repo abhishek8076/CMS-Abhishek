@@ -12,7 +12,6 @@ import MyEditor, { HtmlEditor } from '../htmlEditor/htmlEditor';
 export const Menu = () => {
   const [editorContent, setEditorContent] = useState('');
   const [formData, setFormData] = useState({
-     // Assuming this is an input field for the ID
     name: '',
     is_submenu: 0,
     menu_id: null,
@@ -20,6 +19,7 @@ export const Menu = () => {
     content_type: ' ',
     content_data: '',
   });
+  const [errors, setErrors] = useState({});
 
   const optionsData = [
     { id: 1, value: 'link', label: 'Link' },
@@ -28,7 +28,6 @@ export const Menu = () => {
   ];
 
   useEffect(() => {
-    // Set the initial form data when the component is mounted
     setFormData({
       name: '',
       is_submenu: 0,
@@ -41,6 +40,34 @@ export const Menu = () => {
 
   const handleEditorChange = (content) => {
     setEditorContent(content);
+  };
+
+  const validateForm = () => {
+    const errors = {};
+
+    if (!formData.name) {
+      errors.name = 'Name is required';
+    }
+
+    if (!formData.content_id) {
+      errors.content_id = 'Select an option';
+    }
+
+    if (formData.content_id === '1' && !formData.content_data) {
+      errors.content_data = 'Link is required';
+    }
+
+    if (formData.content_id === '2' && !formData.fileValue) {
+      errors.fileValue = 'File is required';
+    }
+
+    if (formData.content_id === '3' && !editorContent) {
+      errors.editorContent = 'HTML content is required';
+    }
+
+    setErrors(errors);
+
+    return Object.keys(errors).length === 0;
   };
 
   const handleInputChange = (event) => {
@@ -60,30 +87,32 @@ export const Menu = () => {
   };
 
   const handleSubmit = async () => {
-    try {
-      const formDataToSend = new FormData();
-      formDataToSend.append('name', formData.name);
-      formDataToSend.append('is_submenu', formData.is_submenu);
-      formDataToSend.append('contnet_id', formData.content_id);
+    if (validateForm()) {
+      try {
+        const formDataToSend = new FormData();
+        formDataToSend.append('name', formData.name);
+        formDataToSend.append('is_submenu', formData.is_submenu);
+        formDataToSend.append('contnet_id', formData.content_id);
 
-      if (formData.content_id === '1') {
-        formDataToSend.append('content_type', 'html');
-        formDataToSend.append('content_data', formData.content_data);
-      } else if (formData.content_id === '2') {
-        formDataToSend.append('content_typze', 'file');
-        formDataToSend.append('content_data', formData.content_data);
-      } else if (formData.content_id === '3') {
-        formDataToSend.append('content_type', 'html');
-        formDataToSend.append('content_data', formData.content_data);
+        if (formData.content_id === '1') {
+          formDataToSend.append('content_type', 'html');
+          formDataToSend.append('content_data', formData.content_data);
+        } else if (formData.content_id === '2') {
+          formDataToSend.append('content_typze', 'file');
+          formDataToSend.append('content_data', formData.content_data);
+        } else if (formData.content_id === '3') {
+          formDataToSend.append('content_type', 'html');
+          formDataToSend.append('content_data', formData.content_data);
+        }
+
+        const response = await apiClient.post(apis.navmenu, formDataToSend);
+        console.log('Data saved:', response.data);
+      } catch (error) {
+        console.error('Error saving data:', error);
       }
-
-      const response = await apiClient.post(apis.navmenu, formDataToSend);
-      console.log('Data saved:', response.data);
-    } catch (error) {
-      console.error('Error saving data:', error);
     }
   };
-console.log(formData)
+
   const config = {
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
@@ -92,7 +121,6 @@ console.log(formData)
   return (
     <div className="container">
       <div>
-        
         <div className="mb-3">
           <label className="form-label">Name</label>
           <input
@@ -103,9 +131,8 @@ console.log(formData)
             value={formData.name}
             onChange={handleInputChange}
           />
+          {errors.name && <div className="text-danger">{errors.name}</div>}
         </div>
-
-       
 
         <div className="mb-3">
           <label className="form-label">Select an option</label>
@@ -122,9 +149,12 @@ console.log(formData)
               </option>
             ))}
           </select>
+          {errors.content_id && (
+            <div className="text-danger">{errors.content_id}</div>
+          )}
         </div>
 
-        {formData.content_id === "1" && (
+        {formData.content_id === '1' && (
           <div className="mb-3">
             <label className="form-label">Enter Link</label>
             <input
@@ -135,6 +165,9 @@ console.log(formData)
               value={formData.content_data}
               onChange={handleInputChange}
             />
+            {errors.content_data && (
+              <div className="text-danger">{errors.content_data}</div>
+            )}
           </div>
         )}
 
@@ -146,6 +179,9 @@ console.log(formData)
               type="file"
               onChange={handleFileChange}
             />
+            {errors.fileValue && (
+              <div className="text-danger">{errors.fileValue}</div>
+            )}
           </div>
         )}
 
@@ -160,6 +196,9 @@ console.log(formData)
                 model={formData.content_data}
               />
             </div>
+            {errors.editorContent && (
+              <div className="text-danger">{errors.editorContent}</div>
+            )}
           </div>
         )}
 

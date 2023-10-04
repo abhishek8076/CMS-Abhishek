@@ -16,6 +16,7 @@ import { Menu } from '../../components/NavMenu/menu';
 import {Submenu} from '../../components/NavMenu/submenu';
 // import './Cms.scss'
 import { Row, Col,  Button } from 'react-bootstrap';
+import { CMShomepage } from '../../components/NavMenu/CMShomepage';
 
 export const Cms = () => {
   const [menu, setMenu] = React.useState('');
