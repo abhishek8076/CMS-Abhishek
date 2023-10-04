@@ -100,7 +100,7 @@ export function Single() {
     return mobileRegex.test(mobile);
   };
   const isValidName = (name) => {
-    const nameRegex = /^[A-Za-z]+$/;
+    const nameRegex = /^[A-Za-z ]+$/;
     return nameRegex.test(name);
   };
 
