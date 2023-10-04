@@ -16,6 +16,7 @@ import { Menu } from '../../components/NavMenu/menu';
 import {Submenu} from '../../components/NavMenu/submenu';
 // import './Cms.scss'
 import { Row, Col,  Button } from 'react-bootstrap';
+
 export const Cms = () => {
   const [menu, setMenu] = React.useState('');
   const [showDiv, setShowDiv] = useState(false);
@@ -49,7 +50,7 @@ export const Cms = () => {
     setShowDiv(selectedValue === 'option1' || "demo")
     // setShowDiv(if);
   };
-  const options = ['Select', 'Menu', 'Submenu']; // Options for the dropdown
+  const options = ['Select','Home', 'Menu', 'Submenu']; // Options for the dropdown
   const [selectedOption, setSelectedOption] = useState(options[0]); // Initial selected option
 
   const handleOptionChange = (event) => {
@@ -67,7 +68,7 @@ export const Cms = () => {
             <Container className="custom-container"> {/* Add a custom CSS class */}
               <Row>
                 <Col xs={12} className="text-center mt-4">
-                  <h4>Create your own content here</h4>
+                  <h4>Add Menu</h4>
                 </Col>
               </Row>
               <Row className="justify-content-left" style={{marginTop:'20px'}}>
@@ -95,6 +96,7 @@ export const Cms = () => {
               ">
                 <Col xs={6}>
                   {/* Render different components based on the selected option */}
+                  {selectedOption === 'Home' && <CMShomepage />}
                   {selectedOption === 'Menu' && <Menu />}
                   {selectedOption === 'Submenu' && <Submenu />}
                   {/* {selectedOption === 'Subsubmenu' && <Subsubmenu />} */}
