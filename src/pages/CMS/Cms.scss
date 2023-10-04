@@ -4,13 +4,10 @@ h1{
     justify-content: center;
 }
 .mainContainer{
-
     display: flex;
     padding-top: 4vw;
     padding-left: 7vw;
-
 }
-
 .select1{
     margin-left: 50px;
 }
@@ -18,7 +15,6 @@ h1{
     display: flex;
     padding-top: 8vw;
     padding-left: 0.5vw;
-
 }
 .mainContainer {
     background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.2)), url('../../../src/img/image3.jpg');
@@ -43,7 +39,6 @@ h1{
     color: white;
     opacity: 0.6;
     font-weight: bold;
-   
   }
   @keyframes bounce {
     0%, 100% {
@@ -57,8 +52,7 @@ h1{
     padding: 20px;
     width: 100%;
     border:none;
-
-margin-top: 60px;
+    margin-top: 60px;
 }
 
 

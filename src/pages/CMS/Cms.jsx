@@ -13,11 +13,9 @@ import FormControl from '@mui/material/FormControl';
 import { Form } from 'react-bootstrap';
 import New from '../../pages/new/New'
 import { Menu } from '../../components/NavMenu/menu';
-
 import {Submenu} from '../../components/NavMenu/submenu';
 // import './Cms.scss'
 import { Row, Col,  Button } from 'react-bootstrap';
-
 export const Cms = () => {
   const [menu, setMenu] = React.useState('');
   const [showDiv, setShowDiv] = useState(false);

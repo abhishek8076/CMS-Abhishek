@@ -4,72 +4,74 @@ import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import apiClient from '../../services/AxiosApi'; // Adjust the import path
+import apiClient from '../../services/AxiosApi';
 import { Link, useNavigate } from "react-router-dom";
-// import apis from "../../Apis/apis";
-import api from '../../utils/apiUrl.json'
-import axios from "axios";
+import api from '../../utils/apiUrl.json';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import logo from '../../assets/logo.jpg';
-import "bootstrap"
+import "bootstrap";
+
 export default function Login() {
   const navigate = useNavigate();
   const [user, setUser] = useState({
     r_email: "",
     r_password: ""
   });
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const jsonData = { // Adjust the endpoint
-    r_email: user.email,
-    r_password: user.password
-  }
+
+  const [isValidEmail, setIsValidEmail] = useState(true);
+  const [isValidPassword, setIsValidPassword] = useState(true);
+
+  const jsonData = {
+    r_email: user.r_email,
+    r_password: user.r_password
+  };
+
+  const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    // Validate email
+    if (!emailRegex.test(user.r_email)) {
+      setIsValidEmail(false);
+      return;
+    } else {
+      setIsValidEmail(true);
+    }
+
+    // Validate password
+    if (!passwordRegex.test(user.r_password)) {
+      setIsValidPassword(false);
+      return;
+    } else {
+      setIsValidPassword(true);
+    }
+
     const response = await apiClient.post(api.login, jsonData);
 
-    // if (response.status === 200  && response.email === response.data.r_email)
-    //    {
-    //   const  token  = response.data.token;
-    //   const  data = response.data.user
-
-    //   if (token) {
-    //     localStorage.setItem("token",token );
-    //     localStorage.setItem("userData", data); // Assuming your user data is in `response.data.user`
-    //     alert("You are logged in successfully.");
-    //     navigate("/dashboard");
-    //     // Redirect to the dashboard or any other page
-    //   } else {
-    //     alert("Invalid email or password.");
-    //   }
-    // } else {
-    //   alert("Something went wrong.");
-    // }
     if (response && response.data) {
-      if (response.status == 200) {
+      if (response.status === 200) {
         let dt = response.data;
         let user = dt.user;
-        let token = dt.token
-        localStorage.setItem("user", JSON.stringify(user))
+        let token = dt.token;
+        localStorage.setItem("user", JSON.stringify(user));
         const storedUserString = localStorage.getItem('user');
-        const u = JSON.parse(storedUserString)
+        const u = JSON.parse(storedUserString);
 
         if (dt) {
-          localStorage.setItem("token", token)
-          alert("login Sucess!!")
-          navigate("/dashboard")
+          localStorage.setItem("token", token);
+          alert("Login Success!!");
+          navigate("/dashboard");
         }
-     
-
-    }
-  }
-  else if (response.r_email != jsonData.r_email ||
-    response.r_password != jsonData.r_password) {
-    alert("UserName  and Password Not Matched")
-  }
-    else {
-      alert("Unauthorised User")
+      } else if (response.r_email !== jsonData.r_email ||
+                 response.r_password !== jsonData.r_password) {
+        alert("Username and Password Not Matched");
+      } else {
+        alert("Unauthorized User");
+      }
     }
   };
 
@@ -79,19 +81,12 @@ export default function Login() {
       ...prevUser,
       [name]: value
     }));
-
   };
-  console.log(user);
-  let u = localStorage.getItem('user');
-  console.log(u);
 
-  // const storedUserString = localStorage.getItem('user');
-  // const storedUser = JSON.parse(storedUserString)
-  // console.log(localStorage.setItem('user', JSON.stringify(use)))
-  // console.log(storedUser);
   useEffect(() => {
     localStorage.clear();
   }, []);
+
   return (
     <>
       <Container component="main" maxWidth="sm">
@@ -107,28 +102,31 @@ export default function Login() {
             alignItems: "center",
           }}
         >
-          <img src={logo} />
+          <img src={logo} alt="Logo" />
           <Typography component="h1" variant="h5">
-
           </Typography>
           <form onSubmit={handleSubmit}>
             <TextField
               margin="normal"
               fullWidth
-              id="email"
+              id="r_email"
               label="Email Address"
-              name="email"
+              name="r_email"
               autoComplete="email"
               autoFocus
               onChange={handleChange}
+              error={!isValidEmail}
+              helperText={!isValidEmail ? "Invalid email address" : ""}
             />
             <TextField
               margin="normal"
               fullWidth
-              name="password"
+              name="r_password"
               label="Password"
               type="password"
               onChange={handleChange}
+              error={!isValidPassword}
+              helperText={!isValidPassword ? "Password must be at least 8 characters long and contain at least one letter and one number" : ""}
             />
             <Button
               type="submit"
@@ -140,9 +138,7 @@ export default function Login() {
             </Button>
           </form>
         </Box>
-
       </Container>
-
     </>
   );
 }

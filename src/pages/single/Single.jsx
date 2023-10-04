@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Col, Row, Container, Card, Form, Button, Spinner } from 'react-bootstrap';
-import Sidebar from "../../components/sidebar/Sidebar";
-import Navbar from "../../components/navbar/Navbar";
+import Sidebar from '../../components/sidebar/Sidebar';
+import Navbar from '../../components/navbar/Navbar';
 import 'bootstrap/dist/css/bootstrap.css';
 import apiClinet from '../../services/AxiosApi';
 import api from '../../utils/apiUrl.json';
@@ -37,27 +37,30 @@ export function Single() {
 
   const handleUpdateClick = async () => {
     const errors = {};
-    
+
     if (!data.name) {
       errors.name = 'Name is required';
+    } else if (!isValidName(data.email)) {
+      errors.name = 'Invalid name format';
     }
     
+
     if (!data.email) {
       errors.email = 'Email is required';
     } else if (!isValidEmail(data.email)) {
       errors.email = 'Invalid email format';
     }
-    
-    if (!data.mobile_no) {
+
+    if (!data.mobile_no || data.mobile_no.length >10 ) {
       errors.mobile_no = 'Mobile is required';
     } else if (!isValidMobile(data.mobile_no)) {
-      errors.mobile_no = 'Invalid mobile format';
+      errors.mobile_no = 'Invalid mobile format (should contain 10 digits)';
     }
-    
+
     if (!data.address) {
       errors.address = 'Address is required';
     }
-    
+
     if (Object.keys(errors).length > 0) {
       setValidationErrors(errors);
     } else {
@@ -87,17 +90,19 @@ export function Single() {
   };
 
   const isValidEmail = (email) => {
-    // You can implement your email validation logic here
-    // For a simple format check, you can use regular expressions
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
   const isValidMobile = (mobile) => {
-    // You can implement your mobile validation logic here
-    // For example, checking for a valid number format
-    const mobileRegex = /^[0-9]+$/;
+    const mobileRegex = /^[0-9]{10}$/;
+
     return mobileRegex.test(mobile);
+  };
+  const isValidName = (name) => {
+    const nameRegex =  /^[A-Za-z]+$/;
+
+    return nameRegex.test(name);
   };
 
   const storedUserString = localStorage.getItem('user');
@@ -122,7 +127,7 @@ export function Single() {
                       <div className="mb-3">
                         <Form>
                           <Form.Group className="mb-3" controlId="Name">
-                            <Form.Label className="text-center">Name</Form.Label>
+                            <Form.Label className="nametitle" style={{ color: "black" }}>Name</Form.Label>
                             <Form.Control
                               type="text"
                               name="name"
@@ -135,7 +140,7 @@ export function Single() {
                             </Form.Control.Feedback>
                           </Form.Group>
                           <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label className="text-center">
+                            <Form.Label className="text-center" style={{ color: "black" }}>
                               Email
                             </Form.Label>
                             <Form.Control
@@ -150,7 +155,7 @@ export function Single() {
                             </Form.Control.Feedback>
                           </Form.Group>
                           <Form.Group className="mb-3" controlId="Mobile">
-                            <Form.Label className="text-center">Mobile</Form.Label>
+                            <Form.Label className="text-center" style={{ color: "black" }}>Mobile</Form.Label>
                             <Form.Control
                               type="text"
                               name="mobile_no"
@@ -163,7 +168,7 @@ export function Single() {
                             </Form.Control.Feedback>
                           </Form.Group>
                           <Form.Group className="mb-3" controlId="Address">
-                            <Form.Label className="text-center">Address</Form.Label>
+                            <Form.Label className="text-center" style={{ color: "black" }}>Address</Form.Label>
                             <Form.Control
                               type="text"
                               name="address"
@@ -175,6 +180,7 @@ export function Single() {
                               {validationErrors.address}
                             </Form.Control.Feedback>
                           </Form.Group>
+                          
                           {loading ? (
                             <Spinner animation="border" variant="primary" />
                           ) : (

@@ -8,17 +8,12 @@ import apiClient from '../../services/AxiosApi'
 import api from '../../utils/apiUrl.json';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import apis from '../../Apis/apis';
-// import './'
 import './new.scss';
+
 export function New() {
   const [dropdownOptions, setDropdownOptions] = useState([]);
   const [selectedRole, setSelectedRole] = useState('');
   const [formErrors, setFormErrors] = useState({});
-
-  // const handleRoleChange = (event) => {
-  //   setSelectedRole(event.target.value);
-  // };
 
   const [formData, setFormData] = useState({
     name: '',
@@ -30,7 +25,6 @@ export function New() {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setSelectedRole(event.target.value);
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
@@ -41,7 +35,9 @@ export function New() {
     const errors = {};
 
     if (!formData.name) {
-      errors.name = "Name is required";
+      errors.name = 'Name is required';
+    } else if (!/^[A-Za-z]+$/.test(formData.name)) {
+      errors.name = 'Invalid name format';
     }
 
     if (!formData.email) {
@@ -102,130 +98,130 @@ export function New() {
   };
 
   useEffect(() => {
-    const fetchRoles = async (data) => {
+    const fetchRoles = async () => {
       try {
         const response = await apiClient.get(api.getUserType); // Replace with your API endpoint for roles
         setDropdownOptions(response.data);
-
       } catch (error) {
         console.error('Error fetching roles:', error);
       }
     };
     fetchRoles();
   }, []);
-  console.log(formData)
+
   return (
     <>
-     <div>
-      <div className="home">
-        <Sidebar className='nav' style={{}} />
-        <div className="homeContainer">
-          <Navbar />
-          <div className='bgimg'>
-          <Container>
-            <Row className="vh-100 d-flex justify-content-end align-items-left">
-              <Col md={10} lg={6} xs={12}>
-                <Card.Body>
-                  <div className="mb-3 mt-md-4">
-                    <h2 className="fw-bold mb-4 text-center text-uppercase ">
-                      User Details
-                    </h2>
-                    <div className="mb-3">
-                      <Form onSubmit={handleSubmit}>
-                        <Form.Group className="mb-3" controlId="Name">
-                          <Form.Label className="text-center" style={{color:"black"}}>Name</Form.Label>
-                          <Form.Control
-                            type="text"
-                            placeholder="Enter Name"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleChange}
-                            isInvalid={!!formErrors.name}
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {formErrors.name}
-                          </Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="Name">
-                          <Form.Label className="text-center" style={{color:"black"}}>E-mail</Form.Label>
-                          <Form.Control
-                            type="text"
-                            placeholder="Enter Email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            isInvalid={!!formErrors.email}
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {formErrors.name}
-                          </Form.Control.Feedback>
-                        </Form.Group> <Form.Group className="mb-3" controlId="Name">
-                          <Form.Label className="text-center" style={{color:"black"}}>Mobile No.</Form.Label>
-                          <Form.Control
-                            type="text"
-                            placeholder="Enter Mobile No."
-                            name="mobile_no"
-                            value={formData.mobile_no}
-                            onChange={handleChange}
-                            isInvalid={!!formErrors.mobile_no}
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {formErrors.name}
-                          </Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="Name">
-                          <Form.Label className="text-center" style={{color:"black"}}>Address</Form.Label>
-                          <Form.Control
-                            type="text"
-                            placeholder="Enter your address"
-                            name="address"
-                            value={formData.address}
-                            onChange={handleChange}
-                            isInvalid={!!formErrors.address}
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            {formErrors.name}
-                          </Form.Control.Feedback>
-                        </Form.Group>
+      <div>
+        <div className="home">
+          <Sidebar className='nav' style={{}} />
+          <div className="homeContainer">
+            <Navbar />
+            <div className='bgimg'>
+              <Container>
+                <Row className="vh-100 d-flex justify-content-center align-items-left">
+                  <Col md={10} lg={6} xs={12}>
+                    <Card.Body>
+                      <div className="mb-3 mt-md-4">
+                        <h2 className="fw-bold mb-4 text-center text-uppercase">
+                          User Details
+                        </h2>
+                        <div className="mb-3">
+                          <Form onSubmit={handleSubmit}>
+                            <Form.Group className="mb-3" controlId="Name">
+                              <Form.Label className="text-center" style={{color:"black"}}>Name</Form.Label>
+                              <Form.Control
+                                type="text"
+                                placeholder="Enter Name"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                isInvalid={!!formErrors.name}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {formErrors.name}
+                              </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="Email">
+                              <Form.Label className="text-center" style={{color:"black"}}>E-mail</Form.Label>
+                              <Form.Control
+                                type="text"
+                                placeholder="Enter Email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                isInvalid={!!formErrors.email}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {formErrors.email}
+                              </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="MobileNo">
+                              <Form.Label className="text-center" style={{color:"black"}}>Mobile No.</Form.Label>
+                              <Form.Control
+                                type="text"
+                                placeholder="Enter Mobile No."
+                                name="mobile_no"
+                                value={formData.mobile_no}
+                                onChange={handleChange}
+                                isInvalid={!!formErrors.mobile_no}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {formErrors.mobile_no}
+                              </Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="Address">
+                              <Form.Label className="text-center" style={{color:"black"}}>Address</Form.Label>
+                              <Form.Control
+                                type="text"
+                                placeholder="Enter your address"
+                                name="address"
+                                value={formData.address}
+                                onChange={handleChange}
+                                isInvalid={!!formErrors.address}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {formErrors.address}
+                              </Form.Control.Feedback>
+                            </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="Usertype">
-                          <div className="mb-12">
-                            <Form.Label className="text-center" style={{color:"black"}}>Role</Form.Label>
-                            <select
-                              className='form-control'
-                              name='usertype'
-                              value={selectedRole}
-                              onChange={handleChange}
-                              isInvalid={!!formErrors.usertype}
-                            >
-                              <option value='' style={{color:"black"}}>Select a role</option>
-                              {dropdownOptions.map((data) => (
-                                <option key={data.users_id} value={data.users_id}>
-                                  {data.user_name}
-                                </option>
-                              ))}
-                            </select>
-                            <Form.Control.Feedback type="invalid">
-                              {formErrors.usertype}
-                            </Form.Control.Feedback>
-                          </div>
-                        </Form.Group>
+                            <Form.Group className="mb-3" controlId="Usertype">
+                              <div className="mb-12">
+                                <Form.Label className="text-center" style={{color:"black"}}>Role</Form.Label>
+                                <select
+                                  className='form-control'
+                                  name='usertype'
+                                  value={selectedRole}
+                                  onChange={handleChange}
+                                  isInvalid={!!formErrors.usertype}
+                                >
+                                  <option value='' style={{color:"black"}}>Select a role</option>
+                                  {dropdownOptions.map((data) => (
+                                    <option key={data.users_id} value={data.users_id}>
+                                      {data.user_name}
+                                    </option>
+                                  ))}
+                                </select>
+                                <Form.Control.Feedback type="invalid">
+                                  {formErrors.usertype}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
 
-                        <div id="button" className="d-flex">
-                          <Button variant="primary" type="submit" style={{ width: 100 }}>
-                            Submit
-                          </Button>
+                            <div id="button" className="d-flex">
+                              <Button variant="primary" type="submit" style={{ width: 100 }}>
+                                Submit
+                              </Button>
+                            </div>
+                          </Form>
                         </div>
-                      </Form>
-                    </div>
-                  </div>
-                </Card.Body>
-              </Col>
-            </Row>
-          </Container>
+                      </div>
+                    </Card.Body>
+                  </Col>
+                </Row>
+              </Container>
+            </div>
           </div>
         </div>
-      </div>
       </div>
     </>
   );
