@@ -40,7 +40,7 @@ export function Single() {
 
     if (!data.name) {
       errors.name = 'Name is required';
-    } else if (!isValidName(data.email)) {
+    } else if (!isValidName(data.name)) {
       errors.name = 'Invalid name format';
     }
     
@@ -100,8 +100,7 @@ export function Single() {
     return mobileRegex.test(mobile);
   };
   const isValidName = (name) => {
-    const nameRegex =  /^[A-Za-z]+$/;
-
+    const nameRegex = /^[A-Za-z]+$/;
     return nameRegex.test(name);
   };
 
@@ -162,6 +161,7 @@ export function Single() {
                               value={data.mobile_no}
                               onChange={handleInputChange}
                               isInvalid={!!validationErrors.mobile_no}
+                              maxLength={10}
                             />
                             <Form.Control.Feedback type="invalid">
                               {validationErrors.mobile_no}

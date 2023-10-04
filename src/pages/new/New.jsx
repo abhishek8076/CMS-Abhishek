@@ -36,7 +36,7 @@ export function New() {
 
     if (!formData.name) {
       errors.name = 'Name is required';
-    } else if (!/^[A-Za-z]+$/.test(formData.name)) {
+    } else if (/^[A-Za-z]+$/.test(formData.name)) {
       errors.name = 'Invalid name format';
     }
 
@@ -164,6 +164,7 @@ export function New() {
                                 value={formData.mobile_no}
                                 onChange={handleChange}
                                 isInvalid={!!formErrors.mobile_no}
+                                maxLength={10}
                               />
                               <Form.Control.Feedback type="invalid">
                                 {formErrors.mobile_no}
