@@ -44,11 +44,11 @@ const Navbar = () => {
         </div>
 
         <div className="items">
-          <div className="item">
+          {/* <div className="item">
             <IconButton onClick={() => dispatch({ type: "TOGGLE" })}>
               <DarkModeOutlinedIcon className="icon" />
             </IconButton>
-          </div>
+          </div> */}
 
           <div className="item">
             <IconButton onClick={handleMenuOpen}>

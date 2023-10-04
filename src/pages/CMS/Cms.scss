@@ -21,9 +21,7 @@ h1{
 
 }
 .mainContainer {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.2)), url('../../../src/img/image3.jpg');
-    background-size: cover; /* Adjust to your preference */
-    background-repeat: no-repeat;
+    
     // height: 100vh;
     max-width: 100%;
     min-height: 118vh;
@@ -40,19 +38,12 @@ h1{
     margin-top: 30px;
     top: 50px;
     left: 250px;
-    color: white;
+    color: bl;
     opacity: 0.6;
     font-weight: bold;
    
   }
-  @keyframes bounce {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-}
+
 .selectmenu{
     padding: 20px;
     width: 100%;
