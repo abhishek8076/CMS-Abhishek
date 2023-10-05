@@ -65,7 +65,7 @@ const Datatable = () => {
   const handleDeleteConfirm = async () => {
     try {
       // Make a DELETE request to your API with the deleteItemId
-      await apiClient.delete(`/users/${deleteItemId}`);
+      await apiClient.delete(api.deleteuser +deleteItemId);
 
       // Remove the deleted item from the data array
       const updatedData = data.filter((item) => item.users_id !== deleteItemId);

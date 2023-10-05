@@ -5,12 +5,14 @@
     "proxyTargetUrl": "http://localhost:8800/",
     "newuser":"/api/user",  
     "edituser":"/api/user/",
+    "deleteuser":"/api/user/",
+    "whatsnew":"/api/Whatsnew",
     "getUserType":"/api/user/usertype",
     "imageAdd":"/api/Slider/postslider_data", 
     "getwhatsnew":"/api/Whatsnew",
     "getimage":"/api/Slider", 
-     "deleteImg" :"/api/Slider/",
+    "deleteImg" :"/api/Slider/",
     "getApiToken":"/auth/getApiToken",
     "login": "/api/Login",
-     "navmenu":"/Api/TopMenu"
+    "navmenu":"/Api/TopMenu"
 }

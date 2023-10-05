@@ -67,7 +67,7 @@ export default function Login() {
           navigate("/dashboard");
         }
       } else if (response.r_email !== jsonData.r_email ||
-                 response.r_password !== jsonData.r_password) {
+        response.r_password !== jsonData.r_password) {
         alert("Username and Password Not Matched");
       } else {
         alert("Unauthorized User");
