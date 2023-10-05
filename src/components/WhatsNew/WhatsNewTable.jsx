@@ -14,6 +14,7 @@ import {Button} from '@mui/material';
 import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import apiClient from '../../services/AxiosApi.jsx'
+import apis from '../../utils/apiUrl.json';
 
 
 export const WhatsNewTable = () => {
@@ -23,7 +24,7 @@ export const WhatsNewTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await apiClient.get('/demo');
+        const response = await apiClient.get(apis.getwhatsnew);
         setData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -55,19 +56,18 @@ export const WhatsNewTable = () => {
       <TableHead>
         <TableRow>
         <TableCell>ID</TableCell>
-          <TableCell>Name</TableCell>
-          <TableCell>Email</TableCell>
-          <TableCell>Mobile No</TableCell>
-          <TableCell>Address</TableCell>
+        <TableCell>Title</TableCell>
+          <TableCell>Content Type</TableCell>
+          <TableCell>Start Date</TableCell>
+          <TableCell>End Date</TableCell>
         </TableRow>
       </TableHead>
-      <TableBody>
-        
-        {userRows.map((item,i) => (
+      <TableBody> 
+        {data.map((item,i) => (
           
-          <TableRow key={item.id}>
+          <TableRow key={item.u_id}>
              <TableCell>{i+1}</TableCell>
-            <TableCell>{item.username}</TableCell>
+            <TableCell>{item.u_news_tittle}</TableCell>
             <TableCell>{item.age}</TableCell>
             <TableCell>{item.email}</TableCell>
             <TableCell>{item.status}</TableCell>
