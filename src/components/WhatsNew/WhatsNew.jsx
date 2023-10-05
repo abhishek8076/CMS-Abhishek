@@ -153,14 +153,14 @@ function WhatsNew() {
   // };
   const handleConfirm = async () => {
     setConfirmationOpen(false);
-  
+
     if (!text || !fileType) {
       toast.error('Please fill all fields!', toastConfig);
       return;
     }
-  
+
     let isFormatValid = true;
-  
+
     if (fileType === 'pdf' && selectedFile?.type !== 'application/pdf') {
       isFormatValid = false;
     } else if (fileType === 'image' && selectedFile && !selectedFile.type.startsWith('image')) {
@@ -170,12 +170,12 @@ function WhatsNew() {
     } else if (fileType === 'link' && !isUrlValid(url)) {
       isFormatValid = false;
     }
-  
+
     if (!isFormatValid) {
       setFormatError(true);
       return;
     }
-  
+
     // Construct the postData object
     const postData = {
       news_title: text,         // Use 'text' as the news title
@@ -185,7 +185,7 @@ function WhatsNew() {
       html: '',                  // Set HTML content (change as needed)
       file: '',                  // Set file path (change as needed)
     };
-  
+
     try {
       const response = await apiClinet.post(apis.whatsnew, postData);
       if (response.status === 200) {
@@ -202,7 +202,7 @@ function WhatsNew() {
       toast.error('An error occurred', toastConfig);
       // Handle error, show error toast, etc.
     }
-  
+
     // Reset fields and show success toast (for demonstration purposes)
     setText('');
     setFileType('');
@@ -213,7 +213,7 @@ function WhatsNew() {
     setEndDate(new Date());
     setDialogOpen(true);
   };
-  
+
 
   // Handler to close dialog
   const handleDialogClose = () => {
@@ -232,10 +232,10 @@ function WhatsNew() {
   };
   const handlePostData = async (event) => {
     event.preventDefault();
-  
+
     if (text && fileType) {
       let isFormatValid = true;
-  
+
       if (fileType === 'pdf' && selectedFile?.type !== 'application/pdf') {
         isFormatValid = false;
       } else if (fileType === 'image' && selectedFile && !selectedFile.type.startsWith('image')) {
@@ -245,18 +245,18 @@ function WhatsNew() {
       } else if (fileType === 'link' && !isUrlValid(url)) {
         isFormatValid = false;
       }
-  
+
       if (!isFormatValid) {
         setFormatError(true);
         return;
       }
-  
+
       handleConfirmationOpen();
     } else {
       toast.error('Please fill all fields and select a file!', toastConfig);
     }
   };
-  
+
   // Options for file types
   const fileTypeOptions = [
     { value: 'link', label: 'Link' },
@@ -264,8 +264,8 @@ function WhatsNew() {
     { value: 'image', label: 'Image' },
     { value: 'video', label: 'Video' },
   ];
-  
-  
+
+
 
   // Render the component
   return (
