@@ -18,6 +18,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './whatsnew.scss'; // Import your custom SCSS file
+import apiClinet from '../../services/AxiosApi'
+import apis from '../../utils/apiUrl.json'
 
 function WhatsNew() {
   // State variables
@@ -185,7 +187,7 @@ function WhatsNew() {
     };
   
     try {
-      const response = await axios.post('/api/addLink', postData);
+      const response = await apiClinet.post(apis.whatsnew, postData);
       if (response.status === 200) {
         console.log('Data added successfully');
         toast.success('Data posted successfully!', toastConfig);
