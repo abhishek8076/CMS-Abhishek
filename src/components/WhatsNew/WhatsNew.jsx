@@ -1,426 +1,319 @@
-import React, { useState } from 'react';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField
-} from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { toast, ToastContainer } from 'react-toastify';
+import React, { useState, useEffect } from 'react';
+import Axios from 'axios'; // Make sure Axios is imported if used elsewhere
+import 'froala-editor/js/froala_editor.pkgd.min.js';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import 'froala-editor/css/froala_style.min.css';
+import FroalaEditorComponent from 'react-froala-wysiwyg';
+import apiClient from '../../services/AxiosApi'; // Adjust the import path as needed
+import apis from '../../utils/apiUrl.json'; // Adjust the import path as needed
+import MyEditor, { HtmlEditor } from '../htmlEditor/htmlEditor'; // Adjust the import path as needed
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import './whatsnew.scss'; // Import your custom SCSS file
-import apiClinet from '../../services/AxiosApi'
-import apis from '../../utils/apiUrl.json'
+// import Modal from 'react-modal';
 
-function WhatsNew() {
-  // State variables
-  const [text, setText] = useState('');
-  const [fileType, setFileType] = useState('');
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [confirmationOpen, setConfirmationOpen] = useState(false);
-  const [formatError, setFormatError] = useState(false);
-  const [fileName, setFileName] = useState('');
-  const [url, setUrl] = useState('');
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+export const WhatsNew = () => {
+  const [html, sethtml] = useState('');
+  const [file, setselectefile] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+const [modalMessage, setModalMessage] = useState('');
 
-  // Handler for text input change
-  const handleTextChange = (event) => {
-    setText(event.target.value);
-  };
+  const [formData, setFormData] = useState({
+    news_title: '',
+    
+    contenttype: '',
+    external_file: '',
+    internale_file: '',
+    file: "",
+    startdate: '', // Added Starting Date
+    end_date: '',   // Added Ending Date
+    html:""
+  });
+  const [errors, setErrors] = useState({});
 
-  // Handler for file type selection
-  const handleFileTypeChange = (event) => {
-    setFileType(event.target.value);
-    setUrl(''); // Clear URL when file type changes
-  };
-
-  // Handler for file input change
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-    setFileName(event.target.files[0].name);
-  };
-
-  // Handler for URL input change
-  const handleUrlChange = (event) => {
-    setUrl(event.target.value);
-  };
-
-  // Handler for start date change
-  const handleStartDateChange = (date) => {
-    setStartDate(date);
-    if (endDate < date) {
-      setEndDate(date);
-    }
-  };
-
-  // Handler for end date change
-  const handleEndDateChange = (date) => {
-    if (date >= startDate) {
-      setEndDate(date);
-    }
-  };
-
-  // URL validation logic
-  const isUrlValid = (inputUrl) => {
-    // Implement your URL validation logic here
-    return true;
-  };
-
-  // Handler to open confirmation dialog
-  const handleConfirmationOpen = () => {
-    setConfirmationOpen(true);
-  };
-
-  // Handler to close confirmation dialog
-  const handleConfirmationClose = () => {
-    setConfirmationOpen(false);
-  };
-
-  // Handler to post data when confirmed
-  // const handleConfirm = async () => {
-  //   setConfirmationOpen(false);
-
-  //   // Validation and data preparation
-  //   if (!text || !fileType) {
-  //     toast.error('Please fill all fields!', toastConfig);
-  //     return;
-  //   }
-
-  //   // Validate file format based on selected file type
-  //   let isFormatValid = true;
-  //   if (fileType === 'pdf' && selectedFile?.type !== 'application/pdf') {
-  //     isFormatValid = false;
-  //   } else if (fileType === 'image' && selectedFile && !selectedFile.type.startsWith('image')) {
-  //     isFormatValid = false;
-  //   } else if (fileType === 'video' && selectedFile && !selectedFile.type.startsWith('video')) {
-  //     isFormatValid = false;
-  //   } else if (fileType === 'link' && !isUrlValid(url)) {
-  //     isFormatValid = false;
-  //   }
-
-  //   if (!isFormatValid) {
-  //     setFormatError(true);
-  //     toast.error('Invalid format selected!', toastConfig);
-  //     return;
-  //   }
-
-  //   // Prepare data based on file type
-  //   let dataToSend = { text, startDate, endDate };
-  //   if (fileType === 'link') {
-  //     dataToSend = { ...dataToSend, fileType, url };
-  //   } else if (fileType === 'pdf' || fileType === 'image' || fileType === 'video') {
-  //     const formData = new FormData();
-  //     formData.append('file', selectedFile);
-  //     formData.append('fileType', fileType);
-  //     dataToSend = { ...dataToSend, formData };
-  //   }
-
-  //   // Send data to server
-  //   try {
-  //     const response = await axios.post('/api/addLink', dataToSend);
-  //     if (response.status === 200) {
-  //       toast.success('Data posted successfully!', toastConfig);
-  //       // Handle success, clear fields, etc.
-  //     } else {
-  //       console.error('Failed to add link');
-  //       toast.error('Failed to post data. Please try again.', toastConfig);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //     toast.error('An error occurred. Please try again.', toastConfig);
-  //   }
-
-  //   // Reset fields and show success toast
-  //   setText('');
-  //   setFileType('');
-  //   setSelectedFile(null);
-  //   setFileName('');
-  //   setUrl('');
-  //   setStartDate(new Date());
-  //   setEndDate(new Date());
-  //   setDialogOpen(true);
-  // };
-  const handleConfirm = async () => {
-    setConfirmationOpen(false);
-
-    if (!text || !fileType) {
-      toast.error('Please fill all fields!', toastConfig);
-      return;
-    }
-
-    let isFormatValid = true;
-
-    if (fileType === 'pdf' && selectedFile?.type !== 'application/pdf') {
-      isFormatValid = false;
-    } else if (fileType === 'image' && selectedFile && !selectedFile.type.startsWith('image')) {
-      isFormatValid = false;
-    } else if (fileType === 'video' && selectedFile && !selectedFile.type.startsWith('video')) {
-      isFormatValid = false;
-    } else if (fileType === 'link' && !isUrlValid(url)) {
-      isFormatValid = false;
-    }
-
-    if (!isFormatValid) {
-      setFormatError(true);
-      return;
-    }
-
-    // Construct the postData object
-    const postData = {
-      news_title: text,         // Use 'text' as the news title
-      startdate: startDate.toISOString(), // Convert startDate to ISO format
-      end_date: endDate.toISOString(),   // Convert endDate to ISO format
-      contenttype: 0,            // Set content type (change as needed)
-      html: '',                  // Set HTML content (change as needed)
-      file: '',                  // Set file path (change as needed)
-    };
-
-    try {
-      const response = await apiClinet.post(apis.whatsnew, postData);
-      if (response.status === 200) {
-        console.log('Data added successfully');
-        toast.success('Data posted successfully!', toastConfig);
-        // Handle success, clear fields, show success toast, etc.
-      } else {
-        console.error('Failed to add data');
-        toast.error('Failed to post data', toastConfig);
-        // Handle error, show error toast, etc.
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      toast.error('An error occurred', toastConfig);
-      // Handle error, show error toast, etc.
-    }
-
-    // Reset fields and show success toast (for demonstration purposes)
-    setText('');
-    setFileType('');
-    setSelectedFile(null);
-    setFileName('');
-    setUrl('');
-    setStartDate(new Date());
-    setEndDate(new Date());
-    setDialogOpen(true);
-  };
-
-
-  // Handler to close dialog
-  const handleDialogClose = () => {
-    setDialogOpen(false);
-  };
-
-  // Configuration for toast notifications
-  const toastConfig = {
-    position: 'top-center',
-    autoClose: 3000,
-    hideProgressBar: true,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined
-  };
-  const handlePostData = async (event) => {
-    event.preventDefault();
-
-    if (text && fileType) {
-      let isFormatValid = true;
-
-      if (fileType === 'pdf' && selectedFile?.type !== 'application/pdf') {
-        isFormatValid = false;
-      } else if (fileType === 'image' && selectedFile && !selectedFile.type.startsWith('image')) {
-        isFormatValid = false;
-      } else if (fileType === 'video' && selectedFile && !selectedFile.type.startsWith('video')) {
-        isFormatValid = false;
-      } else if (fileType === 'link' && !isUrlValid(url)) {
-        isFormatValid = false;
-      }
-
-      if (!isFormatValid) {
-        setFormatError(true);
-        return;
-      }
-
-      handleConfirmationOpen();
-    } else {
-      toast.error('Please fill all fields and select a file!', toastConfig);
-    }
-  };
-
-  // Options for file types
-  const fileTypeOptions = [
-    { value: 'link', label: 'Link' },
-    { value: 'pdf', label: 'PDF' },
-    { value: 'image', label: 'Image' },
-    { value: 'video', label: 'Video' },
+  const optionsData = [
+    { id: '4', label: 'External Link' },
+    { id: '3', label: 'Internal Link' },
+    { id: '2', label: 'File' },
+    { id: '1', label: 'HTML' },
   ];
 
+  useEffect(() => {
+    setFormData({
+      news_title: '',
+      contenttype: '',
+      external_file: '',
+      internale_file: '',
+      file: "",
+      startdate: '', // Initialize Starting Date
+      end_date: '', 
+      html:""  // Initialize Ending Date
+    });
+  }, []);
 
+  const handleEditorChange = (content) => {
+    sethtml(content);
+  };
 
-  // Render the component
+  const validateForm = () => {
+    const errors = {};
+
+    if (!formData.news_title) {
+      errors.news_title = 'Name is required';
+    }
+
+    if (!formData.contenttype) {
+      errors.contenttype = 'Select a content type';
+    }
+
+    if (formData.contenttype === '4' && !formData.external_file) {
+      errors.external_file = 'External Link is required';
+    }
+
+    if (formData.contenttype === '3' && !formData.internale_file) {
+      errors.internale_file = 'Internal Link is required';
+    }
+
+    if (formData.contenttype === '2' && !file) {
+      errors.file = 'File is required';
+    }
+
+    if (formData.contenttype === '1' && !html) {
+      errors.editorContent = 'HTML content is required';
+    }
+
+    if (!formData.startdate) {
+      errors.startdate = 'Starting Date is required';
+    }
+
+    if (!formData.end_date) {
+      errors.end_date = 'Ending Date is required';
+    }
+
+    setErrors(errors);
+
+    return Object.keys(errors).length === 0;
+  };
+  const handleImageChange = (event) => {
+    const imageFile = event.target.files[0];
+    setselectefile(imageFile);
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value, type } = event.target;
+
+    if (type === '2') {
+      setFormData({
+        ...formData,
+        [name]: event.target.files[0],
+       
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
+  };
+  const openModal = (message) => {
+    setModalMessage(message);
+    setIsModalOpen(true);
+  };
+  
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalMessage('');
+  };
+  const handleSubmit = async () => {
+    if (validateForm()) {
+      try {
+        const formDataToSend = new FormData();
+        formDataToSend.append('news_title', formData.news_title);
+       
+        formDataToSend.append('contenttype', formData.contenttype);
+
+        if (formData.contenttype === '4') {
+          formDataToSend.append('external_file', formData.external_file);
+        } else if (formData.contenttype === '3') {
+          formDataToSend.append('internale_file', formData.internale_file);
+        } else if (formData.contenttype === '2') {
+          formDataToSend.append('file',file);
+        } else if (formData.contenttype === '1') {
+          formDataToSend.append('html_content', html);
+        }
+
+        formDataToSend.append('startdate', formData.startdate); // Add Starting Date
+        formDataToSend.append('end_date', formData.end_date);     // Add Ending Date
+
+        const response = await apiClient.post(apis.whatsnew, formDataToSend,{
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        console.log('Data saved:', response.data);
+        toast.success('Data saved successfully!');
+        openModal('Data saved successfully!');
+      } catch (error) {
+        console.error('Error saving data:', error);
+      }
+    }
+  };
+
+  const config = {
+    placeholderText: 'Edit Your Content Here!',
+    charCounterCount: false,
+  };
+  console.log(formData);
+
   return (
-    <>
-      {/* View Button */}
-      <div>
-        <Button type="button" className="view-button">
-          <Link to="/whatsnew/whatsnewtable" className="view-button">
-            View
-          </Link>
-        </Button>
+    <div className="container">
+    <div className="row">
+      <div className="col">
+      <div className="col text-end">
+        <button className="btn btn-primary" >
+          Submit
+        </button>
       </div>
-      {/* Form */}
-      <div className="container1">
-        <h1 className="main-heading">What's New Page</h1>
-        <form className="form">
-          {/* Text Input */}
-          <TextField
-            label="Add Text"
-            variant="outlined"
-            multiline
-            rows={4}
-            value={text}
-            onChange={handleTextChange}
-            fullWidth
-            margin="normal"
-            className="mb-3"
+        <h1 className="text-center">What's New</h1>
+      </div>
+     
+    </div>
+    <div className="row justify-content-center">
+      <div className="col-md-6">
+        <div className="mb-3">
+          <label className="form-label">Name</label>
+          <input
+            className="form-control"
+            type="text"
+            placeholder="Name"
+            name="news_title"
+            value={formData.news_title}
+            onChange={handleInputChange}
           />
-          {/* File Type Dropdown */}
-          <FormControl variant="outlined" fullWidth margin="normal" className="mb-3">
-            <InputLabel>Select File Type</InputLabel>
-            <Select value={fileType} onChange={handleFileTypeChange} label="Select File Type">
-              {fileTypeOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          {/* URL or File Input */}
-          <div>
-            {fileType !== 'link' && (
-              <>
-                <input
-                  type="file"
-                  accept="application/pdf, image/*, video/*"
-                  onChange={handleFileChange}
-                  id="fileInput"
-                  style={{ display: 'none' }}
-                />
-                <label htmlFor="fileInput" className="file-input-label">
-                  Choose File
-                </label>
-                {selectedFile && (
-                  <div className="selected-file-name">{selectedFile.name}</div>
-                )}
-                {selectedFile && (
-                  <Button
-                    variant="outlined"
-                    color="secondary"
-                    className="delete-file-button"
-                    startIcon={<DeleteIcon />}
-                    onClick={() => setSelectedFile(null)}
-                  >
-                    Delete File
-                  </Button>
-                )}
-              </>
-            )}
-            {fileType === 'link' && (
-              <TextField
-                label="Enter URL"
-                variant="outlined"
-                value={url}
-                onChange={handleUrlChange}
-                fullWidth
-                margin="normal"
-                className="mb-3"
-              />
+          {errors.name && <div className="text-danger">{errors.news_title}</div>}
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Select a content type</label>
+          <select
+            className="form-select"
+            name="contenttype"
+            value={formData.contenttype}
+            onChange={handleInputChange}
+          >
+            <option value="">Select a content type</option>
+            {/* Add your options here */}
+            <option value="4">External</option>
+            <option value="3">Internal</option>
+            <option value="2">File</option>
+            <option value="1">HTML</option>
+          </select>
+          {errors.contenttype && (
+            <div className="text-danger">{errors.contenttype}</div>
+          )}
+        </div>
+
+        {formData.contenttype === '4' && (
+          <div className="mb-3">
+            <label className="form-label">Enter External Link</label>
+            <input
+              className="form-control"
+              type="text"
+              placeholder="Enter External Link"
+              name="external_file"
+              value={formData.external_file}
+              onChange={handleInputChange}
+            />
+            {errors.external_file && (
+              <div className="text-danger">{errors.external_file}</div>
             )}
           </div>
-          {/* Format Error */}
-          {formatError && (
-            <p className="error-text">
-              Please choose the correct format based on the selected option.
-            </p>
-          )}
-          {/* Date Inputs */}
-          <TextField
-            label="Start Date"
-            type="date"
-            value={startDate.toISOString().split('T')[0]}
-            onChange={(e) => handleStartDateChange(new Date(e.target.value))}
-            fullWidth
-            margin="normal"
-            InputLabelProps={{
-              shrink: true
-            }}
-            className="mb-3"
-          />
-          <TextField
-            label="End Date"
-            type="date"
-            value={endDate.toISOString().split('T')[0]}
-            onChange={(e) => handleEndDateChange(new Date(e.target.value))}
-            fullWidth
-            margin="normal"
-            InputLabelProps={{
-              shrink: true
-            }}
-            className="mb-3"
-          />
-          {/* Submit Button */}
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            onClick={handlePostData}
-            className="submit-button"
-          >
-            Post Data
-          </Button>
-        </form>
-        {/* Confirmation Dialog */}
-        <Dialog open={confirmationOpen} onClose={handleConfirmationClose}>
-          <DialogTitle>Confirm Posting</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Are you sure you want to post the data?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleConfirmationClose} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={handleConfirm} color="primary">
-              Confirm
-            </Button>
-          </DialogActions>
-        </Dialog>
-        {/* Success Dialog */}
-        <Dialog open={dialogOpen} onClose={handleDialogClose}>
-          <DialogTitle>Data Posted Successfully</DialogTitle>
-          <DialogContent>Your data has been successfully posted to the database.</DialogContent>
-          <DialogActions>
-            <Button onClick={handleDialogClose} color="primary">
-              Close
-            </Button>
-          </DialogActions>
-        </Dialog>
-        {/* Toast Container */}
-        <ToastContainer />
-      </div>
-    </>
-  );
-}
+        )}
 
-export default WhatsNew;
+        {formData.contenttype === '3' && (
+          <div className="mb-3">
+            <label className="form-label">Enter Internal Link</label>
+            <input
+              className="form-control"
+              type="text"
+              placeholder="Enter Internal Link"
+              name="internale_file"
+              value={formData.internale_file}
+              onChange={handleInputChange}
+            />
+            {errors.internale_file && (
+              <div className="text-danger">{errors.internale_file}</div>
+            )}
+          </div>
+        )}
+
+        {formData.contenttype === '2' && (
+          <div className="mb-3">
+            <label className="form-label">Choose File</label>
+            <input
+              className="form-control"
+              type="file"
+              name="file"
+              onChange={handleImageChange}
+            />
+            
+            {errors.file && (
+              <div className="text-danger">{errors.file}</div>
+            )}
+          </div>
+        )}
+
+        {formData.contenttype === '1' && (
+          <div className="mb-3">
+            <label className="form-label">HTML Editor</label>
+            <div>
+              {/* Include your HTML editor component here */}
+              <textarea
+                className="form-control"
+                value={formData.editorContent}
+                onChange={(e) => handleEditorChange(e.target.value)}
+              ></textarea>
+            </div>
+            {errors.editorContent && (
+              <div className="text-danger">{errors.editorContent}</div>
+            )}
+          </div>
+        )}
+
+        <div className="mb-3">
+          <label className="form-label">Starting Date</label>
+          <input
+            className="form-control"
+            type="date"
+            name="startdate"
+            value={formData.startdate}
+            onChange={handleInputChange}
+          />
+          {errors.startdate && (
+            <div className="text-danger">{errors.startdate}</div>
+          )}
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Ending Date</label>
+          <input
+            className="form-control"
+            type="date"
+            name="end_date"
+            value={formData.end_date}
+            onChange={handleInputChange}
+          />
+          {errors.end_date && (
+            <div className="text-danger">{errors.end_date}</div>
+          )}
+        </div>
+        <div className="btnsubmit">
+            <button className="btn btn-primary" onClick={handleSubmit}>
+              Submit
+            </button>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  );
+};
