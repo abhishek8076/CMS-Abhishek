@@ -9,7 +9,8 @@ import apis from '../../utils/apiUrl.json'; // Adjust the import path as needed
 import MyEditor, { HtmlEditor } from '../htmlEditor/htmlEditor'; // Adjust the import path as needed
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import Modal from 'react-modal';
+import './whatsnew.scss'
+
 
 export const WhatsNew = () => {
   const [html, sethtml] = useState('');
@@ -180,7 +181,8 @@ const [modalMessage, setModalMessage] = useState('');
     <div className="row justify-content-center">
       <div className="col-md-6">
         <div className="mb-3">
-          <label className="form-label">Name</label>
+          
+          <label className="form-label text-dark">Name</label>
           <input
             className="form-control"
             type="text"
@@ -193,7 +195,7 @@ const [modalMessage, setModalMessage] = useState('');
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Select a content type</label>
+          <label className="form-label text-dark">Select a content type</label>
           <select
             className="form-select"
             name="contenttype"
@@ -214,7 +216,7 @@ const [modalMessage, setModalMessage] = useState('');
 
         {formData.contenttype === '4' && (
           <div className="mb-3">
-            <label className="form-label">Enter External Link</label>
+            <label className="form-label text-dark">Enter External Link</label>
             <input
               className="form-control"
               type="text"
@@ -231,7 +233,7 @@ const [modalMessage, setModalMessage] = useState('');
 
         {formData.contenttype === '3' && (
           <div className="mb-3">
-            <label className="form-label">Enter Internal Link</label>
+            <label className="form-label text-dark">Enter Internal Link</label>
             <input
               className="form-control"
               type="text"
@@ -248,7 +250,7 @@ const [modalMessage, setModalMessage] = useState('');
 
         {formData.contenttype === '2' && (
           <div className="mb-3">
-            <label className="form-label">Choose File</label>
+            <label className="form-label text-dark">Choose File</label>
             <input
               className="form-control"
               type="file"
@@ -264,7 +266,7 @@ const [modalMessage, setModalMessage] = useState('');
 
         {formData.contenttype === '1' && (
           <div className="mb-3">
-            <label className="form-label">HTML Editor</label>
+            <label className="form-label text-dark">HTML Editor</label>
             <div>
               {/* Include your HTML editor component here */}
               <textarea
@@ -280,7 +282,7 @@ const [modalMessage, setModalMessage] = useState('');
         )}
 
         <div className="mb-3">
-          <label className="form-label">Starting Date</label>
+          <label className="form-label text-dark">Starting Date</label>
           <input
             className="form-control"
             type="date"
@@ -294,7 +296,7 @@ const [modalMessage, setModalMessage] = useState('');
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Ending Date</label>
+          <label className="form-label text-dark">Ending Date</label>
           <input
             className="form-control"
             type="date"
@@ -310,10 +312,23 @@ const [modalMessage, setModalMessage] = useState('');
             <button className="btn btn-primary" onClick={handleSubmit}>
               Submit
             </button>
+            <CustomModal isOpen={isModalOpen} message={modalMessage} onClose={closeModal} />
           </div>
       </div>
     </div>
   </div>
 
+  );
+};
+const CustomModal = ({ isOpen, message, onClose }) => {
+  return (
+    isOpen && (
+      <div className="custom-modal">
+        <div className="modal-content">
+          <h2>{message}</h2>
+          <button onClick={onClose}>Close</button>
+        </div>
+      </div>
+    )
   );
 };
