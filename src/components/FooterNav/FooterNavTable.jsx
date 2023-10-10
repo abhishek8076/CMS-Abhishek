@@ -27,9 +27,9 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import Alert from '@mui/material/Alert'; 
 
-import './whatsnew.scss';
+// import './whatsnew.scss';
 
-export const WhatsNewTable = () => {
+export const FooterNavTable = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -100,7 +100,7 @@ export const WhatsNewTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await apiClient.get(apis.getwhatsnew);
+        const response = await apiClient.get(apis.getfooter);
         setData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -118,7 +118,7 @@ export const WhatsNewTable = () => {
           <div className="containertable">
             <div>
               <Button type="button" className="view-button">
-                <Link to="/whatsnew" className="view-button">
+                <Link to="/footer" className="view-button">
                   <ArrowBackIcon /> Back
                 </Link>
               </Button>
@@ -131,8 +131,8 @@ export const WhatsNewTable = () => {
                       <TableCell>ID</TableCell>
                       <TableCell>Title</TableCell>
                       <TableCell>Content Type</TableCell>
-                      <TableCell>Start Date</TableCell>
-                      <TableCell>End Date</TableCell>
+                      <TableCell>File</TableCell>
+                      <TableCell>External Link</TableCell>
                       <TableCell>Action</TableCell>
                     </TableRow>
                   </TableHead>
@@ -140,10 +140,11 @@ export const WhatsNewTable = () => {
                     {data.map((item, i) => (
                       <TableRow key={item.u_id}>
                         <TableCell>{i + 1}</TableCell>
-                        <TableCell>{item.u_news_tittle}</TableCell>
+                        <TableCell>{item.u_tittle_name}</TableCell>
                         <TableCell>{item.u_contenttype}</TableCell>
-                        <TableCell>{item.u_start_date}</TableCell>
-                        <TableCell>{item.u_enddate}</TableCell>
+                        <TableCell>{item.u_file}</TableCell>
+                        <TableCell>{item.u_external_link}</TableCell>
+                        
                         <TableCell>
                           <Link
                             to={`/whatsnew/editwhatsnew/${item.u_id}`}

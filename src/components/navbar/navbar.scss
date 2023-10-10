@@ -10,13 +10,15 @@
     width: 100%;
     padding:0 20px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     
 
     .name{
-      color:green;
+      color: #f3f3f3;
       font-size: 20px;
+      margin-bottom: 0px;
+      font-weight: 600;
 
     }
 
@@ -78,10 +80,11 @@
           right: -5px;
         }
         .username{
-          margin-top: 5px;
+          
           font-size: 15px;
-          color: green;
+          color:#f3f3f3;
           text-transform: uppercase;
+          margin-bottom: 0px;
         }
         img {
           width: 30px;
@@ -142,4 +145,12 @@
       }
     }
   }
+}
+
+// custom css
+.navbar {
+  background-color: rgb(102 193 93);
+}
+.item.avatar-logo button {
+  padding: 0px;
 }

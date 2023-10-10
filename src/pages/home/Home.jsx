@@ -25,6 +25,7 @@ const Home = () => {
       <Sidebar className="nav" style={{}} />
       <div className="homeContainer">
         <Navbar />
+<div class="main-body">
         <div className="row">
           <div className="col-md-2">
           <Link to='/users' style={{ textDecoration: "none" }}>
@@ -163,6 +164,7 @@ const Home = () => {
       </div> 
              
          
+ </div>
  </div>
  </div>
  </div>

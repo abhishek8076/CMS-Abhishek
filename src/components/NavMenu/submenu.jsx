@@ -1,240 +1,335 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
-import './Menu.scss';
-import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
+import 'froala-editor/css/froala_style.min.css';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
 import apiClient from '../../services/AxiosApi';
+import apis from '../../utils/apiUrl.json';
+import MyEditor, { HtmlEditor } from '../htmlEditor/htmlEditor';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ViewListIcon from '@mui/icons-material/ViewList';
+import { Link } from 'react-router-dom';
+
+
+
+import DialogActions from '@mui/material/DialogActions';
+
+import Alert from '@mui/material/Alert';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+  Snackbar,
+  DialogTitle, // Add this import
+  DialogContent,
+  Dialog,
+} from '@mui/material'; 
+
+function EAlert(props) {
+  return <Alert elevation={6} variant="filled" {...props} />;
+}
 
 export const Submenu = () => {
-  const [editorContent, setEditorContent] = useState('');
+  const [html, setHtml] = useState('');
+  const [file, setFile] = useState(null);
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [data,Setdata] =useState([])
+
   const [formData, setFormData] = useState({
-    name: '',
-    option: '',
-    linkValue: '',
-    fileValue: null,
-    htmlValue: '',
-    menuoption: '',
+    MenuName: '',
+    ContentType: '',
+    external_link: '',
+    internal_link: '',
+    MenuUrl: 'dsafdsaf',
+    submenu_id: 0,
+    file: '',
+    html: '',
   });
 
-  const [errors, setErrors] = useState({
-    name: '',
-    option: '',
-    linkValue: '',
-    fileValue: '',
-    htmlValue: '',
-    menuoption: '',
-  });
+  const [errors, setErrors] = useState({});
 
-  const optionsData = [
-    { id: 1, value: 'link', label: 'Link' },
-    { id: 2, value: 'file', label: 'File' },
-    { id: 3, value: 'html', label: 'HTML' },
-  ];
-
-  const Menuoptions = [
-    // ... (your menu options data)
-  ];
+  useEffect(() => {
+    setFormData({
+      MenuName: '',
+      ContentType: '',
+      external_link: '',
+      internal_link: '',
+      MenuUrl: 'dsafdsaf',
+      submenu_id: 0,
+      file: '',
+      html: '',
+    });
+  }, []);
 
   const handleEditorChange = (content) => {
-    setEditorContent(content);
-  };
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setFormData({
-      ...formData,
-      fileValue: file,
-    });
+    setHtml(content);
   };
 
   const validateForm = () => {
-    let isValid = true;
-    const newErrors = { ...errors };
+    const newErrors = {};
 
-    if (formData.name.trim() === '') {
-      newErrors.name = 'Name is required';
-      isValid = false;
-    } else {
-      newErrors.name = '';
+    if (!formData.MenuName) {
+      newErrors.MenuName = 'Name is required';
     }
 
-    if (formData.option === '') {
-      newErrors.option = 'Please select an option';
-      isValid = false;
-    } else {
-      newErrors.option = '';
+    if (!formData.ContentType) {
+      newErrors.ContentType = 'Select a content type';
     }
 
-    if (formData.option === '1' && formData.linkValue.trim() === '') {
-      newErrors.linkValue = 'Link is required for this option';
-      isValid = false;
-    } else {
-      newErrors.linkValue = '';
+    if (formData.ContentType === '4' && !formData.external_link) {
+      newErrors.external_link = 'External Link is required';
     }
 
-    if (formData.option === '2' && !formData.fileValue) {
-      newErrors.fileValue = 'File is required for this option';
-      isValid = false;
-    } else {
-      newErrors.fileValue = '';
+    if (formData.ContentType === '3' && !formData.internal_link) {
+      newErrors.internal_link = 'Internal Link is required';
     }
 
-    if (formData.option === '3' && editorContent.trim() === '') {
-      newErrors.htmlValue = 'HTML content is required for this option';
-      isValid = false;
-    } else {
-      newErrors.htmlValue = '';
+    if (formData.ContentType === '2' && !file) {
+      newErrors.file = 'File is required';
     }
 
-    if (formData.menuoption === '') {
-      newErrors.menuoption = 'Please select a menu';
-      isValid = false;
-    } else {
-      newErrors.menuoption = '';
+    if (formData.ContentType === '1' && !html) {
+      newErrors.html = 'HTML content is required';
     }
 
     setErrors(newErrors);
-    return isValid;
+
+    return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async () => {
-    if (validateForm()) {
-      try {
-        const formDataToSend = new FormData();
-        formDataToSend.append('name', formData.name);
-        formDataToSend.append('option', formData.option);
-        formDataToSend.append('menuoption', formData.menuoption);
-        if (formData.option === '1') {
-          formDataToSend.append('data', formData.linkValue);
-        } else if (formData.option === '2') {
-          formDataToSend.append('data', formData.fileValue);
-        } else if (formData.option === '3') {
-          formDataToSend.append('data', formData.htmlValue);
-        }
+  const handleImageChange = (event) => {
+    const imageFile = event.target.files[0];
+    setFile(imageFile);
+  };
 
-        const response = await apiClient.post('/api/save-data', formDataToSend);
-        console.log('Data saved:', response.data);
-      } catch (error) {
-        console.error('Error saving data:', error);
-      }
+  const handleInputChange = (event) => {
+    const { name, value, type } = event.target;
+
+    if (type === 'file') {
+      setFormData({
+        ...formData,
+        [name]: event.target.files[0],
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
     }
   };
 
+  const handleOpenConfirmation = () => {
+    if (validateForm()) {
+      setConfirmDialogOpen(true);
+    }
+  };
+
+  const handleCloseConfirmation = () => {
+    setConfirmDialogOpen(false);
+  };
+
+  const handleConfirmSubmit = async () => {
+    handleCloseConfirmation();
+
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('MenuName', formData.MenuName);
+      formDataToSend.append('ContentType', formData.ContentType);
+      formDataToSend.append('MenuUrl', formData.MenuUrl);
+      formDataToSend.append('submenu_id', formData.submenu_id);
+
+      if (formData.ContentType === '4') {
+        formDataToSend.append('external_link', formData.external_link);
+      } else if (formData.ContentType === '3') {
+        formDataToSend.append('internal_link', formData.internal_link);
+      } else if (formData.ContentType === '2') {
+        formDataToSend.append('file', file);
+      } else if (formData.ContentType === '1') {
+        formDataToSend.append('html_content', html);
+      }
+
+      const response = await apiClient.post(apis.navmenu, formDataToSend, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('Data saved:', response.data);
+      toast.success('Data saved successfully!');
+      setModalMessage('Data saved successfully!');
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error('Error saving data:', error);
+    }
+  };
+  useEffect(() => {
+    const fetchRoles = async () => {
+      try {
+        const response = await apiClient.get(apis.getUserType);
+        Setdata(response.data);
+      } catch (error) {
+        console.error('Error fetching roles:', error);
+      }
+    };
+    fetchRoles();
+  }, []);
+
   const config = {
-    heightMin: 300,
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
   };
+  console.log(formData)
 
   return (
     <div className="container">
-      <div>
-        <div className="mb-3">
-          <label className="form-label">Select Menu</label>
-          <select
-            className="form-select"
-            name="menuoption"
-            value={formData.menuoption}
-            onChange={handleInputChange}
-          >
-            <option value="">Select Menu</option>
-            {Menuoptions.map((option) => (
-              <option key={option.id} value={option.id}>
-                {option.name}
-              </option>
-            ))}
-          </select>
-          <div className="text-danger">{errors.menuoption}</div>
+      <div className="row">
+        <div className="col">
+         
+          <h1 className="text-center">Menu</h1>
         </div>
-        {/* Name input field */}
-        <div className="mb-3">
-          <label className="form-label">Name</label>
-          <input
-            className="form-control"
-            type="text"
-            placeholder="Name"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-          />
-          <div className="text-danger">{errors.name}</div>
-        </div>
-
-        {/* Dropdown to select an option */}
-        <div className="mb-3">
-          <label className="form-label">Select an option</label>
-          <select
-            className="form-select"
-            name="option"
-            value={formData.option}
-            onChange={handleInputChange}
-          >
-            <option value="">Select an option</option>
-            {optionsData.map((option) => (
-              <option key={option.id} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-          <div className="text-danger">{errors.option}</div>
-        </div>
-
-        {/* Conditional input fields based on selected option */}
-        {formData.option === 'link' && (
+      </div>
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          {/* Input for Name */}
           <div className="mb-3">
-            <label className="form-label">Enter Link</label>
+            <label className="form-label text-dark">Name</label>
             <input
               className="form-control"
               type="text"
-              placeholder="Enter Link"
-              name="linkValue"
-              value={formData.linkValue}
+              placeholder="Name"
+              name="MenuName"
+              value={formData.MenuName}
               onChange={handleInputChange}
             />
-            <div className="text-danger">{errors.linkValue}</div>
+            {errors.MenuName && <div className="text-danger">{errors.MenuName}</div>}
           </div>
-        )}
 
-        {formData.option === 'file' && (
+          {/* Input for Select a content type */}
           <div className="mb-3">
-            <label className="form-label">Choose File</label>
-            <input
-              className="form-control"
-              type="file"
-              onChange={handleFileChange}
-            />
-            <div className="text-danger">{errors.fileValue}</div>
+            <label className="form-label text-dark">Select a content type</label>
+            <select
+              className="form-select"
+              name="ContentType"
+              value={formData.ContentType}
+              onChange={handleInputChange}
+            >
+              <option value="">Select a content type</option>
+              <option value="4">External Link</option>
+              <option value="3">Internal Link</option>
+              <option value="2">File</option>
+              <option value="1">HTML</option>
+            </select>
+            {errors.ContentType && <div className="text-danger">{errors.ContentType}</div>}
           </div>
-        )}
 
-        {formData.option === 'html' && (
-          <div className="mb-3">
-            <label className="form-label">HTML Editor</label>
-            <div>
-              <FroalaEditorComponent
-                tag="textarea"
-                config={config}
-                onModelChange={handleEditorChange}
-                model={editorContent}
+          {/* Input for External Link */}
+          {formData.ContentType === '4' && (
+            <div className="mb-3">
+              <label className="form-label text-dark">Enter External Link</label>
+              <input
+                className="form-control"
+                type="text"
+                placeholder="Enter External Link"
+                name="external_link"
+                value={formData.external_link}
+                onChange={handleInputChange}
               />
+              {errors.external_link && <div className="text-danger">{errors.external_link}</div>}
             </div>
-            <div className="text-danger">{errors.htmlValue}</div>
-          </div>
-        )}
+          )}
 
-        {/* Submit button */}
-        <button className="btn btn-primary" onClick={handleSubmit}>
-          Submit
-        </button>
+          {/* Input for Internal Link */}
+          {formData.ContentType === '3' && (
+            <div className="mb-3">
+              <label className="form-label text-dark">Enter Internal Link</label>
+              <input
+                className="form-control"
+                type="text"
+                placeholder="Enter Internal Link"
+                name="internal_link"
+                value={formData.internal_link}
+                onChange={handleInputChange}
+              />
+              {errors.internal_link && <div className="text-danger">{errors.internal_link}</div>}
+            </div>
+          )}
+
+          {/* Input for File */}
+          {formData.ContentType === '2' && (
+            <div className="mb-3">
+              <label className="form-label text-dark">Choose File</label>
+              <input
+                className="form-control"
+                type="file"
+                name="file"
+                onChange={handleImageChange}
+              />
+              {errors.file && <div className="text-danger">{errors.file}</div>}
+            </div>
+          )}
+
+          {/* HTML Editor Input */}
+          {formData.ContentType === '1' && (
+            <div className="mb-3">
+              <label className="form-label text-dark">HTML Editor</label>
+              <div>
+                <textarea
+                  className="form-control"
+                  value={html}
+                  onChange={(e) => handleEditorChange(e.target.value)}
+                ></textarea>
+              </div>
+              {errors.editorContent && <div className="text-danger">{errors.editorContent}</div>}
+            </div>
+          )}
+
+          {/* Submit Button */}
+          <div className="btnsubmit">
+            <button className="btn btn-primary" onClick={handleOpenConfirmation}>
+              Submit
+            </button>
+            <Dialog open={confirmDialogOpen} onClose={handleCloseConfirmation}>
+              <DialogTitle>Confirm Submit</DialogTitle>
+              <DialogContent>
+                Are you sure you want to submit this data?
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseConfirmation} color="primary">
+                  Cancel
+                </Button>
+                <Button onClick={handleConfirmSubmit} color="primary">
+                  Confirm
+                </Button>
+              </DialogActions>
+            </Dialog>
+            <Snackbar
+              open={snackbarOpen}
+              autoHideDuration={3000} // Adjust as needed
+              onClose={() => setSnackbarOpen(false)}
+            >
+              <Alert severity="success" onClose={() => setSnackbarOpen(false)}>
+                {modalMessage}
+              </Alert>
+            </Snackbar>
+            <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000} // Adjust as needed
+        onClose={() => setSnackbarOpen(false)}
+      >
+        <Alert severity="success" onClose={() => setSnackbarOpen(false)}>
+          Data deleted successfully.
+        </Alert>
+      </Snackbar>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -99,6 +99,11 @@ const Datatable = () => {
               <AddIcon /> Add New
             </Button>
           </Link>
+          <Link to="/services" className="link">
+            <Button id="btn" variant="contained">
+              <AddIcon /> Services
+            </Button>
+          </Link>
         </div>
 
         {/* Filter inputs */}

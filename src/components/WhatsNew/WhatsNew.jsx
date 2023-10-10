@@ -10,6 +10,8 @@ import MyEditor, { HtmlEditor } from '../htmlEditor/htmlEditor'; // Adjust the i
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './whatsnew.scss'
+import ViewListIcon from '@mui/icons-material/ViewList';
+import { Link } from 'react-router-dom';
 
 
 export const WhatsNew = () => {
@@ -170,9 +172,11 @@ const [modalMessage, setModalMessage] = useState('');
     <div className="row">
       <div className="col">
       <div className="col text-end">
+        <Link to='/whatsnew/whatsnewtable' style={{textDecoration:'none'}}>
         <button className="btn btn-primary" >
-          Submit
+         <ViewListIcon/> Data view
         </button>
+        </Link>
       </div>
         <h1 className="text-center">What's New</h1>
       </div>

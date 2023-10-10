@@ -50,9 +50,9 @@ const Navbar = () => {
             </IconButton>
           </div> */}
 
-          <div className="item">
+          <div className="item avatar-logo" >
             <IconButton onClick={handleMenuOpen}>
-              <Avatar src={logo} alt="Profile" className="avatar" />
+              <Avatar src={logo} alt="Profile" className="avatar avatar-img" />
             </IconButton>
             <Menu
               anchorEl={anchorEl}

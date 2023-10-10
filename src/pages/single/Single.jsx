@@ -6,6 +6,7 @@ import Navbar from '../../components/navbar/Navbar';
 import 'bootstrap/dist/css/bootstrap.css';
 import apiClinet from '../../services/AxiosApi';
 import api from '../../utils/apiUrl.json';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert } from '@mui/material'; // Import Material-UI components
 
 export function Single() {
   const { id } = useParams();
@@ -19,6 +20,9 @@ export function Single() {
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [updateError, setUpdateError] = useState('');
   const [validationErrors, setValidationErrors] = useState({});
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   useEffect(() => {
     async function fetchData() {
@@ -51,8 +55,8 @@ export function Single() {
       errors.email = 'Invalid email format';
     }
 
-    if (!data.mobile_no || data.mobile_no.length >10 ) {
-      errors.mobile_no = 'Mobile is required';
+    if (!data.mobile_no || data.mobile_no.length !== 10) {
+      errors.mobile_no = 'Mobile is required and should contain 10 digits';
     } else if (!isValidMobile(data.mobile_no)) {
       errors.mobile_no = 'Invalid mobile format (should contain 10 digits)';
     }
@@ -64,16 +68,39 @@ export function Single() {
     if (Object.keys(errors).length > 0) {
       setValidationErrors(errors);
     } else {
-      try {
-        setLoading(true);
-        await apiClinet.put(api.edituser + id, data);
-        setUpdateSuccess(true);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error updating user data:', error);
-        setUpdateError('Failed to update user data');
-        setLoading(false);
-      }
+      // Open the confirmation dialog when the user clicks "Update User"
+      setConfirmDialogOpen(true);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    // Handle cancel action in the confirmation dialog
+    setConfirmDialogOpen(false);
+  };
+
+  const handleDeleteConfirm = async () => {
+    // Handle confirm action in the confirmation dialog
+
+    // Close the confirmation dialog
+    setConfirmDialogOpen(false);
+
+    try {
+      setLoading(true);
+      await apiClinet.put(api.edituser + id, data);
+      setUpdateSuccess(true);
+      setLoading(false);
+
+      // Show the snackbar with a success message
+      setSnackbarMessage('User data updated successfully.');
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error('Error updating user data:', error);
+      setUpdateError('Failed to update user data');
+      setLoading(false);
+
+      // Show the snackbar with an error message
+      setSnackbarMessage('Failed to update user data');
+      setSnackbarOpen(true);
     }
   };
 
@@ -234,6 +261,33 @@ export function Single() {
           </div>
         </div>
       </div>
+
+      {/* Confirmation Dialog */}
+      <Dialog open={confirmDialogOpen} onClose={handleDeleteCancel}>
+        <DialogTitle>Confirm Update</DialogTitle>
+        <DialogContent>
+          Are you sure you want to update this user?
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="primary">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Snackbar */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+      >
+        <Alert severity={updateSuccess ? "success" : "error"} onClose={() => setSnackbarOpen(false)}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

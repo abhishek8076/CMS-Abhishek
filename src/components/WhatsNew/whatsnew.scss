@@ -96,3 +96,8 @@
   .form-label{
     color:black
   }
+  .scrollable-table {
+    max-height: 400px; /* Adjust the height as needed */
+    overflow-y: auto;
+  }
+  

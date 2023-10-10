@@ -4,7 +4,7 @@ import Navbar from '../../components/navbar/Navbar'
 import { Banner } from '../../components/Banner/Banner'
 import WhatsNew from '../../components/WhatsNew/WhatsNew'
 // import Footer from '../../components/Footer/Footer'
-import Footer from "../../components/FooterNav/FooterNav"
+import {FooterPage} from "../../components/FooterNav/FooterNav"
 
 export const Extra = () => {
   return (
@@ -12,7 +12,7 @@ export const Extra = () => {
       <Sidebar />
       <div className="listContainer">
         <Navbar />
-       <Footer/>
+       <FooterPage/>
       </div>
     </div>
   )
