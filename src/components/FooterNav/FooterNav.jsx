@@ -156,7 +156,17 @@ export const FooterPage = () => {
       console.log('Data saved:', response.data);
       toast.success('Data saved successfully!');
       setModalMessage('Data saved successfully!');
-      setSnackbarOpen(true); // Show the success Snackbar
+      setSnackbarOpen(true);
+       // Show the success Snackbar
+        // Clear the form fields
+    setFormData({
+      tittle_name: '',
+      contenttype: '',
+      external_link: '',
+      internale_link: '',
+      file: '',
+      html: '',
+    });
     } catch (error) {
       console.error('Error saving data:', error);
     }
@@ -311,7 +321,7 @@ export const FooterPage = () => {
         onClose={() => setSnackbarOpen(false)}
       >
         <Alert severity="success" onClose={() => setSnackbarOpen(false)}>
-          Data deleted successfully.
+          Data Save successfully.
         </Alert>
       </Snackbar>
           </div>

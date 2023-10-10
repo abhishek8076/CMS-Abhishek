@@ -313,7 +313,7 @@ export const Menu = () => {
         onClose={() => setSnackbarOpen(false)}
       >
         <Alert severity="success" onClose={() => setSnackbarOpen(false)}>
-          Data deleted successfully.
+          Data Save successfully.
         </Alert>
       </Snackbar>
           </div>

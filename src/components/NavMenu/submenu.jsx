@@ -31,6 +31,8 @@ import {
   DialogContent,
   Dialog,
 } from '@mui/material'; 
+import { Form } from 'react-bootstrap';
+import { ElectricBike } from '@mui/icons-material';
 
 function EAlert(props) {
   return <Alert elevation={6} variant="filled" {...props} />;
@@ -43,6 +45,7 @@ export const Submenu = () => {
   const [modalMessage, setModalMessage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [data,Setdata] =useState([])
+  const [selectedRole, setSelectedRole] = useState('');
 
   const [formData, setFormData] = useState({
     MenuName: '',
@@ -50,9 +53,10 @@ export const Submenu = () => {
     external_link: '',
     internal_link: '',
     MenuUrl: 'dsafdsaf',
-    submenu_id: 0,
+    submenu_id: "",
     file: '',
     html: '',
+    menu_id:''
   });
 
   const [errors, setErrors] = useState({});
@@ -64,9 +68,10 @@ export const Submenu = () => {
       external_link: '',
       internal_link: '',
       MenuUrl: 'dsafdsaf',
-      submenu_id: 0,
+      submenu_id: "",
       file: '',
       html: '',
+      menu_id:''
     });
   }, []);
 
@@ -80,9 +85,16 @@ export const Submenu = () => {
     if (!formData.MenuName) {
       newErrors.MenuName = 'Name is required';
     }
+    // if (!formData.menu_id) {
+    //   newErrors.MenuName = 'Name is required';
+    // }
+
 
     if (!formData.ContentType) {
       newErrors.ContentType = 'Select a content type';
+    }
+    if (!selectedRole) {
+      newErrors.ContentType = 'Select Menu';
     }
 
     if (formData.ContentType === '4' && !formData.external_link) {
@@ -112,6 +124,7 @@ export const Submenu = () => {
   };
 
   const handleInputChange = (event) => {
+    setSelectedRole(event.target.value);
     const { name, value, type } = event.target;
 
     if (type === 'file') {
@@ -120,6 +133,7 @@ export const Submenu = () => {
         [name]: event.target.files[0],
       });
     } else {
+      setSelectedRole(event.target.value);
       setFormData({
         ...formData,
         [name]: value,
@@ -145,7 +159,8 @@ export const Submenu = () => {
       formDataToSend.append('MenuName', formData.MenuName);
       formDataToSend.append('ContentType', formData.ContentType);
       formDataToSend.append('MenuUrl', formData.MenuUrl);
-      formDataToSend.append('submenu_id', formData.submenu_id);
+      // formDataToSend.append('submenu_id', formData.submenu_id);
+      formDataToSend.append('submenu_id', selectedRole);
 
       if (formData.ContentType === '4') {
         formDataToSend.append('external_link', formData.external_link);
@@ -157,7 +172,7 @@ export const Submenu = () => {
         formDataToSend.append('html_content', html);
       }
 
-      const response = await apiClient.post(apis.navmenu, formDataToSend, {
+      const response = await apiClient.post(apis.navmenu , formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -173,7 +188,7 @@ export const Submenu = () => {
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const response = await apiClient.get(apis.getUserType);
+        const response = await apiClient.get(apis.getmenuname);
         Setdata(response.data);
       } catch (error) {
         console.error('Error fetching roles:', error);
@@ -193,11 +208,35 @@ export const Submenu = () => {
       <div className="row">
         <div className="col">
          
-          <h1 className="text-center">Menu</h1>
+          <h1 className="text-center">Sub Menu</h1>
         </div>
       </div>
       <div className="row justify-content-center">
         <div className="col-md-6">
+        <Form.Group className="mb-3" controlId="Usertype">
+                              <div className="mb-12">
+                                <Form.Label className="text-center" style={{color:"black"}}>Menu Names</Form.Label>
+                                <select
+                                  className='form-control'
+                                  name='menu_id'
+                                  value={selectedRole}
+                                  onChange={handleInputChange}
+                                  
+                                >
+                                  <option value='' style={{color:"black"}}>Select a Menu</option>
+                                  {data.map((data) => (
+                                    <option key={data.u_id} value={data.u_id}>
+                                      {data.u_menu_name}
+                                    </option>
+                                  ))}
+                                </select>
+                                <Form.Control.Feedback type="invalid">
+                                  {/* {formErrors.usertype} */}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>
+                            {errors.selectedRole && <div className="text-danger">{errors.selectedRole}</div>}
+
           {/* Input for Name */}
           <div className="mb-3">
             <label className="form-label text-dark">Name</label>
@@ -325,7 +364,7 @@ export const Submenu = () => {
         onClose={() => setSnackbarOpen(false)}
       >
         <Alert severity="success" onClose={() => setSnackbarOpen(false)}>
-          Data deleted successfully.
+          Data save successfully.
         </Alert>
       </Snackbar>
           </div>

@@ -17,5 +17,7 @@
     "deleteImg" :"/api/Slider/",
     "getApiToken":"/auth/getApiToken",
     "login": "/api/Login",
-    "navmenu":"/Api/TopMenu"
+    "navmenu":"/Api/TopMenu",
+    "getmenuname":"/Api/TopMenu",
+    "submenunav":"/Api/TopMenu/SubMenu"
 }
