@@ -4,11 +4,6 @@ import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.min.css';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
-<<<<<<< HEAD
-import 'bootstrap/dist/css/bootstrap.min.css';
-import apiClient from '../../services/AxiosApi.jsx'
-import apis from '../../utils/apiUrl.json';
-=======
 import apiClient from '../../services/AxiosApi';
 import apis from '../../utils/apiUrl.json';
 import MyEditor, { HtmlEditor } from '../htmlEditor/htmlEditor';
@@ -16,7 +11,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import { Link } from 'react-router-dom';
->>>>>>> 2c5e594a579843bba36602f1815932700d6e79a6
 
 
 
@@ -140,13 +134,6 @@ export const FooterPage = () => {
     handleCloseConfirmation();
 
     try {
-<<<<<<< HEAD
-      const response = await axios.post(apis.footerdata, formData);
-      
-      setSuccess('Data sent successfully!');
-      setError('');
-      setOpenSnackbar(true);
-=======
       const formDataToSend = new FormData();
       formDataToSend.append('tittle_name', formData.tittle_name);
       formDataToSend.append('contenttype', formData.contenttype);
@@ -180,7 +167,6 @@ export const FooterPage = () => {
       file: '',
       html: '',
     });
->>>>>>> 2c5e594a579843bba36602f1815932700d6e79a6
     } catch (error) {
       console.error('Error saving data:', error);
     }
