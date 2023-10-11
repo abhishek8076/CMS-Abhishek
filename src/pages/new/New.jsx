@@ -41,7 +41,7 @@ export function New() {
 
     if (!formData.name) {
       errors.name = 'Name is required';
-    } else if (/^[A-Za-z ]+$/.test(formData.name)) {
+    } else if (!/^[A-Za-z ]+$/.test(formData.name)) {
       errors.name = 'Invalid name format';
     }
 

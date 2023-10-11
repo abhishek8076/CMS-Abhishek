@@ -7,6 +7,7 @@
     "edituser":"/api/user/",
     "deleteuser":"/api/user/",
     "whatsnew":"/api/Whatsnew",
+    "footerdata":"api/lowerfooter",
     "getUserType":"/api/user/usertype",
     "imageAdd":"/api/Slider/postslider_data", 
     "getwhatsnew":"/api/Whatsnew",

@@ -4,6 +4,8 @@ import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import apiClient from '../../services/AxiosApi.jsx'
+import apis from '../../utils/apiUrl.json';
 
 function FooterPage() {
   const [footerType, setFooterType] = useState('');
@@ -43,7 +45,8 @@ function FooterPage() {
 
     // Send data to the API using Axios
     try {
-      const response = await axios.post('YOUR_API_URL_HERE', formData);
+      const response = await axios.post(apis.footerdata, formData);
+      
       setSuccess('Data sent successfully!');
       setError('');
       setOpenSnackbar(true);
