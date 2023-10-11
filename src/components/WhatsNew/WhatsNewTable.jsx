@@ -68,9 +68,9 @@ export const WhatsNewTable = () => {
           <TableRow key={item.u_id}>
              <TableCell>{i+1}</TableCell>
             <TableCell>{item.u_news_tittle}</TableCell>
-            <TableCell>{item.age}</TableCell>
+            {/* <TableCell>{item.age}</TableCell>
             <TableCell>{item.email}</TableCell>
-            <TableCell>{item.status}</TableCell>
+            <TableCell>{item.status}</TableCell> */}
           </TableRow>
         ))}
       </TableBody>
