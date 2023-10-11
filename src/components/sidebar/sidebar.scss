@@ -2,7 +2,8 @@
   flex: 1;
   border-right: 0.5px solid rgb(230, 227, 227);
   min-height: 100vh;
-  background-color: white;
+  background-color:#343a40;
+  padding: 15px;
 
   .top {
     height: 50px;
@@ -11,9 +12,10 @@
     justify-content: center;
 
     .logo {
-      font-size: 20px;
-      font-weight: bold;
-      color: green;
+      font-size: 22px;
+    font-weight: 900;
+    color: #f3f3f3;
+    letter-spacing: 1.2px;
     }
   }
 
@@ -23,7 +25,7 @@
   }
 
   .center {
-    padding-left: 10px;
+    padding-left: 0px;
 
     ul {
       list-style: none;
@@ -31,11 +33,11 @@
       padding: 0;
 
       .title {
-        font-size: 10px;
-        font-weight: bold;
-        color: #999;
-        margin-top: 15px;
-        margin-bottom: 5px;
+        font-size: 12px;
+    color: #fff;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: 700;
       }
 
       li {
@@ -43,6 +45,7 @@
         align-items: center;
         padding: 5px;
         cursor: pointer;
+        padding: 10px 7px;
 
         &:hover {
           background-color: #ece8ff;
@@ -50,13 +53,13 @@
 
         .icon {
           font-size: 18px;
-          color: green;
+          color:#ffffff;
         }
 
         span{
             font-size: 13px;
             font-weight: 600;
-            color: #888;
+            color: #fff;
             margin-left: 10px;
         }
       }
@@ -87,4 +90,13 @@
           }
       }
   }
+}
+// custom css
+.sidebar .center ul li:hover {
+  background-color: #66c15d;
+  color: #fff;
+  font-weight: 500;
+  box-shadow: 0px 20px 50px 0px #FF6A591A;
+  border-radius: 5px;
+  padding: 10px 7px;
 }

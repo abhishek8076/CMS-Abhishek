@@ -22,10 +22,13 @@ import { Extra } from "./pages/extra/Extra";
 import { IndexWhatsNew } from "./components/WhatsNew/IndexWhatsNew";
 import { IndexBanner } from "./components/Banner/IndexBanner";
 import { WhatsNewTable } from "./components/WhatsNew/WhatsNewTable";
+import { EditWhatsnew } from "./components/WhatsNew/EditWhatsnew";
 import { Banner } from "./components/Banner/Banner";
 import Profile from "./pages/profile/Profile";
 import  {CmsDisplay}  from "./pages/cmsDisplay/CmsDisplay";
 import { Menuoptions } from "./datatablesource";
+import { ServicesBox } from "./components/servicesBox/ServicesBox";
+import { FooterNavTable } from "./components/FooterNav/FooterNavTable";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -78,7 +81,7 @@ function App() {
         
         <Route path="/" element={<Login />} />
         <Route path="/dashboard" element={<Home />} />
-        <Route path="extra" element={<Extra />} />
+        {/* <Route path="extra" element={<Extra />} /> */}
         {/* <Route path="/users" element={<List />} /> */}
         <Route path="/cms" element={<Cms />} />
        
@@ -91,11 +94,20 @@ function App() {
             />
        </Route>
        <Route path="/profile" element={<Profile/>} />
+       <Route path="/services" element={<ServicesBox/>} />
        <Route path="/display" element={<CmsDisplay/>} />
        <Route path="/banner" element={<IndexBanner/>} />
        <Route path="whatsnew"  >
            <Route index element={<IndexWhatsNew />} />
             <Route path="whatsnewtable" element={<WhatsNewTable />} />
+            <Route path="editwhatsnew/:id" element={<EditWhatsnew />} />
+
+
+          </Route>
+       <Route path="footer"  >
+           <Route index element={<Extra />} />
+            <Route path="footertable" element={<FooterNavTable />} />
+            {/* <Route path="editfooter/:id" element={<EditWhatsnew />} /> */}
 
 
           </Route>

@@ -1,5 +1,5 @@
 import React from 'react'
-import WhatsNew from './WhatsNew'
+import {WhatsNew} from './WhatsNew'
   import { WhatsNewTable } from './WhatsNewTable';
 import Sidebar from '../sidebar/Sidebar';
 import Navbar from '../navbar/Navbar';

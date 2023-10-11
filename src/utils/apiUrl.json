@@ -11,9 +11,14 @@
     "getUserType":"/api/user/usertype",
     "imageAdd":"/api/Slider/postslider_data", 
     "getwhatsnew":"/api/Whatsnew",
+    "deletewhatsnew":"/api/Whatsnew/", 
+     "newfooter":"/api/lowerfooter" ,
+     "getfooter":"/api/lowerfooter",
     "getimage":"/api/Slider", 
     "deleteImg" :"/api/Slider/",
     "getApiToken":"/auth/getApiToken",
     "login": "/api/Login",
-    "navmenu":"/Api/TopMenu"
+    "navmenu":"/Api/TopMenu",
+    "getmenuname":"/Api/TopMenu",
+    "submenunav":"/Api/TopMenu/SubMenu"
 }

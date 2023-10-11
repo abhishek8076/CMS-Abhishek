@@ -47,7 +47,7 @@ const Sidebar = () => {
               <span>CMS</span>
             </li>
           </Link>
-          <Link to="/extra" style={{ textDecoration: "none" }}>
+          <Link to="/footer" style={{ textDecoration: "none" }}>
             <li>
               <PersonOutlineIcon className="icon" />
               <span>Footer</span>

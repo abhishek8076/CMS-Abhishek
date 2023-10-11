@@ -8,16 +8,6 @@ import {
   TableRow,
   Paper,
   Button,
-<<<<<<< HEAD
-} from '@mui/material';
-import { Link } from 'react-router-dom';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import apiClient from '../../services/AxiosApi.jsx';
-import apis from '../../utils/apiUrl.json';
-
-export const WhatsNewTable = () => {
-  const [data, setData] = useState([]);
-=======
   Snackbar,
   DialogTitle, // Add this import
   DialogContent,
@@ -37,9 +27,9 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import Alert from '@mui/material/Alert'; 
 
-import './whatsnew.scss';
+// import './whatsnew.scss';
 
-export const WhatsNewTable = () => {
+export const FooterNavTable = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -106,12 +96,11 @@ export const WhatsNewTable = () => {
   const handleDeleteCancel = () => {
     setConfirmDialogOpen(false);
   };
->>>>>>> 2c5e594a579843bba36602f1815932700d6e79a6
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await apiClient.get(apis.getwhatsnew);
+        const response = await apiClient.get(apis.getfooter);
         setData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -123,54 +112,13 @@ export const WhatsNewTable = () => {
   return (
     <div>
       <div className="list">
-<<<<<<< HEAD
-        {/* Sidebar and Navbar components */}
-      </div>
-      <div className="listContainer">
-        <div className="containertable">
-          <div>
-            <Button type="button" className="view-button">
-              <Link to="/whatsnew" className="view-button">
-                <ArrowBackIcon />Back
-              </Link>
-            </Button>
-          </div>
-          <div className="table-scroll">
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>ID</TableCell>
-                    <TableCell>Title</TableCell>
-                    <TableCell>Content Type</TableCell>
-                    <TableCell>Start Date</TableCell>
-                    <TableCell>End Date</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {data.map((item, i) => (
-                    <TableRow key={item.u_id}>
-                      <TableCell>{i + 1}</TableCell>
-                      <TableCell>{item.u_news_tittle}</TableCell>
-                      <TableCell>{item.u_contenttype}</TableCell>
-                      <TableCell>{item.u_startdate}</TableCell>
-                      <TableCell>{item.u_end_date}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div>
-        </div>
-      </div>
-=======
         <Sidebar />
         <div className="listContainer">
           <Navbar />
           <div className="containertable">
             <div>
               <Button type="button" className="view-button">
-                <Link to="/whatsnew" className="view-button">
+                <Link to="/footer" className="view-button">
                   <ArrowBackIcon /> Back
                 </Link>
               </Button>
@@ -183,8 +131,8 @@ export const WhatsNewTable = () => {
                       <TableCell>ID</TableCell>
                       <TableCell>Title</TableCell>
                       <TableCell>Content Type</TableCell>
-                      <TableCell>Start Date</TableCell>
-                      <TableCell>End Date</TableCell>
+                      <TableCell>File</TableCell>
+                      <TableCell>External Link</TableCell>
                       <TableCell>Action</TableCell>
                     </TableRow>
                   </TableHead>
@@ -192,10 +140,11 @@ export const WhatsNewTable = () => {
                     {data.map((item, i) => (
                       <TableRow key={item.u_id}>
                         <TableCell>{i + 1}</TableCell>
-                        <TableCell>{item.u_news_tittle}</TableCell>
+                        <TableCell>{item.u_tittle_name}</TableCell>
                         <TableCell>{item.u_contenttype}</TableCell>
-                        <TableCell>{item.u_start_date}</TableCell>
-                        <TableCell>{item.u_enddate}</TableCell>
+                        <TableCell>{item.u_file}</TableCell>
+                        <TableCell>{item.u_external_link}</TableCell>
+                        
                         <TableCell>
                           <Link
                             to={`/whatsnew/editwhatsnew/${item.u_id}`}
@@ -249,7 +198,6 @@ export const WhatsNewTable = () => {
           Data deleted successfully.
         </Alert>
       </Snackbar>
->>>>>>> 2c5e594a579843bba36602f1815932700d6e79a6
     </div>
   );
 };

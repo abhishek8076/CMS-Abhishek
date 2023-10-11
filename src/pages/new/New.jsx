@@ -9,6 +9,7 @@ import api from '../../utils/apiUrl.json';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './new.scss';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert } from '@mui/material'; // Import Material-UI components
 
 export function New() {
   const [dropdownOptions, setDropdownOptions] = useState([]);
@@ -22,6 +23,11 @@ export function New() {
     address: '',
     usertype: '',
   });
+
+  // New state variables for confirmation dialog and snackbar
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const handleRoleChange = (event) => {
     setSelectedRole(event.target.value);
@@ -76,15 +82,35 @@ export function New() {
       return;
     }
 
+    // Open the confirmation dialog when the user clicks "Submit"
+    setConfirmDialogOpen(true);
+  };
+
+  const handleDeleteCancel = () => {
+    // Handle cancel action in the confirmation dialog
+    setConfirmDialogOpen(false);
+  };
+
+  const handleDeleteConfirm = async () => {
+    // Handle confirm action in the confirmation dialog
+
+    // Close the confirmation dialog
+    setConfirmDialogOpen(false);
+
     try {
-      const formDataToSend ={
+      const formDataToSend = {
         ...formData,
         usertype: parseInt(selectedRole, 10),
       };
 
-      const response = await apiClient.post(api.newuser, formDataToSend); // Replace with your API endpoint
+      const response = await apiClient.post(api.newuser, formDataToSend);
       if (response.status === 200) {
         toast.success('Data submitted successfully!');
+
+        // Show the snackbar with a success message
+        setSnackbarMessage('Data submitted successfully.');
+        setSnackbarOpen(true);
+
         setFormData({
           name: '',
           email: '',
@@ -105,7 +131,7 @@ export function New() {
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const response = await apiClient.get(api.getUserType); // Replace with your API endpoint for roles
+        const response = await apiClient.get(api.getUserType);
         setDropdownOptions(response.data);
       } catch (error) {
         console.error('Error fetching roles:', error);
@@ -229,6 +255,33 @@ export function New() {
           </div>
         </div>
       </div>
+
+      {/* Confirmation Dialog */}
+      <Dialog open={confirmDialogOpen} onClose={handleDeleteCancel}>
+        <DialogTitle>Confirm Create</DialogTitle>
+        <DialogContent>
+          Are you sure you want to create this user?
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="primary">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Snackbar */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+      >
+        <Alert severity="success" onClose={() => setSnackbarOpen(false)}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

@@ -1,162 +1,346 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import 'froala-editor/css/froala_style.min.css';
+import React, { useState, useEffect } from 'react';
+import Axios from 'axios';
+import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
+import 'froala-editor/css/froala_style.min.css';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
+<<<<<<< HEAD
 import 'bootstrap/dist/css/bootstrap.min.css';
 import apiClient from '../../services/AxiosApi.jsx'
 import apis from '../../utils/apiUrl.json';
+=======
+import apiClient from '../../services/AxiosApi';
+import apis from '../../utils/apiUrl.json';
+import MyEditor, { HtmlEditor } from '../htmlEditor/htmlEditor';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ViewListIcon from '@mui/icons-material/ViewList';
+import { Link } from 'react-router-dom';
+>>>>>>> 2c5e594a579843bba36602f1815932700d6e79a6
 
-function FooterPage() {
-  const [footerType, setFooterType] = useState('');
-  const [footerName, setFooterName] = useState('');
-  const [fileData, setFileData] = useState(null);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const [openSnackbar, setOpenSnackbar] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
-    // Validate the fields
-    if (!footerName) {
-      setError('Footer Name is required.');
-      return;
+import DialogActions from '@mui/material/DialogActions';
+
+import Alert from '@mui/material/Alert';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+  Snackbar,
+  DialogTitle, // Add this import
+  DialogContent,
+  Dialog,
+} from '@mui/material'; 
+
+function EAlert(props) {
+  return <Alert elevation={6} variant="filled" {...props} />;
+}
+
+export const FooterPage = () => {
+  const [html, sethtml] = useState('');
+  const [file, setselectefile] = useState(null);
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false); // Confirmation dialog state
+  // const [snackbarOpen, setSnackbarOpen] = useState(false); // Snackbar state
+  const [modalMessage, setModalMessage] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const [formData, setFormData] = useState({
+    tittle_name: '',
+    contenttype: '',
+    external_link: '',
+    internale_link: '',
+    file: '',
+    html: '',
+  });
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    setFormData({
+      tittle_name: '',
+      contenttype: '',
+      external_link: '',
+      internale_link: '',
+      file: '',
+      html: '',
+    });
+  }, []);
+
+  const handleEditorChange = (content) => {
+    sethtml(content);
+  };
+
+  const validateForm = () => {
+    const errors = {};
+
+    if (!formData.tittle_name) {
+      errors.tittle_name = 'Name is required';
     }
 
-    if (!footerType) {
-      setError('Footer Type is required.');
-      return;
+    if (!formData.contenttype) {
+      errors.contenttype = 'Select a content type';
     }
 
-    if (footerType === 'file' && !fileData) {
-      setError('File is required for File type.');
-      return;
+    if (formData.contenttype === '4' && !formData.external_link) {
+      errors.external_link = 'External Link is required';
     }
 
-    // Prepare the data based on the selected type
-    let formData = new FormData();
-    formData.append('footerType', footerType);
-    formData.append('footerName', footerName);
-
-    if (footerType === 'file' && fileData) {
-      formData.append('file', fileData);
+    if (formData.contenttype === '3' && !formData.internale_link) {
+      errors.internale_link = 'Internal Link is required';
     }
 
-    // Send data to the API using Axios
+    if (formData.contenttype === '2' && !file) {
+      errors.file = 'File is required';
+    }
+
+    if (formData.contenttype === '1' && !html) {
+      errors.editorContent = 'HTML content is required';
+    }
+
+    setErrors(errors);
+
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleImageChange = (event) => {
+    const imageFile = event.target.files[0];
+    setselectefile(imageFile);
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value, type } = event.target;
+
+    if (type === '2') {
+      setFormData({
+        ...formData,
+        [name]: event.target.files[0],
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
+  };
+
+  const handleOpenConfirmation = () => {
+    setConfirmDialogOpen(true);
+  };
+
+  const handleCloseConfirmation = () => {
+    setConfirmDialogOpen(false);
+  };
+
+  const handleConfirmSubmit = async () => {
+    handleCloseConfirmation();
+
     try {
+<<<<<<< HEAD
       const response = await axios.post(apis.footerdata, formData);
       
       setSuccess('Data sent successfully!');
       setError('');
       setOpenSnackbar(true);
+=======
+      const formDataToSend = new FormData();
+      formDataToSend.append('tittle_name', formData.tittle_name);
+      formDataToSend.append('contenttype', formData.contenttype);
+
+      if (formData.contenttype === '4') {
+        formDataToSend.append('external_link', formData.external_link);
+      } else if (formData.contenttype === '3') {
+        formDataToSend.append('internale_link', formData.internale_link);
+      } else if (formData.contenttype === '2') {
+        formDataToSend.append('file', file);
+      } else if (formData.contenttype === '1') {
+        formDataToSend.append('html_content', html);
+      }
+
+      const response = await apiClient.post(apis.newfooter, formDataToSend, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('Data saved:', response.data);
+      toast.success('Data saved successfully!');
+      setModalMessage('Data saved successfully!');
+      setSnackbarOpen(true);
+       // Show the success Snackbar
+        // Clear the form fields
+    setFormData({
+      tittle_name: '',
+      contenttype: '',
+      external_link: '',
+      internale_link: '',
+      file: '',
+      html: '',
+    });
+>>>>>>> 2c5e594a579843bba36602f1815932700d6e79a6
     } catch (error) {
-      setError('An error occurred while sending data.');
-      setOpenSnackbar(true);
+      console.error('Error saving data:', error);
     }
   };
 
-  const handleFileChange = (e) => {
-    setFileData(e.target.files[0]);
-  };
-
-  const handleSnackbarClose = () => {
-    setOpenSnackbar(false);
-  };
-
   const config = {
-    placeholderText: 'Content Here!',
+    placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
   };
+  console.log(formData)
 
   return (
-    <div className='bgimg' style={{ height: '100vh' }}>
-      <div className='headingdiv'></div>
-      <div className='container'>
-        <div className='row justify-content-center'>
-          <div className='col-md-6'>
-            <div className='headingdiv'>
-              <p className='text-center' style={{ color: 'black',fontSize:"40px", fontWeight:"bold"}} id='headingfooter'>
-                Footer
-              </p>
-            </div>
-            <form onSubmit={handleSubmit}>
-              <div className='mb-3'>
-                <label>Footer Name</label>
-                <input
-                  type='text'
-                  className='form-control'
-                  value={footerName}
-                  onChange={(e) => setFooterName(e.target.value)}
-                />
-              </div>
-              <div className='mb-3'>
-                <label>Footer Type</label>
-                <select
-                  className='form-select'
-                  value={footerType}
-                  onChange={(e) => setFooterType(e.target.value)}
-                >
-                  <option value=''>Select an option</option>
-                  <option value='file'>File</option>
-                  <option value='link'>Link</option>
-                  <option value='html-editor'>HTML Editor</option>
-                </select>
-              </div>
-              {footerType === 'file' && (
-                <div className='mb-3'>
-                  <input
-                    type='file'
-                    accept='.pdf,.doc,.docx,.txt,.jpg,.png,.jpeg'
-                    onChange={handleFileChange}
-                  />
-                </div>
-              )}
-              {footerType === 'link' && (
-                <div className='mb-3'>
-                  <input
-                    type='text'
-                    className='form-control'
-                    placeholder='Upload link'
-                    onChange={handleFileChange}
-                  />
-                </div>
-              )}
-              {footerType === 'html-editor' && (
-                <div className='mb-3'>
-                  <label>Editor:</label>
-                  <FroalaEditorComponent tag='textarea' config={config} />
-                </div>
-              )}
-              <button type='submit' className='btn btn-primary'>
-                Submit
+    <div className="container">
+      <div className="row">
+        <div className="col">
+          <div className="col text-end">
+            <Link to="/footer/footertable" style={{ textDecoration: 'none' }}>
+              <button className="btn btn-primary">
+                <ViewListIcon /> Data view
               </button>
-            </form>
-            {error && (
-              <div
-                className='alert alert-danger mt-3'
-                role='alert'
-                show={openSnackbar}
-                onClose={handleSnackbarClose}
-              >
-                {error}
+            </Link>
+          </div>
+          <h1 className="text-center">Footer</h1>
+        </div>
+      </div>
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          {/* Input for Name */}
+          <div className="mb-3">
+            <label className="form-label text-dark">Name</label>
+            <input
+              className="form-control"
+              type="text"
+              placeholder="Name"
+              name="tittle_name"
+              value={formData.tittle_name}
+              onChange={handleInputChange}
+            />
+            {errors.tittle_name && <div className="text-danger">{errors.tittle_name}</div>}
+          </div>
+
+          {/* Input for Select a content type */}
+          <div className="mb-3">
+            <label className="form-label text-dark">Select a content type</label>
+            <select
+              className="form-select"
+              name="contenttype"
+              value={formData.contenttype}
+              onChange={handleInputChange}
+            >
+              <option value="">Select a content type</option>
+              <option value="4">External Link</option>
+              <option value="3">Internal Link</option>
+              <option value="2">File</option>
+              <option value="1">HTML</option>
+            </select>
+            {errors.contenttype && <div className="text-danger">{errors.contenttype}</div>}
+          </div>
+
+          {/* Input for External Link */}
+          {formData.contenttype === '4' && (
+            <div className="mb-3">
+              <label className="form-label text-dark">Enter External Link</label>
+              <input
+                className="form-control"
+                type="text"
+                placeholder="Enter External Link"
+                name="external_link"
+                value={formData.external_link}
+                onChange={handleInputChange}
+              />
+              {errors.external_link && <div className="text-danger">{errors.external_link}</div>}
+            </div>
+          )}
+
+          {/* Input for Internal Link */}
+          {formData.contenttype === '3' && (
+            <div className="mb-3">
+              <label className="form-label text-dark">Enter Internal Link</label>
+              <input
+                className="form-control"
+                type="text"
+                placeholder="Enter Internal Link"
+                name="internale_link"
+                value={formData.internale_link}
+                onChange={handleInputChange}
+              />
+              {errors.internale_link && <div className="text-danger">{errors.internale_link}</div>}
+            </div>
+          )}
+
+          {/* Input for File */}
+          {formData.contenttype === '2' && (
+            <div className="mb-3">
+              <label className="form-label text-dark">Choose File</label>
+              <input
+                className="form-control"
+                type="file"
+                name="file"
+                onChange={handleImageChange}
+              />
+              {errors.file && <div className="text-danger">{errors.file}</div>}
+            </div>
+          )}
+
+          {/* HTML Editor Input */}
+          {formData.contenttype === '1' && (
+            <div className="mb-3">
+              <label className="form-label text-dark">HTML Editor</label>
+              <div>
+                <textarea
+                  className="form-control"
+                  value={html}
+                  onChange={(e) => handleEditorChange(e.target.value)}
+                ></textarea>
               </div>
-            )}
-            {success && (
-              <div
-                className='alert alert-success mt-3'
-                role='alert'
-                show={openSnackbar}
-                onClose={handleSnackbarClose}
-              >
-                {success}
-              </div>
-            )}
+              {errors.editorContent && <div className="text-danger">{errors.editorContent}</div>}
+            </div>
+          )}
+
+          {/* Submit Button */}
+          <div className="btnsubmit">
+            <button className="btn btn-primary" onClick={handleOpenConfirmation}>
+              Submit
+            </button>
+            <Dialog open={confirmDialogOpen} onClose={handleCloseConfirmation}>
+              <DialogTitle>Confirm Submit</DialogTitle>
+              <DialogContent>
+                Are you sure you want to submit this data?
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseConfirmation} color="primary">
+                  Cancel
+                </Button>
+                <Button onClick={handleConfirmSubmit} color="primary">
+                  Confirm
+                </Button>
+              </DialogActions>
+            </Dialog>
+            <Snackbar
+              open={snackbarOpen}
+              autoHideDuration={3000} // Adjust as needed
+              onClose={() => setSnackbarOpen(false)}
+            >
+              <Alert severity="success" onClose={() => setSnackbarOpen(false)}>
+                {modalMessage}
+              </Alert>
+            </Snackbar>
+            <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000} // Adjust as needed
+        onClose={() => setSnackbarOpen(false)}
+      >
+        <Alert severity="success" onClose={() => setSnackbarOpen(false)}>
+          Data Save successfully.
+        </Alert>
+      </Snackbar>
           </div>
         </div>
       </div>
     </div>
   );
-}
-
-export default FooterPage;
+};
