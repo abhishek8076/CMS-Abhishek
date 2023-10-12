@@ -18,18 +18,18 @@ import { EditNotifications } from '@mui/icons-material';
 import { GridDeleteIcon } from '@mui/x-data-grid';
 
 // Import your API client and URL configurations
-import apiClient from '../../services/AxiosApi.jsx';
-import apis from '../../utils/apiUrl.json';
+import apiClient from '../../../services/AxiosApi.jsx';
+import apis from '../../../utils/apiUrl.json';
 
-import Sidebar from '../sidebar/Sidebar.jsx';
-import Navbar from '../navbar/Navbar.jsx'
+import Sidebar from '../../sidebar/Sidebar.jsx';
+import Navbar from '../../navbar/Navbar.jsx'
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import Alert from '@mui/material/Alert'; 
 
 // import './whatsnew.scss';
 
-export const FooterNavTable = () => {
+export const FooterDescTable = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);

@@ -11,7 +11,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import { Link } from 'react-router-dom';
-
+import Foo from '../FooterNav/FooterDesc';
+import {Routes, Route, useNavigate} from 'react-router-dom';
 
 
 import DialogActions from '@mui/material/DialogActions';
@@ -43,6 +44,7 @@ export const FooterPage = () => {
   // const [snackbarOpen, setSnackbarOpen] = useState(false); // Snackbar state
   const [modalMessage, setModalMessage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     tittle_name: '',
@@ -52,6 +54,10 @@ export const FooterPage = () => {
     file: '',
     html: '',
   });
+  const navigateFooter = () => {
+    // 👇️ navigate to /
+    navigate('/');
+  };
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
@@ -109,7 +115,7 @@ export const FooterPage = () => {
   const handleInputChange = (event) => {
     const { name, value, type } = event.target;
 
-    if (type === '2') {
+    if (type === 'file') {
       setFormData({
         ...formData,
         [name]: event.target.files[0],
@@ -119,7 +125,7 @@ export const FooterPage = () => {
         ...formData,
         [name]: value,
       });
-    }
+    }    
   };
 
   const handleOpenConfirmation = () => {
@@ -132,6 +138,7 @@ export const FooterPage = () => {
 
   const handleConfirmSubmit = async () => {
     handleCloseConfirmation();
+    validateForm();
 
     try {
       const formDataToSend = new FormData();
@@ -286,6 +293,7 @@ export const FooterPage = () => {
               {errors.editorContent && <div className="text-danger">{errors.editorContent}</div>}
             </div>
           )}
+         
 
           {/* Submit Button */}
           <div className="btnsubmit">
@@ -315,15 +323,6 @@ export const FooterPage = () => {
                 {modalMessage}
               </Alert>
             </Snackbar>
-            <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={3000} // Adjust as needed
-        onClose={() => setSnackbarOpen(false)}
-      >
-        <Alert severity="success" onClose={() => setSnackbarOpen(false)}>
-          Data Save successfully.
-        </Alert>
-      </Snackbar>
           </div>
         </div>
       </div>
