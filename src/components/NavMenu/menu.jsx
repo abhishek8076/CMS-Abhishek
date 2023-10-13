@@ -42,6 +42,11 @@ export const Menu = () => {
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [editorContent, setEditorContent] = useState('');
+
+  // const handleEditorChange = (content) => {
+  //   setEditorContent(content);
+  // };
 
   const [formData, setFormData] = useState({
     MenuName: '',
@@ -153,7 +158,7 @@ export const Menu = () => {
       } else if (formData.ContentType === '2') {
         formDataToSend.append('file', file);
       } else if (formData.ContentType === '1') {
-        formDataToSend.append('html_content', html);
+        formDataToSend.append('html', html);
       }
 
       const response = await apiClient.post(apis.navmenu, formDataToSend, {
@@ -174,7 +179,7 @@ export const Menu = () => {
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
   };
-  console.log(formData)
+  console.log(formData,html)
 
   return (
     <div className="container">
@@ -269,12 +274,17 @@ export const Menu = () => {
             <div className="mb-3">
               <label className="form-label text-dark">HTML Editor</label>
               <div>
-                <textarea
+                {/* <textarea
                   className="form-control"
                   value={html}
                   onChange={(e) => handleEditorChange(e.target.value)}
-                ></textarea>
+                ></textarea> */}
               </div>
+              <FroalaEditorComponent
+      tag='textarea'
+      model={html}
+      onModelChange={handleEditorChange}
+    />
               {errors.editorContent && <div className="text-danger">{errors.editorContent}</div>}
             </div>
           )}
