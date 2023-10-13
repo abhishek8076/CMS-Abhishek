@@ -317,8 +317,7 @@ export const FooterPage = () => {
             <Snackbar
               open={snackbarOpen}
               autoHideDuration={3000} // Adjust as needed
-              onClose={() => setSnackbarOpen(false)}
-            >
+              onClose={() => setSnackbarOpen(false)}>
               <Alert severity="success" onClose={() => setSnackbarOpen(false)}>
                 {modalMessage}
               </Alert>
