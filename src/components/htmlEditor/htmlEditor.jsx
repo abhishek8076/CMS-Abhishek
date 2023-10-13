@@ -1,76 +1,61 @@
-import React, { useRef } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
-import {CKEditor} from "ckeditor4-react";
+import React, { useCallback, useState, useMemo, useEffect } from "react";
+import JoditEditor from "jodit-react";
 
-CKEditor.editorUrl =
-  "https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.5.4/ckeditor.js";
 
-export const HtmlEditor=()=> {
-    const editorRef = useRef(null);
-    const log = () => {
-    if (editorRef.current) {
-        console.log(editorRef.current.getContent());
-    }
-  };
+export default function HtmlEditor() {
+  const [content, setContent] = useState("");
+  const [logs, setLogs] = useState([]);
+  const appendLog = useCallback(
+    (message) => {
+      console.log("logs = ", logs);
+      const newLogs = [...logs, message];
+      setLogs(newLogs);
+    },
+    [logs, setLogs]
+  );
+
+  const config = useMemo(
+    () => ({
+      readonly: false
+    }),
+    []
+  );
+
+  const onChange = useCallback(
+    (newContent) => {
+      appendLog(`onChange triggered with ${newContent}`);
+    },
+    [appendLog]
+  );
+
+  useEffect(() => {
+    console.log("onChange = ", onChange);
+  }, [onChange]);
+
+  const onBlur = useCallback(
+    (newContent) => {
+      appendLog(`onBlur triggered with ${newContent}`);
+      setContent(newContent);
+    },
+    [appendLog, setContent]
+  );
+
   return (
-    <>
-    <h1>jlkjsdlf</h1>
-    
-    <CKEditor
-        data="<p>Hello from CKEditor 4!</p>"
-        config={{
-          toolbar: [
-            { name: "tools", items: ["Maximize"] },
-            {
-              name: "clipboard",
-              items: ["Cut", "Copy", "Paste", "PasteText", "-", "Undo", "Redo"]
-            },
-            { name: "links", items: ["Link", "Unlink"] },
-            { name: "document", items: ["Source"] },
-            "/",
-            {
-              name: "basicstyles",
-              items: [
-                "Bold",
-                "Italic",
-                "Underline",
-                "Strike",
-                "-",
-                "Subscript",
-                "Superscript"
-              ]
-            },
-            {
-              name: "paragraph",
-              items: [
-                "NumberedList",
-                "BulletedList",
-                "-",
-                "Outdent",
-                "Indent",
-                "Blockquote"
-              ]
-            },
-            {
-              name: "align",
-              items: [
-                "AlignLeft",
-                "JustifyLeft",
-                "JustifyCenter",
-                "JustifyRight",
-                "JustifyBlock"
-              ]
-            },
-            "/",
-            { name: "styles", items: ["Format", "-", "Font", "-", "FontSize"] },
-            { name: "colors", items: ["TextColor", "BGColor"] },
-            { name: "insert", items: ["Image", "Table", "HorizontalRule"] },
-            "/"
-          ],
-          extraPlugins: "colorbutton,colordialog,font",
-          removeButtons: ""
-        }}
+    <div>
+      <JoditEditor
+        value={content}
+        config={config}
+        tabIndex={1}
+        onBlur={onBlur}
+        onChange={onChange}
       />
-    </>
+      <h3>Logs</h3>
+      <div>
+        {logs.map((log, index) => (
+          <p key={index}>{log}</p>
+        ))}
+      </div>
+      <button onClick={() => appendLog("hello")}>Add</button>
+    </div>
   );
 }

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState,useEffect, useMemo, useCallback } from "react";
+
 import Axios from 'axios'; // Make sure Axios is imported if used elsewhere
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
@@ -12,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './whatsnew.scss'
 import ViewListIcon from '@mui/icons-material/ViewList';
 import { Link } from 'react-router-dom';
+import JoditEditor from "jodit-react";
 
 
 export const WhatsNew = () => {
@@ -19,6 +21,19 @@ export const WhatsNew = () => {
   const [file, setselectefile] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 const [modalMessage, setModalMessage] = useState('');
+const [content, setContent] = useState("");
+
+const config = useMemo(
+  () => ({
+    readonly: false
+  }),
+  []
+);
+
+const onChange = useCallback((newContent) => {
+  console.log("Editor content changed:", newContent);
+  setContent(newContent);
+}, []);
 
   const [formData, setFormData] = useState({
     news_title: '',
@@ -80,9 +95,9 @@ const [modalMessage, setModalMessage] = useState('');
       errors.file = 'File is required';
     }
 
-    if (formData.contenttype === '1' && !html) {
-      errors.editorContent = 'HTML content is required';
-    }
+    // if (formData.contenttype === '1' && !html) {
+    //   errors.editorContent = 'HTML content is required';
+    // }
 
     if (!formData.startdate) {
       errors.startdate = 'Starting Date is required';
@@ -141,7 +156,7 @@ const [modalMessage, setModalMessage] = useState('');
         } else if (formData.contenttype === '2') {
           formDataToSend.append('file',file);
         } else if (formData.contenttype === '1') {
-          formDataToSend.append('html_content', html);
+          formDataToSend.append('html', content);
         }
 
         formDataToSend.append('startdate', formData.startdate); // Add Starting Date
@@ -161,10 +176,7 @@ const [modalMessage, setModalMessage] = useState('');
     }
   };
 
-  const config = {
-    placeholderText: 'Edit Your Content Here!',
-    charCounterCount: false,
-  };
+
   console.log(formData);
 
   return (
@@ -273,11 +285,17 @@ const [modalMessage, setModalMessage] = useState('');
             <label className="form-label text-dark">HTML Editor</label>
             <div>
               {/* Include your HTML editor component here */}
-              <textarea
+              {/* <textarea
                 className="form-control"
                 value={formData.editorContent}
                 onChange={(e) => handleEditorChange(e.target.value)}
-              ></textarea>
+              ></textarea> */}
+               <JoditEditor
+        value={content}
+        config={config}
+        tabIndex={1}
+        onChange={onChange}
+      />
             </div>
             {errors.editorContent && (
               <div className="text-danger">{errors.editorContent}</div>

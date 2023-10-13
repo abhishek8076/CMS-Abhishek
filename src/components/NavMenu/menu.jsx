@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useCallback,useMemo} from 'react';
 import Axios from 'axios';
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
@@ -6,12 +6,13 @@ import 'froala-editor/css/froala_style.min.css';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
 import apiClient from '../../services/AxiosApi';
 import apis from '../../utils/apiUrl.json';
-import MyEditor, { HtmlEditor } from '../htmlEditor/htmlEditor';
+import  HtmlEditor  from '../htmlEditor/htmlEditor';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import { Link } from 'react-router-dom';
 import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
+import JoditEditor from "jodit-react";
 
 
 
@@ -44,6 +45,19 @@ export const Menu = () => {
   const [modalMessage, setModalMessage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [editorContent, setEditorContent] = useState('');
+  const [content, setContent] = useState("");
+
+const config = useMemo(
+  () => ({
+    readonly: false
+  }),
+  []
+);
+
+const onChange = useCallback((newContent) => {
+  console.log("Editor content changed:", newContent);
+  setContent(newContent);
+}, []);
 
   // const handleEditorChange = (content) => {
   //   setEditorContent(content);
@@ -102,9 +116,9 @@ export const Menu = () => {
       newErrors.file = 'File is required';
     }
 
-    if (formData.ContentType === '1' && !html) {
-      newErrors.html = 'HTML content is required';
-    }
+    // if (formData.ContentType === '1' && !html) {
+    //   newErrors.html = 'HTML content is required';
+    // }
 
     setErrors(newErrors);
 
@@ -159,7 +173,7 @@ export const Menu = () => {
       } else if (formData.ContentType === '2') {
         formDataToSend.append('file', file);
       } else if (formData.ContentType === '1') {
-        formDataToSend.append('html', html);
+        formDataToSend.append('html', content);
       }
 
       const response = await apiClient.post(apis.navmenu, formDataToSend, {
@@ -176,10 +190,6 @@ export const Menu = () => {
     }
   };
 
-  const config = {
-    placeholderText: 'Edit Your Content Here!',
-    charCounterCount: false,
-  };
   console.log(formData,html)
 
   return (
@@ -281,11 +291,18 @@ export const Menu = () => {
                   onChange={(e) => handleEditorChange(e.target.value)}
                 ></textarea> */}
               </div>
-              <FroalaEditorComponent
+              {/* <FroalaEditorComponent
       tag='textarea'
       model={html}
       onModelChange={handleEditorChange}
-    />
+    /> */}
+    {/* <HtmlEditor/> */}
+    <JoditEditor
+        value={content}
+        config={config}
+        tabIndex={1}
+        onChange={onChange}
+      />
               {errors.editorContent && <div className="text-danger">{errors.editorContent}</div>}
             </div>
           )}
