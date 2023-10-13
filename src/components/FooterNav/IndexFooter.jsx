@@ -23,7 +23,7 @@ export const IndexFooter = () => {
           <div>
             <button onClick={() => handleButtonClick("button1")}>Description</button>
             <button onClick={() => handleButtonClick("button2")}>Services</button>
-            <button onClick={() => handleButtonClick("button3")}>Address</button>
+            <button onClick={() => handleButtonClick("button3")}>Office Address</button>
             <button onClick={() => handleButtonClick("button4")}>Linking</button>
 
             <div style={{ display: activeButton === "button1" ? "block" : "none" }}>

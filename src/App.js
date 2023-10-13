@@ -28,7 +28,7 @@ import Profile from "./pages/profile/Profile";
 import  {CmsDisplay}  from "./pages/cmsDisplay/CmsDisplay";
 import { Menuoptions } from "./datatablesource";
 import { ServicesBox } from "./components/servicesBox/ServicesBox";
-import { FooterNavTable } from "./components/FooterNav/FooterData/FooterNavTable";
+import { FooterNavTable } from "./components/FooterNav/FooterTable/FooterNavTable";
 // import {IndexFooter} from "./components/FooterNav/IndexFooter";
 import {FooterDesc} from "./components/FooterNav/FooterDesc"  
 import  {FooterService}  from "./components/FooterNav/FooterService";
@@ -36,9 +36,10 @@ import {FooterOffice}  from "./components/FooterNav/FooterOffice";
 import {IndexFooter} from "./components/FooterNav/IndexFooter";
 // import { FooterDescTable } from "./component/FooterNav/FooterData/FooterDescTable";
 // import { FooterServTable } from "./component/FooterNav/FooterData/FooterServTable";
-import { FooterOfficeTable } from "./components/FooterNav/FooterData/FooterOfficeTable";
-import { FooterDescTable } from "./components/FooterNav/FooterData/FooterDescTable";
-import { FooterServTable } from "./components/FooterNav/FooterData/FootetServTable";
+import { FooterOfficeTable } from "./components/FooterNav/FooterTable/FooterOfficeTable";
+import { FooterDescTable } from "./components/FooterNav/FooterTable/FooterDescTable";
+import { FooterServTable } from "./components/FooterNav/FooterTable/FootetServTable";
+import {FooterNavEdit} from "./components/FooterNav/FooderEdit/FooterNavEdit"
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -123,6 +124,7 @@ function App() {
             <Route path="footerdesc" element={<FooterDesc/>} />
             <Route path="footerservice" element={<FooterService/>} />
             <Route path="footeroffice" element={<FooterOffice/>} />
+            <Route path="footernavedit/:id" element={<FooterNavEdit />} />
             {/* <Route path="footerpage" element={<FooterNav/>} /> */}
             
             {/* <Route path="editfooter/:id" element={<EditWhatsnew />} /> */}
