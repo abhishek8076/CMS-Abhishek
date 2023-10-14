@@ -15,6 +15,8 @@ import img3 from '../../img/whatsnew.png';
 import img4 from '../../img/banner1.png';
 import img5 from '../../img/link2.png';
 import img6 from '../../img/order.png';
+
+
 import { AutoAwesomeMotionOutlined, AutoFixHigh } from '@mui/icons-material';
 import { Container } from 'react-bootstrap';
 
@@ -39,8 +41,8 @@ const Home = () => {
                   // alt="green iguana"
                 />
                 
-                <CardContent>
-                  <Typography gutterBottom variant="h6" component="div">
+                <CardContent  className="custom-content1">
+                  <Typography gutterBottom variant="h6" component="div" className="custom-typo" >
                     User
                   </Typography>
                   
@@ -61,8 +63,8 @@ const Home = () => {
                   image={img1}
                   alt="green iguana"
                 />
-                <CardContent>
-                  <Typography gutterBottom variant="h6" component="div">
+                <CardContent  className="custom-content2">
+                  <Typography gutterBottom variant="h6" component="div" className="custom-typo">
                     CMS
                   </Typography>
                  
@@ -81,8 +83,8 @@ const Home = () => {
                   image={img2}
                   alt="green iguana"
                 />
-                <CardContent>
-                  <Typography gutterBottom variant="h6" component="div">
+                <CardContent  className="custom-content3">
+                  <Typography gutterBottom variant="h6" component="div" className="custom-typo">
                     Footer
                   </Typography>
                  
@@ -101,8 +103,8 @@ const Home = () => {
                   image={img3}
                   alt="green iguana"
                 />
-                <CardContent>
-                  <Typography gutterBottom variant="h6" component="div">
+                <CardContent  className="custom-content4">
+                  <Typography gutterBottom variant="h6" component="div" className="custom-typo">
                     Whats New
                   </Typography>
                   {/* <Typography variant="body2" color="text.secondary">
@@ -123,8 +125,8 @@ const Home = () => {
                   image={img4}
                   alt="green iguana"
                 />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
+                <CardContent  className="custom-content5">
+                  <Typography gutterBottom variant="h5" component="div" className="custom-typo">
                     Banner
                   </Typography>
                 </CardContent>
@@ -143,8 +145,8 @@ const Home = () => {
                   image={img5}
                   alt="green iguana"
                 />
-                <CardContent>
-                  <Typography gutterBottom variant="h6" component="div">
+                <CardContent  className="custom-content6">
+                  <Typography gutterBottom variant="h6" component="div" className="custom-typo">
                     Related Links
                   </Typography>
                   

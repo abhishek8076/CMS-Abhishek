@@ -151,17 +151,20 @@ export const FooterDesc = () => {
       <div className="row">
         <div className="col">
           <div className="col text-end">
-            <Link to="/footer/footertable" style={{ textDecoration: 'none' }}>
+            <Link to="/footer/footertable" style={{ textDecoration: "none" }}>
               <button className="btn btn-primary">
                 <ViewListIcon /> Data view
               </button>
             </Link>
           </div>
-          <h1 className="text-center">Footer Description</h1>
         </div>
       </div>
+      <div className="main-body">
       <div className="row justify-content-center">
         <div className="col-md-6">
+        <div className="mb-3">
+        <h1 className="text-center">Footer Description</h1>
+          </div>
           <div className="mb-3">
             <label className="form-label text-dark">Enter Title</label>
             <input
@@ -172,7 +175,9 @@ export const FooterDesc = () => {
               value={formData.tittle_name}
               onChange={handleInputChange}
             />
-            {errors.tittle_name && <div className="text-danger">{errors.tittle_name}</div>}
+            {errors.tittle_name && (
+              <div className="text-danger">{errors.tittle_name}</div>
+            )}
           </div>
           <div className="mb-3">
             <label className="form-label text-dark">Description</label>
@@ -184,15 +189,22 @@ export const FooterDesc = () => {
               value={formData.description}
               onChange={handleInputChange}
             />
-            {errors.description && <div className="text-danger">{errors.description}</div>}
+            {errors.description && (
+              <div className="text-danger">{errors.description}</div>
+            )}
           </div>
           <div className="btnsubmit">
-            <button className="btn btn-primary" onClick={handleOpenConfirmation}>
+            <button
+              className="btn btn-primary"
+              onClick={handleOpenConfirmation}
+            >
               Submit
             </button>
             <Dialog open={confirmDialogOpen} onClose={handleCloseConfirmation}>
               <DialogTitle>Confirm Submit</DialogTitle>
-              <DialogContent>Are you sure you want to submit this data?</DialogContent>
+              <DialogContent>
+                Are you sure you want to submit this data?
+              </DialogContent>
               <DialogActions>
                 <Button onClick={handleCloseConfirmation} color="primary">
                   Cancel
@@ -214,6 +226,7 @@ export const FooterDesc = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

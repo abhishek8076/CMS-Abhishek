@@ -14,13 +14,13 @@
     justify-content: space-between;
     
 
-    .name{
-      color: #f3f3f3;
+   
+    .name {
+      color: #ffff00;
       font-size: 20px;
       margin-bottom: 0px;
       font-weight: 600;
-
-    }
+  }
 
     .search {
       display: flex;
@@ -149,7 +149,8 @@
 
 // custom css
 .navbar {
-  background-color: rgb(102 193 93);
+  background-color: #00a79d;
+  
 }
 .item.avatar-logo button {
   padding: 0px;
