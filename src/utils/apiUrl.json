@@ -20,5 +20,6 @@
     "login": "/api/Login",
     "navmenu":"/Api/TopMenu",
     "getmenuname":"/Api/TopMenu",
+    "getmenudatabyid":"/Api/TopMenu/",
     "submenunav":"/Api/TopMenu/SubMenu"
 }

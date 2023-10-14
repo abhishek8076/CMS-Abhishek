@@ -40,7 +40,8 @@ import { FooterOfficeTable } from "./components/FooterNav/FooterTable/FooterOffi
 import { FooterDescTable } from "./components/FooterNav/FooterTable/FooterDescTable";
 import { FooterServTable } from "./components/FooterNav/FooterTable/FootetServTable";
 import {FooterNavEdit} from "./components/FooterNav/FooderEdit/FooterNavEdit"
-
+import{ MenuTable} from './components/NavMenu/NavMenuTable/MenuTable'
+import {EditNavMenu} from "./components/NavMenu/EditNavMenu/EditNavMenu";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
   // const LocalStorageData = localStorage.getItem("token");
@@ -94,7 +95,7 @@ function App() {
         <Route path="/dashboard" element={<Home />} />
         {/* <Route path="extra" element={<Extra />} /> */}
         {/* <Route path="/users" element={<List />} /> */}
-        <Route path="/cms" element={<Cms />} />
+        {/* <Route path="/cms" element={<Cms />} /> */}
        
         <Route path="users">
             <Route index element={<List />} />
@@ -108,6 +109,13 @@ function App() {
        <Route path="/services" element={<ServicesBox/>} />
        <Route path="/display" element={<CmsDisplay/>} />
        <Route path="/banner" element={<IndexBanner/>} />
+       <Route path="cms"  >
+           <Route index element={<Cms />} />
+            <Route path="menutable" element={<MenuTable />} />
+            <Route path="editmenu/:id" element={<EditNavMenu />} />
+
+
+          </Route>
        <Route path="whatsnew"  >
            <Route index element={<IndexWhatsNew />} />
             <Route path="whatsnewtable" element={<WhatsNewTable />} />
