@@ -21,5 +21,6 @@
     "navmenu":"/Api/TopMenu",
     "getmenuname":"/Api/TopMenu",
     "getmenudatabyid":"/Api/TopMenu/",
-    "submenunav":"/Api/TopMenu/SubMenu"
+    "submenunav":"/Api/TopMenu/SubMenu",
+    "homepage":"/api/Homemaster"
 }

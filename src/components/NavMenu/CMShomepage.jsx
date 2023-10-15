@@ -10,6 +10,8 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { ButtonBase } from '@mui/material';
 import { ButtonGroup } from 'react-bootstrap';
+import apiClient from '../../services/AxiosApi'
+import apis from '../../utils/apiUrl.json'
 
 export const CMShomepage = () => {
   const [content, setContent] = useState('');
@@ -27,9 +29,15 @@ export const CMShomepage = () => {
   };
 
   const handleConfirmSubmit = () => {
-    // User confirmed, so save the content
-    axios
-      .post('/api/saveContent', { content })
+    const formData = new FormData();
+  formData.append('h_html',content );
+
+    apiClient
+      .post(apis.homepage, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      } )
       .then((response) => {
         console.log(response.data);
         setModalMessage('Content saved successfully.');

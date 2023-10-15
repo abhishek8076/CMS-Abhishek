@@ -284,7 +284,7 @@ const onChange = useCallback((newContent) => {
           {formData.ContentType === '1' && (
             <div className="mb-3">
               <label className="form-label text-dark">HTML Editor</label>
-              <div>
+              <div >
                 {/* <textarea
                   className="form-control"
                   value={html}
