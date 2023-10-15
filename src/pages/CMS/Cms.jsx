@@ -17,6 +17,7 @@ import {Submenu} from '../../components/NavMenu/submenu';
 // import './Cms.scss'
 import { Row, Col,  Button } from 'react-bootstrap';
 import { CMShomepage } from '../../components/NavMenu/CMShomepage';
+import { Link } from 'react-router-dom';
 
 export const Cms = () => {
   const [menu, setMenu] = React.useState('');
@@ -66,13 +67,27 @@ export const Cms = () => {
         <div className="backgroundcontainer">
           <Navbar />
           <div className='mainContainer'>
+           
             <Container className="custom-container"> {/* Add a custom CSS class */}
+           
+            <Row>
+                <Col xs={12} className="text-end">
+                <Link to='/cms/menutable' style={{textDecoration:'none'}}>
+            <Button>
+              Table
+            </Button>
+            </Link>
+                </Col>
+              </Row>
               <Row>
                 <Col xs={12} className="text-center mt-4">
+               
                   <h4>Add Menu</h4>
+                  
                 </Col>
               </Row>
               <Row className="justify-content-left" style={{marginTop:'20px'}}>
+                
                 <Col xs={6}>
                   <Form>
                     <Form.Group controlId="exampleForm.ControlSelect1">
