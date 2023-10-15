@@ -29,6 +29,11 @@ export const Cms = () => {
     { label: 'Link', value: "2" },
     { label: 'HTML', value: "3" },
   ]
+  const [activeButton, setActiveButton] = useState("button1"); // Set "button1" as the initial active button
+
+  const handleButtonClick = (buttonId) => {
+    setActiveButton(buttonId);
+  };
 
   const [selectedRole, setSelectedRole] = useState('')
   const handleRoleChange = (event) => {
@@ -66,11 +71,17 @@ export const Cms = () => {
       <div className="homeContainer">
         <div className="backgroundcontainer">
           <Navbar />
-          <div className='mainContainer'>
-           
-            <Container className="custom-container"> {/* Add a custom CSS class */}
-           
-            <Row>
+          <div >
+         
+      
+            <div className="container">
+          <div className="tab-box">
+            <button onClick={() => handleButtonClick("button1")} className="tab1">Home</button>
+            <button onClick={() => handleButtonClick("button2")} className="tab2">Menu</button>
+            <button onClick={() => handleButtonClick("button3")} className="tab3">Sub Menu</button>
+            {/* <button onClick={() => handleButtonClick("button4")} className="tab4">Linking</button> */}
+</div>
+<Row>
                 <Col xs={12} className="text-end">
                 <Link to='/cms/menutable' style={{textDecoration:'none'}}>
             <Button>
@@ -79,47 +90,21 @@ export const Cms = () => {
             </Link>
                 </Col>
               </Row>
-              <Row>
-                <Col xs={12} className="text-center mt-4">
-               
-                  <h4>Add Menu</h4>
-                  
-                </Col>
-              </Row>
-              <Row className="justify-content-left" style={{marginTop:'20px'}}>
-                
-                <Col xs={6}>
-                  <Form>
-                    <Form.Group controlId="exampleForm.ControlSelect1">
-                    
-                      <Form.Control
-                        as="select" 
-                        value={selectedOption}
-                        onChange={handleOptionChange}
-                        className="float-left" // Set dropdown to the left
-                      >
-                        {options.map((option, index) => (
-                          <option key={index} value={option}>
-                            {option}
-                          </option>
-                        ))}
-                      </Form.Control>
-                    </Form.Group>
-                  </Form>
-                </Col>
-              </Row>
-              <Row className="justify-content-left   
-              ">
-                <Col xs={6}>
-                  {/* Render different components based on the selected option */}
-                  {selectedOption === 'Home' && <CMShomepage />}
-                  {selectedOption === 'Menu' && <Menu />}
-                  {selectedOption === 'Submenu' && <Submenu />}
-                  {/* {selectedOption === 'Subsubmenu' && <Subsubmenu />} */}
-                  {/* {hello my name is demo} */}
-                </Col>
-              </Row>
-            </Container>
+            <div style={{ display: activeButton === "button1" ? "block" : "none" }}>
+            < CMShomepage/>
+          
+            </div>
+            <div style={{ display: activeButton === "button2" ? "block" : "none" }}>
+            <Menu />
+              
+            </div>
+            <div style={{ display: activeButton === "button3" ? "block" : "none" }}>
+            <Submenu />
+            </div>
+            {/* <div style={{ display: activeButton === "button4" ? "block" : "none" }}>
+            <FooterPage />
+            </div> */}
+          </div>
           </div>
         </div>
       </div>
