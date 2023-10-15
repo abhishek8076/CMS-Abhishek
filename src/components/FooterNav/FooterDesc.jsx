@@ -13,7 +13,7 @@ import ViewListIcon from '@mui/icons-material/ViewList';
 import { Link } from 'react-router-dom';
 import Sidebar from '../sidebar/Sidebar';
 import Navbar from '../navbar/Navbar';
-
+import './indexFooter.scss';
 import DialogActions from '@mui/material/DialogActions';
 import Alert from '@mui/material/Alert';
 import {
@@ -159,11 +159,12 @@ export const FooterDesc = () => {
           </div>
         </div>
       </div>
-      <div className="main-body">
+      {/* <div className="main-body"> */}
       <div className="row justify-content-center">
         <div className="col-md-6">
+<div className="box-sec">
         <div className="mb-3">
-        <h1 className="text-center">Footer Description</h1>
+        <h1 className="text-center heading-main">Footer Description</h1>
           </div>
           <div className="mb-3">
             <label className="form-label text-dark">Enter Title</label>
@@ -224,9 +225,10 @@ export const FooterDesc = () => {
               </Alert>
             </Snackbar>
           </div>
+          </div>
         </div>
       </div>
     </div>
-    </div>
+    // </div>
   );
 };

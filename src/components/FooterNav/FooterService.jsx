@@ -136,11 +136,12 @@ export const FooterService = () => {
               </button>
             </Link>
           </div>
-          <h1 className="text-center">Footer Service</h1>
         </div>
       </div>
       <div className="row justify-content-center">
         <div className="col-md-6">
+        <div className="box-sec">
+        <h1 className="text-center heading-main">Footer Service</h1>
           {/* Input for Title */}
           <div className="mb-3">
             <label className="form-label text-dark">Enter Title</label>
@@ -191,6 +192,7 @@ export const FooterService = () => {
             >
               {modalMessage}
             </Snackbar>
+          </div>
           </div>
         </div>
       </div>

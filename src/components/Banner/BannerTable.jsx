@@ -70,7 +70,7 @@ export const BannerTable = () => {
     <>
       <div className="datatable">
         <div className="datatableTitle" style={{ paddingTop: 20, paddingLeft: 10 }}>
-          <h2>Banner Data</h2>
+        <h1 class="text-center heading-main">Banner Data</h1>
         </div>
       </div>
       <div className="container">

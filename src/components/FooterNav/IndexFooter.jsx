@@ -20,12 +20,12 @@ export const IndexFooter = () => {
       <div className="listContainer">
         <Navbar />
         <div className="container">
-          <div>
-            <button onClick={() => handleButtonClick("button1")}>Description</button>
-            <button onClick={() => handleButtonClick("button2")}>Services</button>
-            <button onClick={() => handleButtonClick("button3")}>Office Address</button>
-            <button onClick={() => handleButtonClick("button4")}>Linking</button>
-
+          <div className="tab-box">
+            <button onClick={() => handleButtonClick("button1")} className="tab1">Description</button>
+            <button onClick={() => handleButtonClick("button2")} className="tab2">Services</button>
+            <button onClick={() => handleButtonClick("button3")} className="tab3">Office Address</button>
+            <button onClick={() => handleButtonClick("button4")} className="tab4">Linking</button>
+</div>
             <div style={{ display: activeButton === "button1" ? "block" : "none" }}>
             <FooterDesc />
           
@@ -43,6 +43,6 @@ export const IndexFooter = () => {
           </div>
         </div>
       </div>
-    </div>
+   
   );
 };

@@ -89,10 +89,14 @@ export const FooterOffice = () => {
               </button>
             </Link>
           </div>
-      <h1 className="text-center">Office address</h1>
       </div>
+      
       <div className="row justify-content-center">
         <div className="col-md-6">
+        <div className="box-sec">
+          <div className="mb-3">
+          <h1 className="text-center heading-main">Office Address</h1>
+          </div>
           <div className="mb-3">
             <label className="form-label text-dark">Enter Title</label>
             <input
@@ -138,6 +142,7 @@ export const FooterOffice = () => {
             <button className="btn btn-primary" onClick={handleConfirmSubmit}>
               Submit
             </button>
+          </div>
           </div>
         </div>
       </div>

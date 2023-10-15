@@ -215,11 +215,12 @@ export const EditWhatsnew = () => {
               </button>
             </Link>
           </div>
-          <h1 className="text-center">What's New</h1>
         </div>
       </div>
       <div className="row justify-content-center">
         <div className="col-md-6">
+        <div class="box-sec">
+        <h1 className="text-center heading-main">What's New</h1>
           <div className="mb-3">
             <label className="form-label text-dark">Name</label>
             <input
@@ -355,6 +356,7 @@ export const EditWhatsnew = () => {
             <CustomModal isOpen={isModalOpen} message={modalMessage} onClose={closeModal} />
           </div>
         </div>
+      </div>
       </div>
     </div>
     </div>
