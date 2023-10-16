@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useMemo,useCallback } from 'react';
 import Axios from 'axios';
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
@@ -33,6 +33,7 @@ import {
 } from '@mui/material';
 import { Form } from 'react-bootstrap';
 import { ElectricBike } from '@mui/icons-material';
+import JoditEditor from 'jodit-react';
 
 function EAlert(props) {
   return <Alert elevation={6} variant="filled" {...props} />;
@@ -46,13 +47,14 @@ export const Submenu = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [data, Setdata] = useState([])
   const [selectedRole, setSelectedRole] = useState('');
+  const [content, setContent] = useState("");
 
   const [formData, setFormData] = useState({
     MenuName: '',
     ContentType: '',
     external_link: '',
     internal_link: '',
-    MenuUrl: 'dsafdsaf',
+  
     submenu_id: "",
     file: '',
     html: '',
@@ -72,6 +74,19 @@ export const Submenu = () => {
       html: '',
     
     });
+  }, []);
+  
+
+  const config = useMemo(
+    () => ({
+      readonly: false
+    }),
+    []
+  );
+  
+  const onChange = useCallback((newContent) => {
+    console.log("Editor content changed:", newContent);
+    setContent(newContent);
   }, []);
 
   const handleEditorChange = (content) => {
@@ -108,9 +123,9 @@ export const Submenu = () => {
       newErrors.file = 'File is required';
     }
 
-    if (formData.ContentType === '1' && !html) {
-      newErrors.html = 'HTML content is required';
-    }
+    // if (formData.ContentType === '1' && !html) {
+    //   newErrors.html = 'HTML content is required';
+    // }
 
     setErrors(newErrors);
 
@@ -168,7 +183,7 @@ export const Submenu = () => {
       } else if (formData.ContentType === '2') {
         formDataToSend.append('file', file);
       } else if (formData.ContentType === '1') {
-        formDataToSend.append('html_content', html);
+        formDataToSend.append('html', content);
       }
 
       const response = await apiClient.post(apis.navmenu, formDataToSend, {
@@ -196,10 +211,7 @@ export const Submenu = () => {
     fetchRoles();
   }, []);
 
-  const config = {
-    placeholderText: 'Edit Your Content Here!',
-    charCounterCount: false,
-  };
+
   console.log(formData)
 
   return (
@@ -319,11 +331,17 @@ export const Submenu = () => {
             <div className="mb-3">
               <label className="form-label text-dark">HTML Editor</label>
               <div>
-                <textarea
+                {/* <textarea
                   className="form-control"
                   value={html}
                   onChange={(e) => handleEditorChange(e.target.value)}
-                ></textarea>
+                ></textarea> */}
+                <JoditEditor
+        value={content}
+        config={config}
+        tabIndex={1}
+        onChange={onChange}
+      />
               </div>
               {errors.editorContent && <div className="text-danger">{errors.editorContent}</div>}
             </div>
