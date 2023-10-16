@@ -48,6 +48,9 @@ export const Submenu = () => {
   const [data, Setdata] = useState([])
   const [selectedRole, setSelectedRole] = useState('');
   const [content, setContent] = useState("");
+  const [dropdownOptions, setDropdownOptions] = useState([]);
+  const [formErrors, setFormErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     MenuName: '',
@@ -210,7 +213,20 @@ export const Submenu = () => {
     };
     fetchRoles();
   }, []);
-
+  useEffect(() => {
+    async function fetchData1() {
+      try {
+        setLoading(true);
+        const response = await apiClient.get(apis.getmenuname);
+        setDropdownOptions(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        setLoading(false);
+      }
+    }
+    fetchData1();
+  }, []);
 
   console.log(formData)
 
@@ -299,15 +315,20 @@ export const Submenu = () => {
           {/* Input for Internal Link */}
           {formData.ContentType === '3' && (
             <div className="mb-3">
-              <label className="form-label text-dark">Enter Internal Link</label>
-              <input
-                className="form-control"
-                type="text"
-                placeholder="Enter Internal Link"
-                name="internal_link"
-                value={formData.internal_link}
-                onChange={handleInputChange}
-              />
+              <select
+                                  className='form-control'
+                                  name='internal_link'
+                                  value={formData.internal_link}
+                                  onChange={handleInputChange}
+                                  isInvalid={!!formErrors.internal_link}
+                                >
+                                  <option value='' style={{color:"black"}}>Select a role</option>
+                                  {dropdownOptions.map((data) => (
+                                    <option key={data.u_id} value={"/menu/"+data.u_menu_url}>
+                                      {"Menu Name"+":-"+data.u_menu_name}
+                                    </option>
+                                  ))}
+                                </select>
               {errors.internal_link && <div className="text-danger">{errors.internal_link}</div>}
             </div>
           )}

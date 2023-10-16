@@ -1,13 +1,12 @@
-import React, { useState,useEffect, useMemo, useCallback } from "react";
-
-import Axios from 'axios'; // Make sure Axios is imported if used elsewhere
+import React, { useState, useEffect, useMemo, useCallback } from "react";
+import Axios from 'axios';
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.min.css';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
-import apiClient from '../../services/AxiosApi'; // Adjust the import path as needed
-import apis from '../../utils/apiUrl.json'; // Adjust the import path as needed
-import MyEditor, { HtmlEditor } from '../htmlEditor/htmlEditor'; // Adjust the import path as needed
+import apiClient from '../../services/AxiosApi';
+import apis from '../../utils/apiUrl.json';
+import MyEditor, { HtmlEditor } from '../htmlEditor/htmlEditor';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './whatsnew.scss'
@@ -15,36 +14,34 @@ import ViewListIcon from '@mui/icons-material/ViewList';
 import { Link } from 'react-router-dom';
 import JoditEditor from "jodit-react";
 
-
 export const WhatsNew = () => {
   const [html, sethtml] = useState('');
   const [file, setselectefile] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-const [modalMessage, setModalMessage] = useState('');
-const [content, setContent] = useState("");
+  const [modalMessage, setModalMessage] = useState('');
+  const [content, setContent] = useState("");
 
-const config = useMemo(
-  () => ({
-    readonly: false
-  }),
-  []
-);
+  const config = useMemo(
+    () => ({
+      readonly: false
+    }),
+    []
+  );
 
-const onChange = useCallback((newContent) => {
-  console.log("Editor content changed:", newContent);
-  setContent(newContent);
-}, []);
+  const onChange = useCallback((newContent) => {
+    console.log("Editor content changed:", newContent);
+    setContent(newContent);
+  }, []);
 
   const [formData, setFormData] = useState({
     news_title: '',
-    
     contenttype: '',
     external_file: '',
     internale_file: '',
     file: "",
-    startdate: '', // Added Starting Date
-    end_date: '',   // Added Ending Date
-    html:""
+    startdate: '',
+    end_date: '',
+    html: ""
   });
   const [errors, setErrors] = useState({});
 
@@ -62,9 +59,9 @@ const onChange = useCallback((newContent) => {
       external_file: '',
       internale_file: '',
       file: "",
-      startdate: '', // Initialize Starting Date
-      end_date: '', 
-      html:""  // Initialize Ending Date
+      startdate: '',
+      end_date: '',
+      html: ""
     });
   }, []);
 
@@ -95,22 +92,21 @@ const onChange = useCallback((newContent) => {
       errors.file = 'File is required';
     }
 
-    // if (formData.contenttype === '1' && !html) {
-    //   errors.editorContent = 'HTML content is required';
-    // }
-
     if (!formData.startdate) {
       errors.startdate = 'Starting Date is required';
     }
 
     if (!formData.end_date) {
       errors.end_date = 'Ending Date is required';
+    } else if (new Date(formData.startdate) > new Date(formData.end_date)) {
+      errors.end_date = 'End date must be greater than or equal to start date';
     }
 
     setErrors(errors);
 
     return Object.keys(errors).length === 0;
   };
+
   const handleImageChange = (event) => {
     const imageFile = event.target.files[0];
     setselectefile(imageFile);
@@ -123,7 +119,6 @@ const onChange = useCallback((newContent) => {
       setFormData({
         ...formData,
         [name]: event.target.files[0],
-       
       });
     } else {
       setFormData({
@@ -132,21 +127,22 @@ const onChange = useCallback((newContent) => {
       });
     }
   };
+
   const openModal = (message) => {
     setModalMessage(message);
     setIsModalOpen(true);
   };
-  
+
   const closeModal = () => {
     setIsModalOpen(false);
     setModalMessage('');
   };
+
   const handleSubmit = async () => {
     if (validateForm()) {
       try {
         const formDataToSend = new FormData();
         formDataToSend.append('news_title', formData.news_title);
-       
         formDataToSend.append('contenttype', formData.contenttype);
 
         if (formData.contenttype === '4') {
@@ -154,15 +150,15 @@ const onChange = useCallback((newContent) => {
         } else if (formData.contenttype === '3') {
           formDataToSend.append('internale_file', formData.internale_file);
         } else if (formData.contenttype === '2') {
-          formDataToSend.append('file',file);
+          formDataToSend.append('file', file);
         } else if (formData.contenttype === '1') {
           formDataToSend.append('html', content);
         }
 
-        formDataToSend.append('startdate', formData.startdate); // Add Starting Date
-        formDataToSend.append('end_date', formData.end_date);     // Add Ending Date
+        formDataToSend.append('startdate', formData.startdate);
+        formDataToSend.append('end_date', formData.end_date);
 
-        const response = await apiClient.post(apis.whatsnew, formDataToSend,{
+        const response = await apiClient.post(apis.whatsnew, formDataToSend, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -176,175 +172,156 @@ const onChange = useCallback((newContent) => {
     }
   };
 
-
   console.log(formData);
 
   return (
     <div className="container">
-    <div className="row">
-      <div className="col">
-      <div className="col text-end">
-        <Link to='/whatsnew/whatsnewtable' style={{textDecoration:'none'}}>
-        <button className="btn btn-primary" >
-         <ViewListIcon/> Data view
-        </button>
-        </Link>
-      </div>
-        
-      </div>
-     
-    </div>
-    <div className="row justify-content-center">
-      <div className="col-md-6">
-      <div class="box-sec">
-      <h1 className="text-center heading-main">What's New</h1>
-        <div className="mb-3">
-          
-          <label className="form-label text-dark">Name</label>
-          <input
-            className="form-control"
-            type="text"
-            placeholder="Name"
-            name="news_title"
-            value={formData.news_title}
-            onChange={handleInputChange}
-          />
-          {errors.name && <div className="text-danger">{errors.news_title}</div>}
+      <div className="row">
+        <div className="col">
+          <div className="col text-end">
+            <Link to='/whatsnew/whatsnewtable' style={{ textDecoration: 'none' }}>
+              <button className="btn btn-primary" >
+                <ViewListIcon /> Data view
+              </button>
+            </Link>
+          </div>
         </div>
-
-        <div className="mb-3">
-          <label className="form-label text-dark">Select a content type</label>
-          <select
-            className="form-select"
-            name="contenttype"
-            value={formData.contenttype}
-            onChange={handleInputChange}
-          >
-            <option value="">Select a content type</option>
-            {/* Add your options here */}
-            <option value="4">External</option>
-            <option value="3">Internal</option>
-            <option value="2">File</option>
-            <option value="1">HTML</option>
-          </select>
-          {errors.contenttype && (
-            <div className="text-danger">{errors.contenttype}</div>
-          )}
-        </div>
-
-        {formData.contenttype === '4' && (
-          <div className="mb-3">
-            <label className="form-label text-dark">Enter External Link</label>
-            <input
-              className="form-control"
-              type="text"
-              placeholder="Enter External Link"
-              name="external_file"
-              value={formData.external_file}
-              onChange={handleInputChange}
-            />
-            {errors.external_file && (
-              <div className="text-danger">{errors.external_file}</div>
-            )}
-          </div>
-        )}
-
-        {formData.contenttype === '3' && (
-          <div className="mb-3">
-            <label className="form-label text-dark">Enter Internal Link</label>
-            <input
-              className="form-control"
-              type="text"
-              placeholder="Enter Internal Link"
-              name="internale_file"
-              value={formData.internale_file}
-              onChange={handleInputChange}
-            />
-            {errors.internale_file && (
-              <div className="text-danger">{errors.internale_file}</div>
-            )}
-          </div>
-        )}
-
-        {formData.contenttype === '2' && (
-          <div className="mb-3">
-            <label className="form-label text-dark">Choose File</label>
-            <input
-              className="form-control"
-              type="file"
-              name="file"
-              onChange={handleImageChange}
-            />
-            
-            {errors.file && (
-              <div className="text-danger">{errors.file}</div>
-            )}
-          </div>
-        )}
-
-        {formData.contenttype === '1' && (
-          <div className="mb-3">
-            <label className="form-label text-dark">HTML Editor</label>
-            <div>
-              {/* Include your HTML editor component here */}
-              {/* <textarea
+      </div>
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <div class="box-sec">
+            <h1 className="text-center heading-main">What's New</h1>
+            <div className="mb-3">
+              <label className="form-label text-dark">Name</label>
+              <input
                 className="form-control"
-                value={formData.editorContent}
-                onChange={(e) => handleEditorChange(e.target.value)}
-              ></textarea> */}
-               <JoditEditor
-        value={content}
-        config={config}
-        tabIndex={1}
-        onChange={onChange}
-      />
+                type="text"
+                placeholder="Name"
+                name="news_title"
+                value={formData.news_title}
+                onChange={handleInputChange}
+              />
+              {errors.name && <div className="text-danger">{errors.news_title}</div>}
             </div>
-            {errors.editorContent && (
-              <div className="text-danger">{errors.editorContent}</div>
+            <div className="mb-3">
+              <label className="form-label text-dark">Select a content type</label>
+              <select
+                className="form-select"
+                name="contenttype"
+                value={formData.contenttype}
+                onChange={handleInputChange}
+              >
+                <option value="">Select a content type</option>
+                <option value="4">External</option>
+                <option value="3">Internal</option>
+                <option value="2">File</option>
+                <option value="1">HTML</option>
+              </select>
+              {errors.contenttype && (
+                <div className="text-danger">{errors.contenttype}</div>
+              )}
+            </div>
+            {formData.contenttype === '4' && (
+              <div className="mb-3">
+                <label className="form-label text-dark">Enter External Link</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  placeholder="Enter External Link"
+                  name="external_file"
+                  value={formData.external_file}
+                  onChange={handleInputChange}
+                />
+                {errors.external_file && (
+                  <div className="text-danger">{errors.external_file}</div>
+                )}
+              </div>
             )}
+            {formData.contenttype === '3' && (
+              <div className="mb-3">
+                <label className="form-label text-dark">Enter Internal Link</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  placeholder="Enter Internal Link"
+                  name="internale_file"
+                  value={formData.internale_file}
+                  onChange={handleInputChange}
+                />
+                {errors.internale_file && (
+                  <div className="text-danger">{errors.internale_file}</div>
+                )}
+              </div>
+            )}
+            {formData.contenttype === '2' && (
+              <div className="mb-3">
+                <label className="form-label text-dark">Choose File</label>
+                <input
+                  className="form-control"
+                  type="file"
+                  name="file"
+                  onChange={handleImageChange}
+                />
+                {errors.file && (
+                  <div className="text-danger">{errors.file}</div>
+                )}
+              </div>
+            )}
+            {formData.contenttype === '1' && (
+              <div className="mb-3">
+                <label className="form-label text-dark">HTML Editor</label>
+                <div>
+                  <JoditEditor
+                    value={content}
+                    config={config}
+                    tabIndex={1}
+                    onChange={onChange}
+                  />
+                </div>
+                {errors.editorContent && (
+                  <div className="text-danger">{errors.editorContent}</div>
+                )}
+              </div>
+            )}
+            <div className="mb-3">
+              <label className="form-label text-dark">Starting Date</label>
+              <input
+                className="form-control"
+                type="date"
+                name="startdate"
+                value={formData.startdate}
+                onChange={handleInputChange}
+              />
+              {errors.startdate && (
+                <div className="text-danger">{errors.startdate}</div>
+              )}
+            </div>
+            <div className="mb-3">
+              <label className="form-label text-dark">Ending Date</label>
+              <input
+                className="form-control"
+                type="date"
+                name="end_date"
+                value={formData.end_date}
+                onChange={handleInputChange}
+              />
+              {errors.end_date && (
+                <div className="text-danger">{errors.end_date}</div>
+              )}
+            </div>
+            <div className="btnsubmit">
+              <button className="btn btn-primary" onClick={handleSubmit}>
+                Submit
+              </button>
+              <CustomModal isOpen={isModalOpen} message={modalMessage} onClose={closeModal} />
+            </div>
           </div>
-        )}
-
-        <div className="mb-3">
-          <label className="form-label text-dark">Starting Date</label>
-          <input
-            className="form-control"
-            type="date"
-            name="startdate"
-            value={formData.startdate}
-            onChange={handleInputChange}
-          />
-          {errors.startdate && (
-            <div className="text-danger">{errors.startdate}</div>
-          )}
         </div>
-
-        <div className="mb-3">
-          <label className="form-label text-dark">Ending Date</label>
-          <input
-            className="form-control"
-            type="date"
-            name="end_date"
-            value={formData.end_date}
-            onChange={handleInputChange}
-          />
-          {errors.end_date && (
-            <div className="text-danger">{errors.end_date}</div>
-          )}
-        </div>
-        <div className="btnsubmit">
-            <button className="btn btn-primary" onClick={handleSubmit}>
-              Submit
-            </button>
-            <CustomModal isOpen={isModalOpen} message={modalMessage} onClose={closeModal} />
-          </div>
       </div>
     </div>
-    </div>
-  </div>
-
   );
 };
+
 const CustomModal = ({ isOpen, message, onClose }) => {
   return (
     isOpen && (
