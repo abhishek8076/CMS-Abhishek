@@ -228,6 +228,7 @@ const onChange = useCallback((newContent) => {
               name="MenuName"
               value={formData.MenuName}
               onChange={handleInputChange}
+              maxLength={20}
             />
             {errors.MenuName && <div className="text-danger">{errors.MenuName}</div>}
           </div>

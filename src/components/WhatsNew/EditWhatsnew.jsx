@@ -74,6 +74,7 @@ export const EditWhatsnew = () => {
       });
     }
   }, [editingItemId]);
+  
 
   const handleEditorChange = (content) => {
     setHtml(content);
@@ -179,16 +180,7 @@ export const EditWhatsnew = () => {
           console.log('Data updated:', response.data);
           toast.success('Data updated successfully!');
           openModal('Data updated successfully!');
-        } else {
-          const response = await apiClient.post(apis.whatsnew, formDataToSend, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          });
-          console.log('Data saved:', response.data);
-          toast.success('Data saved successfully!');
-          openModal('Data saved successfully!');
-        }
+        } 
       } catch (error) {
         console.error('Error saving/updating data:', error);
       }
