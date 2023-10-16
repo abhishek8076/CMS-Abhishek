@@ -46,6 +46,9 @@ export const Menu = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [editorContent, setEditorContent] = useState('');
   const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [dropdownOptions, setDropdownOptions] = useState([]);
+  const [formErrors, setFormErrors] = useState({});
 
 const config = useMemo(
   () => ({
@@ -82,7 +85,7 @@ const onChange = useCallback((newContent) => {
       ContentType: '',
       external_link: '',
       internal_link: '',
-      MenuUrl: 'dsafdsaf',
+  
       submenu_id: 0,
       file: '',
       html: '',
@@ -108,9 +111,9 @@ const onChange = useCallback((newContent) => {
       newErrors.external_link = 'External Link is required';
     }
 
-    if (formData.ContentType === '3' && !formData.internal_link) {
-      newErrors.internal_link = 'Internal Link is required';
-    }
+    // if (formData.ContentType === '3' && !formData.internal_link) {
+    //   newErrors.internal_link = 'Internal Link is required';
+    // }
 
     if (formData.ContentType === '2' && !file) {
       newErrors.file = 'File is required';
@@ -189,7 +192,20 @@ const onChange = useCallback((newContent) => {
       console.error('Error saving data:', error);
     }
   };
-
+  useEffect(() => {
+    async function fetchData1() {
+      try {
+        setLoading(true);
+        const response = await apiClient.get(apis.getmenuname);
+        setDropdownOptions(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        setLoading(false);
+      }
+    }
+    fetchData1();
+  }, []);
   console.log(formData,html)
 
   return (
@@ -253,15 +269,20 @@ const onChange = useCallback((newContent) => {
           {/* Input for Internal Link */}
           {formData.ContentType === '3' && (
             <div className="mb-3">
-              <label className="form-label text-dark">Enter Internal Link</label>
-              <input
-                className="form-control"
-                type="text"
-                placeholder="Enter Internal Link"
-                name="internal_link"
-                value={formData.internal_link}
-                onChange={handleInputChange}
-              />
+              <select
+                                  className='form-control'
+                                  name='internal_link'
+                                  value={formData.internal_link}
+                                  onChange={handleInputChange}
+                                  isInvalid={!!formErrors.internal_link}
+                                >
+                                  <option value='' style={{color:"black"}}>Select a role</option>
+                                  {dropdownOptions.map((data) => (
+                                    <option key={data.u_id} value={"/menu/"+data.u_menu_url}>
+                                      {"Menu Name"+":-"+data.u_menu_name}
+                                    </option>
+                                  ))}
+                                </select>
               {errors.internal_link && <div className="text-danger">{errors.internal_link}</div>}
             </div>
           )}

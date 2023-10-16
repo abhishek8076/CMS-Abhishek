@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './new.scss';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert } from '@mui/material'; // Import Material-UI components
+import { Link } from 'react-router-dom';
 
 export function New() {
   const [dropdownOptions, setDropdownOptions] = useState([]);
@@ -46,25 +47,25 @@ export function New() {
     const errors = {};
 
     if (!formData.name) {
-      errors.name = 'Name is required';
+      errors.name = 'Please enter your name';
     } else if (!/^[A-Za-z ]+$/.test(formData.name)) {
-      errors.name = 'Invalid name format';
+      errors.name = 'Please input alphabet characters only';
     }
 
     if (!formData.email) {
       errors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      errors.email = "Invalid email format";
+      errors.email = `E-mail must include "@" character `;
     }
 
     if (!formData.mobile_no) {
-      errors.mobile_no = "Mobile number is required";
-    } else if (!/^[0-9]{10}$/.test(formData.mobile_no)) {
-      errors.mobile_no = "Invalid mobile number format";
+      errors.mobile_no = "Please enter your mobile number";
+    } else if (!/^[6-9]{10}$/.test(formData.mobile_no)) {
+      errors.mobile_no = "Please enter a valid 10-digit phone number ";
     }
 
     if (!formData.address) {
-      errors.address = "Address is required";
+      errors.address = "Please enter your address";
     }
 
     if (!selectedRole) {
@@ -239,11 +240,18 @@ export function New() {
                               </div>
                             </Form.Group>
 
-                            <div id="button" className="d-flex">
+                            <div id="button" className="d-flex " style={{justifyContent:"space-between"}}>
                               <Button variant="primary" type="submit" style={{ width: 100 }}>
                                 Submit
                               </Button>
+                              <Link to="/users">
+                              <Button variant="primary" type="submit" style={{ width: 100 }}>
+                                Back
+                              </Button>
+                            </Link>
                             </div>
+
+  
                           </Form>
                         </div>
                       </div>

@@ -15,7 +15,11 @@ export function Single() {
     email: '',
     mobile_no: '',
     address: '',
+    usertype:''
   });
+  const [dropdownOptions, setDropdownOptions] = useState([]);
+  const [formErrors, setFormErrors] = useState({});
+  const [selectedRole, setSelectedRole] = useState('');
   const [loading, setLoading] = useState(false);
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [updateError, setUpdateError] = useState('');
@@ -38,27 +42,41 @@ export function Single() {
     }
     fetchData();
   }, [id]);
+  useEffect(() => {
+    async function fetchData1() {
+      try {
+        setLoading(true);
+        const response = await apiClinet.get(api.getUserType);
+        setDropdownOptions(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        setLoading(false);
+      }
+    }
+    fetchData1();
+  }, []);
 
   const handleUpdateClick = async () => {
     const errors = {};
 
     if (!data.name) {
-      errors.name = 'Name is required';
+      errors.name = 'Enter your name';
     } else if (!isValidName(data.name)) {
-      errors.name = 'Invalid name format';
+      errors.name = 'Please input alphabet characters only';
     }
     
 
     if (!data.email) {
       errors.email = 'Email is required';
     } else if (!isValidEmail(data.email)) {
-      errors.email = 'Invalid email format';
+      errors.email = 'E-mail must include "@" character ';
     }
 
     if (!data.mobile_no || data.mobile_no.length !== 10) {
       errors.mobile_no = 'Mobile is required and should contain 10 digits';
     } else if (!isValidMobile(data.mobile_no)) {
-      errors.mobile_no = 'Invalid mobile format (should contain 10 digits)';
+      errors.mobile_no = 'Please enter a valid 10-digit phone number ';
     }
 
     if (!data.address) {
@@ -106,6 +124,7 @@ export function Single() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    setSelectedRole(e.target.value);
     setValidationErrors((prevErrors) => ({
       ...prevErrors,
       [name]: undefined,
@@ -122,7 +141,7 @@ export function Single() {
   };
 
   const isValidMobile = (mobile) => {
-    const mobileRegex = /^[0-9]{10}$/;
+    const mobileRegex = /^[6-9]{10}$/;
 
     return mobileRegex.test(mobile);
   };
@@ -207,7 +226,28 @@ export function Single() {
                               {validationErrors.address}
                             </Form.Control.Feedback>
                           </Form.Group>
-                          
+                          <Form.Group className="mb-3" controlId="Usertype">
+                              <div className="mb-12">
+                                <Form.Label className="text-center" style={{color:"black"}}>Role</Form.Label>
+                                <select
+                                  className='form-control'
+                                  name='usertype'
+                                  value={data.usertype}
+                                  onChange={handleInputChange}
+                                  isInvalid={!!formErrors.usertype}
+                                >
+                                  <option value='' style={{color:"black"}}>Select a role</option>
+                                  {dropdownOptions.map((data) => (
+                                    <option key={data.users_id} value={data.users_id}>
+                                      {data.user_name}
+                                    </option>
+                                  ))}
+                                </select>
+                                <Form.Control.Feedback type="invalid">
+                                  {formErrors.usertype}
+                                </Form.Control.Feedback>
+                              </div>
+                            </Form.Group>   
                           {loading ? (
                             <Spinner animation="border" variant="primary" />
                           ) : (
@@ -225,8 +265,8 @@ export function Single() {
                               <div
                                 style={{
                                   display: 'flex',
-                                  flexDirection: 'column',
-                                  justifyContent: 'end',
+                                  
+                                  justifyContent:'space-between',
                                   marginTop: '5px',
                                 }}
                               >
