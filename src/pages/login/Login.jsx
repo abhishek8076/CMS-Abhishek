@@ -52,93 +52,90 @@ export default function Login() {
 
     const response = await apiClient.post(api.login, jsonData);
 
-    if (response && response.data) {
-      if (response.status === 200) {
-        let dt = response.data;
-        let user = dt.user;
-        let token = dt.token;
-        localStorage.setItem("user", JSON.stringify(user));
-        const storedUserString = localStorage.getItem('user');
-        const u = JSON.parse(storedUserString);
+      if (response && response.data) {
+        if (response.status === 200) {
+          let dt = response.data;
+          let user = dt.user;
+          let token = dt.token;
+          localStorage.setItem("user", JSON.stringify(user));
+          const storedUserString = localStorage.getItem('user');
+          const u = JSON.parse(storedUserString);
 
-        if (dt) {
-          localStorage.setItem("token", token);
-          alert("Login Success!!");
-          navigate("/dashboard");
-        }
-      } else if (response.r_email !== jsonData.r_email ||
-        response.r_password !== jsonData.r_password) {
-        alert("Username and Password Not Matched");
-      } else {
-        alert("Unauthorized User");
+          if (dt) {
+            localStorage.setItem("token", token);
+            alert("Login Success!!");
+            navigate("/dashboard");
+          }
+        } 
+      }else {
+        alert("You have entered incorrect email/password");
       }
-    }
-  };
+    };
+  
+    const handleChange = (event) => {
+      const { name, value } = event.target;
+      setUser((prevUser) => ({
+        ...prevUser,
+        [name]: value
+      }));
+    };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setUser((prevUser) => ({
-      ...prevUser,
-      [name]: value
-    }));
-  };
+    useEffect(() => {
+      localStorage.clear();
+    }, []);
 
-  useEffect(() => {
-    localStorage.clear();
-  }, []);
-
-  return (
-    <>
-      <Container component="main" maxWidth="sm">
-        <Box
-          sx={{
-            boxShadow: 3,
-            borderRadius: 2,
-            px: 4,
-            py: 6,
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <img src={logo} alt="Logo" />
-          <Typography component="h1" variant="h5">
-          </Typography>
-          <form onSubmit={handleSubmit}>
-            <TextField
-              margin="normal"
-              fullWidth
-              id="r_email"
-              label="Email Address"
-              name="r_email"
-              autoComplete="email"
-              autoFocus
-              onChange={handleChange}
-              error={!isValidEmail}
-              helperText={!isValidEmail ? "Invalid email address" : ""}
-            />
-            <TextField
-              margin="normal"
-              fullWidth
-              name="r_password"
-              label="Password"
-              type="password"
-              onChange={handleChange}
-              error={!isValidPassword}
-              helperText={!isValidPassword ? "Please enter your password" : ""}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
-          </form>
-        </Box>
-      </Container>
-    </>
-  );
-}
+    return (
+      <>
+        <Container component="main" maxWidth="sm">
+          <Box
+            sx={{
+              boxShadow: 3,
+              borderRadius: 2,
+              px: 4,
+              py: 6,
+              marginTop: 8,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <img src={logo} alt="Logo" />
+            <Typography component="h1" variant="h5">
+            </Typography>
+            <form onSubmit={handleSubmit}>
+              <TextField
+                margin="normal"
+                fullWidth
+                id="r_email"
+                label="Email Address"
+                name="r_email"
+                autoComplete="email"
+                autoFocus
+                onChange={handleChange}
+                error={!isValidEmail}
+                helperText={!isValidEmail ? "Invalid email address" : ""}
+              />
+              <TextField
+                margin="normal"
+                fullWidth
+                name="r_password"
+                label="Password"
+                type="password"
+                onChange={handleChange}
+                error={!isValidPassword}
+                helperText={!isValidPassword ? "Please enter your password" : ""}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign In
+              </Button>
+            </form>
+          </Box>
+        </Container>
+      </>
+    );
+  }
