@@ -28,29 +28,54 @@ export const CMShomepage = () => {
     setConfirmDialogOpen(true);
   };
 
-  const handleConfirmSubmit = () => {
-    const formData = new FormData();
-  formData.append('h_html',content );
+  // const handleConfirmSubmit = () => {
+  //   const formData = new FormData();
+  // formData.append('h_html',content );
 
-    apiClient
-      .post(apis.homepage, formData, {
+  //   apiClient
+  //     .post(apis.homepage, formData, {
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data',
+  //       },
+  //     } )
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       setModalMessage('Content saved successfully.');
+  //       setSnackbarOpen(true);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error:', error);
+  //       setModalMessage('Error saving content.');
+  //       setSnackbarOpen(true);
+  //     });
+
+  //   setConfirmDialogOpen(false);
+  // };
+  const handleConfirmSubmit = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('h_html', content);
+  
+      const response = await apiClient.post(apis.homepage, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+         
         },
-      } )
-      .then((response) => {
-        console.log(response.data);
-        setModalMessage('Content saved successfully.');
-        setSnackbarOpen(true);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        setModalMessage('Error saving content.');
-        setSnackbarOpen(true);
+      
       });
-
+  
+      console.log(response.data);
+      setModalMessage('Content saved successfully.');
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error('Error:', error);
+      setModalMessage('Error saving content.');
+      setSnackbarOpen(true);
+    }
+  
     setConfirmDialogOpen(false);
   };
+  
 
   const handleCloseConfirmation = () => {
     setConfirmDialogOpen(false);

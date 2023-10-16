@@ -30,7 +30,7 @@ import {
   DialogTitle, // Add this import
   DialogContent,
   Dialog,
-} from '@mui/material'; 
+} from '@mui/material';
 import { Form } from 'react-bootstrap';
 import { ElectricBike } from '@mui/icons-material';
 
@@ -44,7 +44,7 @@ export const Submenu = () => {
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [data,Setdata] =useState([])
+  const [data, Setdata] = useState([])
   const [selectedRole, setSelectedRole] = useState('');
 
   const [formData, setFormData] = useState({
@@ -56,7 +56,7 @@ export const Submenu = () => {
     submenu_id: "",
     file: '',
     html: '',
-    menu_id:''
+    
   });
 
   const [errors, setErrors] = useState({});
@@ -67,11 +67,10 @@ export const Submenu = () => {
       ContentType: '',
       external_link: '',
       internal_link: '',
-      MenuUrl: 'dsafdsaf',
       submenu_id: "",
       file: '',
       html: '',
-      menu_id:''
+    
     });
   }, []);
 
@@ -158,7 +157,7 @@ export const Submenu = () => {
       const formDataToSend = new FormData();
       formDataToSend.append('MenuName', formData.MenuName);
       formDataToSend.append('ContentType', formData.ContentType);
-      formDataToSend.append('MenuUrl', formData.MenuUrl);
+   
       // formDataToSend.append('submenu_id', formData.submenu_id);
       formDataToSend.append('submenu_id', selectedRole);
 
@@ -172,7 +171,7 @@ export const Submenu = () => {
         formDataToSend.append('html_content', html);
       }
 
-      const response = await apiClient.post(apis.navmenu , formDataToSend, {
+      const response = await apiClient.post(apis.navmenu, formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -207,35 +206,35 @@ export const Submenu = () => {
     <div className="container">
       <div className="row">
         <div className="col">
-         
+
           <h1 className="text-center">Sub Menu</h1>
         </div>
       </div>
       <div className="row justify-content-center">
         <div className="col-md-6">
-        <Form.Group className="mb-3" controlId="Usertype">
-                              <div className="mb-12">
-                                <Form.Label className="text-center" style={{color:"black"}}>Menu Names</Form.Label>
-                                <select
-                                  className='form-control'
-                                  name='menu_id'
-                                  value={selectedRole}
-                                  onChange={handleInputChange}
-                                  
-                                >
-                                  <option value='' style={{color:"black"}}>Select a Menu</option>
-                                  {data.map((data) => (
-                                    <option key={data.u_id} value={data.u_id}>
-                                      {data.u_menu_name}
-                                    </option>
-                                  ))}
-                                </select>
-                                <Form.Control.Feedback type="invalid">
-                                  {/* {formErrors.usertype} */}
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>
-                            {errors.selectedRole && <div className="text-danger">{errors.selectedRole}</div>}
+          <Form.Group className="mb-3" controlId="Usertype">
+            <div className="mb-12">
+              <Form.Label className="text-center" style={{ color: "black" }}>Menu Names</Form.Label>
+              <select
+                className='form-control'
+                name='submenu_id'
+                value={selectedRole}
+                onChange={handleInputChange}
+
+              >
+                <option value='' style={{ color: "black" }}>Select a Menu</option>
+                {data.map((data) => (
+                  <option key={data.u_id} value={data.u_id}>
+                    {data.u_menu_name}
+                  </option>
+                ))}
+              </select>
+              <Form.Control.Feedback type="invalid">
+                {/* {formErrors.usertype} */}
+              </Form.Control.Feedback>
+            </div>
+          </Form.Group>
+          {errors.selectedRole && <div className="text-danger">{errors.selectedRole}</div>}
 
           {/* Input for Name */}
           <div className="mb-3">
@@ -359,14 +358,14 @@ export const Submenu = () => {
               </Alert>
             </Snackbar>
             <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={3000} // Adjust as needed
-        onClose={() => setSnackbarOpen(false)}
-      >
-        <Alert severity="success" onClose={() => setSnackbarOpen(false)}>
-          Data save successfully.
-        </Alert>
-      </Snackbar>
+              open={snackbarOpen}
+              autoHideDuration={3000} // Adjust as needed
+              onClose={() => setSnackbarOpen(false)}
+            >
+              <Alert severity="success" onClose={() => setSnackbarOpen(false)}>
+                Data save successfully.
+              </Alert>
+            </Snackbar>
           </div>
         </div>
       </div>
