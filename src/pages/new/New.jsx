@@ -60,7 +60,7 @@ export function New() {
 
     if (!formData.mobile_no) {
       errors.mobile_no = "Please enter your mobile number";
-    } else if (!/^[6-9]{10}$/.test(formData.mobile_no)) {
+    } else if (!/^(\+91|\+91\-|0)?[789]\d{9}$/.test(formData.mobile_no)) {
       errors.mobile_no = "Please enter a valid 10-digit phone number ";
     }
 

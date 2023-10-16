@@ -71,7 +71,7 @@ const onChange = useCallback((newContent) => {
     ContentType: '',
     external_link: '',
     internal_link: '',
-    MenuUrl: 'dsafdsaf',
+ 
     submenu_id: 0,
     file: '',
     html: '',
