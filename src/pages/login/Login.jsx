@@ -43,7 +43,7 @@ export default function Login() {
     }
 
     // Validate password
-    if (!passwordRegex.test(user.r_password)) {
+    if (!user.r_password) {
       setIsValidPassword(false);
       return;
     } else {
@@ -126,7 +126,7 @@ export default function Login() {
               type="password"
               onChange={handleChange}
               error={!isValidPassword}
-              helperText={!isValidPassword ? "Password must be at least 8 characters long and contain at least one letter and one number" : ""}
+              helperText={!isValidPassword ? "Please enter your password" : ""}
             />
             <Button
               type="submit"
