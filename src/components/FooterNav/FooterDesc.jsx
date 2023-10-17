@@ -43,6 +43,8 @@ export const FooterDesc = () => {
   const [formData, setFormData] = useState({
     tittle_name: '',
     description: '',
+    footertype:1,
+    contenttype:0
   });
   const [errors, setErrors] = useState({});
 
@@ -50,6 +52,8 @@ export const FooterDesc = () => {
     setFormData({
       tittle_name: '',
       description: '',
+      footertype:1,
+      contenttype:0
     });
   }, []);
 
@@ -105,6 +109,8 @@ export const FooterDesc = () => {
       const formDataToSend = new FormData();
       formDataToSend.append('tittle_name', formData.tittle_name);
       formDataToSend.append('description', formData.description);
+      formDataToSend.append('footertype', formData.footertype);
+      formDataToSend.append('contenttype', formData.contenttype);
 
       const response = await apiClient.post(apis.newfooter, formDataToSend, {
         headers: {
@@ -121,6 +127,7 @@ export const FooterDesc = () => {
       setFormData({
         tittle_name: '',
         description: '',
+       
       });
     } catch (error) {
       console.error('Error saving data:', error);
