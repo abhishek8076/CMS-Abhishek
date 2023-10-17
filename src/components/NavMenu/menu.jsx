@@ -33,6 +33,7 @@ import {
   DialogContent,
   Dialog,
 } from '@mui/material'; 
+import { Col, Row } from 'react-bootstrap';
 
 function EAlert(props) {
   return <Alert elevation={6} variant="filled" {...props} />;
@@ -211,8 +212,16 @@ const onChange = useCallback((newContent) => {
   return (
     <div className="container">
       <div className="row justify-content-center">
-        <div className="col-md-6">
-
+        <div >
+        <Row>
+                <Col xs={12} className="text-end">
+                <Link to='/cms/menutable' style={{textDecoration:'none'}}>
+            <Button>
+              Table
+            </Button>
+            </Link>
+                </Col>
+              </Row>
         <div class="box-sec"> 
         <h1 className="text-center heading-main">Menu</h1>
           {/* Input for Name */}

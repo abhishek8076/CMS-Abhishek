@@ -16,7 +16,7 @@ import { Menu } from '../../components/NavMenu/menu';
 import {Submenu} from '../../components/NavMenu/submenu';
 // import './Cms.scss'
 import { Row, Col,  Button } from 'react-bootstrap';
-import { CMShomepage } from '../../components/NavMenu/CMShomepage';
+import { CMShomepage } from '../../components/NavMenu/Homemenu/CMShomepage';
 import { Link } from 'react-router-dom';
 
 export const Cms = () => {
@@ -80,15 +80,7 @@ export const Cms = () => {
             <button onClick={() => handleButtonClick("button3")} className="tab3">Sub Menu</button>
             {/* <button onClick={() => handleButtonClick("button4")} className="tab4">Linking</button> */}
 </div>
-<Row>
-                <Col xs={12} className="text-end">
-                <Link to='/cms/menutable' style={{textDecoration:'none'}}>
-            <Button>
-              Table
-            </Button>
-            </Link>
-                </Col>
-              </Row>
+
             <div style={{ display: activeButton === "button1" ? "block" : "none" }}>
             < CMShomepage/>
           

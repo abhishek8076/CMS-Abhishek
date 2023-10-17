@@ -31,7 +31,7 @@ import {
   DialogContent,
   Dialog,
 } from '@mui/material';
-import { Form } from 'react-bootstrap';
+import { Col, Form, Row } from 'react-bootstrap';
 import { ElectricBike } from '@mui/icons-material';
 import JoditEditor from 'jodit-react';
 
@@ -233,7 +233,16 @@ export const Editsubmenu = () => {
   return (
     <div className="container">
       <div className="row justify-content-center">
-        <div className="col-md-6">
+      <Row>
+                <Col xs={12} className="text-end">
+                <Link to='/cms/menutable' style={{textDecoration:'none'}}>
+            <Button>
+              Table
+            </Button>
+            </Link>
+                </Col>
+              </Row>
+        <div >
         <div class="box-sec">
         <h1 className="text-center">Edit SubMenu</h1>
           <Form.Group className="mb-3" controlId="Usertype">

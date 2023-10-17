@@ -33,6 +33,7 @@ import {
   DialogContent,
   Dialog,
 } from '@mui/material'; 
+import { Col, Row } from 'react-bootstrap';
 
 
 export const Editmenu = () => {
@@ -224,7 +225,17 @@ const onChange = useCallback((newContent) => {
     
     <div className="container" >
       <div className="row justify-content-center">
-        <div className="col-md-6">
+      <Row>
+      <Col xs={12} className="text-end">
+
+                <Link to='/cms/menutable' style={{textDecoration:'none'}}>
+            <Button>
+              Table
+            </Button>
+            </Link>
+                </Col>
+              </Row>
+        <div >
 
         <div class="box-sec"> 
         <h1 className="text-center heading-main">Edit Menu</h1>

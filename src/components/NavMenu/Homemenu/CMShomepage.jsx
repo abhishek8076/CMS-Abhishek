@@ -10,8 +10,8 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { ButtonBase } from '@mui/material';
 import { ButtonGroup } from 'react-bootstrap';
-import apiClient from '../../services/AxiosApi'
-import apis from '../../utils/apiUrl.json'
+import apiClient from '../../../services/AxiosApi'
+import apis from '../../../utils/apiUrl.json'
 
 export const CMShomepage = () => {
   const [content, setContent] = useState('');
