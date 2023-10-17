@@ -72,8 +72,7 @@ export const Cms = () => {
         <div className="backgroundcontainer">
           <Navbar />
           <div >
-         
-      
+    
             <div className="container">
           <div className="tab-box">
             <button onClick={() => handleButtonClick("button1")} className="tab1">Home</button>
