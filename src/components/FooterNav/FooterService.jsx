@@ -36,6 +36,8 @@ export const FooterService = () => {
   const [formData, setFormData] = useState({
     title_name: '',
     description: '',
+    footertype:2,
+    contenttype :0,
   });
 
   const [errors, setErrors] = useState({});
@@ -44,6 +46,8 @@ export const FooterService = () => {
     setFormData({
       title_name: '',
       description: '',
+      footertype: 2,
+      contenttype :0,
     });
   }, []);
 
@@ -100,7 +104,8 @@ export const FooterService = () => {
         const formDataToSend = new FormData();
         formDataToSend.append('title_name', formData.title_name);
         formDataToSend.append('description', formData.description);
-
+        formDataToSend.append('contenttype', formData.contenttype);
+        formDataToSend.append('footertype', formData.footertype);
         // Add more formData fields here if needed
 
         const response = await apiClient.post(apis.newfooter, formDataToSend, {
@@ -118,13 +123,14 @@ export const FooterService = () => {
         setFormData({
           title_name: '',
           description: '',
+         
         });
       } catch (error) {
         console.error('Error saving data:', error);
       }
     }
   };
-
+console.log(formData);
   return (
     <div className="container">
       <div className="row">

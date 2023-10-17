@@ -31,9 +31,7 @@ import {
   Dialog,
 } from '@mui/material';
 
-function EAlert(props) {
-  return <Alert elevation={6} variant="filled" {...props} />;
-}
+
 
 export const FooterDesc = () => {
   const [html, sethtml] = useState('');
@@ -54,10 +52,6 @@ export const FooterDesc = () => {
       description: '',
     });
   }, []);
-
-  const handleEditorChange = (content) => {
-    sethtml(content);
-  };
 
  
     const validateForm = () => {
@@ -81,25 +75,17 @@ export const FooterDesc = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleImageChange = (event) => {
-    const imageFile = event.target.files[0];
-    setselectedfile(imageFile);
-  };
 
   const handleInputChange = (event) => {
-    const { name, value, type } = event.target;
+    const { name, value} = event.target;
 
-    if (type === '2') {
-      setFormData({
-        ...formData,
-        [name]: event.target.files[0],
-      });
-    } else {
+  
+    
       setFormData({
         ...formData,
         [name]: value,
       });
-    }
+    
   };
 
   const handleOpenConfirmation = () => {
@@ -141,10 +127,6 @@ export const FooterDesc = () => {
     }
   };
 
-  const config = {
-    placeholderText: 'Edit Your Content Here!',
-    charCounterCount: false,
-  };
   console.log(formData)
 
   return (
