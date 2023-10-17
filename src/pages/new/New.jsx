@@ -16,7 +16,7 @@ export function New() {
   const [dropdownOptions, setDropdownOptions] = useState([]);
   const [selectedRole, setSelectedRole] = useState('');
   const [formErrors, setFormErrors] = useState({});
-
+  const [successDialogOpen, setSuccessDialogOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -27,6 +27,7 @@ export function New() {
 
   // New state variables for confirmation dialog and snackbar
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [confirmDialogOpen1, setConfirmDialogOpen1] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
@@ -91,27 +92,28 @@ export function New() {
     // Handle cancel action in the confirmation dialog
     setConfirmDialogOpen(false);
   };
+  const handleDeleteCancel1 = () => {
+    // Handle cancel action in the confirmation dialog
+    setConfirmDialogOpen1(false);
+  };
 
   const handleDeleteConfirm = async () => {
     // Handle confirm action in the confirmation dialog
-
+  
     // Close the confirmation dialog
     setConfirmDialogOpen(false);
-
+  
     try {
       const formDataToSend = {
         ...formData,
         usertype: parseInt(selectedRole, 10),
       };
-
+  
       const response = await apiClient.post(api.newuser, formDataToSend);
       if (response.status === 200) {
-        toast.success('Data submitted successfully!');
-
-        // Show the snackbar with a success message
-        setSnackbarMessage('Data submitted successfully.');
-        setSnackbarOpen(true);
-
+        // Show the success dialog
+        setSuccessDialogOpen(true);
+  
         setFormData({
           name: '',
           email: '',
@@ -128,7 +130,7 @@ export function New() {
       toast.error('Something went wrong');
     }
   };
-
+  
   useEffect(() => {
     const fetchRoles = async () => {
       try {
@@ -160,7 +162,7 @@ export function New() {
                         <div className="mb-3">
                           <Form onSubmit={handleSubmit}>
                             <Form.Group className="mb-3" controlId="Name">
-                              <Form.Label className="text-center" style={{color:"black"}}>Name</Form.Label>
+                              <Form.Label className="text-center" style={{ color: "black" }}>Name</Form.Label>
                               <Form.Control
                                 type="text"
                                 placeholder="Enter Name"
@@ -168,13 +170,14 @@ export function New() {
                                 value={formData.name}
                                 onChange={handleChange}
                                 isInvalid={!!formErrors.name}
+                                maxLength={15}
                               />
                               <Form.Control.Feedback type="invalid">
                                 {formErrors.name}
                               </Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="Email">
-                              <Form.Label className="text-center" style={{color:"black"}}>E-mail</Form.Label>
+                              <Form.Label className="text-center" style={{ color: "black" }}>E-mail</Form.Label>
                               <Form.Control
                                 type="text"
                                 placeholder="Enter Email"
@@ -182,13 +185,14 @@ export function New() {
                                 value={formData.email}
                                 onChange={handleChange}
                                 isInvalid={!!formErrors.email}
+
                               />
                               <Form.Control.Feedback type="invalid">
                                 {formErrors.email}
                               </Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="MobileNo">
-                              <Form.Label className="text-center" style={{color:"black"}}>Mobile No.</Form.Label>
+                              <Form.Label className="text-center" style={{ color: "black" }}>Mobile No.</Form.Label>
                               <Form.Control
                                 type="text"
                                 placeholder="Enter Mobile No."
@@ -203,7 +207,7 @@ export function New() {
                               </Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="Address">
-                              <Form.Label className="text-center" style={{color:"black"}}>Address</Form.Label>
+                              <Form.Label className="text-center" style={{ color: "black" }}>Address</Form.Label>
                               <Form.Control
                                 type="text"
                                 placeholder="Enter your address"
@@ -211,6 +215,7 @@ export function New() {
                                 value={formData.address}
                                 onChange={handleChange}
                                 isInvalid={!!formErrors.address}
+                                maxLength={20}
                               />
                               <Form.Control.Feedback type="invalid">
                                 {formErrors.address}
@@ -219,7 +224,7 @@ export function New() {
 
                             <Form.Group className="mb-3" controlId="Usertype">
                               <div className="mb-12">
-                                <Form.Label className="text-center" style={{color:"black"}}>Role</Form.Label>
+                                <Form.Label className="text-center" style={{ color: "black" }}>Role</Form.Label>
                                 <select
                                   className='form-control'
                                   name='usertype'
@@ -227,7 +232,7 @@ export function New() {
                                   onChange={handleChange}
                                   isInvalid={!!formErrors.usertype}
                                 >
-                                  <option value='' style={{color:"black"}}>Select a role</option>
+                                  <option value='' style={{ color: "black" }}>Select a role</option>
                                   {dropdownOptions.map((data) => (
                                     <option key={data.users_id} value={data.users_id}>
                                       {data.user_name}
@@ -240,18 +245,18 @@ export function New() {
                               </div>
                             </Form.Group>
 
-                            <div id="button" className="d-flex " style={{justifyContent:"space-between"}}>
+                            <div id="button" className="d-flex " style={{ justifyContent: "space-between" }}>
                               <Button variant="primary" type="submit" style={{ width: 100 }}>
                                 Submit
                               </Button>
                               <Link to="/users">
-                              <Button variant="primary" type="submit" style={{ width: 100 }}>
-                                Back
-                              </Button>
-                            </Link>
+                                <Button variant="primary" type="submit" style={{ width: 100 }}>
+                                  Back
+                                </Button>
+                              </Link>
                             </div>
 
-  
+
                           </Form>
                         </div>
                       </div>
@@ -280,16 +285,21 @@ export function New() {
         </DialogActions>
       </Dialog>
 
-      {/* Snackbar */}
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={3000}
-        onClose={() => setSnackbarOpen(false)}
+
+      <Dialog
+        open={successDialogOpen}
+        onClose={() => setSuccessDialogOpen(false)}
       >
-        <Alert severity="success" onClose={() => setSnackbarOpen(false)}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
+        <DialogTitle>Success</DialogTitle>
+        <DialogContent>
+          User created successfully!
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setSuccessDialogOpen(false)} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
