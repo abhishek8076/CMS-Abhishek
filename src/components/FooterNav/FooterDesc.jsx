@@ -145,6 +145,7 @@ export const FooterDesc = () => {
     placeholderText: 'Edit Your Content Here!',
     charCounterCount: false,
   };
+  console.log(formData)
 
   return (
     <div className="container">

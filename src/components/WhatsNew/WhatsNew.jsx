@@ -73,8 +73,10 @@ export const WhatsNew = () => {
     const errors = {};
 
     if (!formData.news_title) {
-      errors.news_title = 'Name is required';
-    }
+        errors.name = 'Please enter your name';
+      } else if (!/^[A-Za-z ]+$/.test(formData.name)) {
+        errors.name = 'Please input alphabet characters only';
+      }
 
     if (!formData.contenttype) {
       errors.contenttype = 'Select a content type';
