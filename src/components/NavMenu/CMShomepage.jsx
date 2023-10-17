@@ -83,7 +83,8 @@ export const CMShomepage = () => {
 
   return (
     <div>
-      <h1>Home Page</h1>
+      <div class="box-sec">
+      <h1 class="heading-main">Home Page</h1>
       <div className="App">
         <JoditEditor value={content} onChange={onChange} />
         <Button onClick={handleSave}>Save Content</Button>
@@ -113,6 +114,7 @@ export const CMShomepage = () => {
           {modalMessage}
         </Alert>
       </Snackbar>
+    </div>
     </div>
   );
 };

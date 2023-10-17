@@ -196,11 +196,12 @@ export const FooterPage = () => {
               </button>
             </Link>
           </div>
-          <h1 className="text-center">Footer</h1>
         </div>
       </div>
       <div className="row justify-content-center">
         <div className="col-md-6">
+        <div class="box-sec">
+        <h1 className="text-center heading-main">Footer</h1>
           {/* Input for Name */}
           <div className="mb-3">
             <label className="form-label text-dark">Name</label>
@@ -324,6 +325,7 @@ export const FooterPage = () => {
             </Snackbar>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
