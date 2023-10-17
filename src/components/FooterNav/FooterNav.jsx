@@ -53,6 +53,7 @@ export const FooterPage = () => {
     internale_link: '',
     file: '',
     html: '',
+    footertype:4,
   });
   const navigateFooter = () => {
     // 👇️ navigate to /
@@ -68,6 +69,7 @@ export const FooterPage = () => {
       internale_link: '',
       file: '',
       html: '',
+      footertype:4,
     });
   }, []);
 
@@ -144,7 +146,7 @@ export const FooterPage = () => {
       const formDataToSend = new FormData();
       formDataToSend.append('tittle_name', formData.tittle_name);
       formDataToSend.append('contenttype', formData.contenttype);
-
+      formDataToSend.append('footertype', formData.footertype);
       if (formData.contenttype === '4') {
         formDataToSend.append('external_link', formData.external_link);
       } else if (formData.contenttype === '3') {

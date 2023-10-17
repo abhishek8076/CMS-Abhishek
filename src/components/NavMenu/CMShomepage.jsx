@@ -19,6 +19,7 @@ export const CMShomepage = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
 
+  
   const onChange = useCallback((newContent) => {
     console.log('Editor content changed:', newContent);
     setContent(newContent);
@@ -28,41 +29,14 @@ export const CMShomepage = () => {
     setConfirmDialogOpen(true);
   };
 
-  // const handleConfirmSubmit = () => {
-  //   const formData = new FormData();
-  // formData.append('h_html',content );
-
-  //   apiClient
-  //     .post(apis.homepage, formData, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //     } )
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       setModalMessage('Content saved successfully.');
-  //       setSnackbarOpen(true);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error:', error);
-  //       setModalMessage('Error saving content.');
-  //       setSnackbarOpen(true);
-  //     });
-
-  //   setConfirmDialogOpen(false);
-  // };
   const handleConfirmSubmit = async () => {
     try {
       const formData = new FormData();
-      formData.append('h_html', content);
+      formData.append('h_html',content);
   
-      const response = await apiClient.post(apis.homepage, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-         
-        },
+      const response = await apiClient.post(apis.homepage, formData
       
-      });
+      );
   
       console.log(response.data);
       setModalMessage('Content saved successfully.');

@@ -2,6 +2,24 @@ import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { Link } from 'react-router-dom';
 import ViewListIcon from '@mui/icons-material/ViewList';
+import apis from '../../utils/apiUrl.json';
+import DialogActions from '@mui/material/DialogActions';
+import Alert from '@mui/material/Alert';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+  Snackbar,
+  DialogTitle,
+  DialogContent,
+  Dialog,
+} from '@mui/material';
+
 
 export const FooterOffice = () => {
   const [html, setHtml] = useState('');
@@ -13,7 +31,9 @@ export const FooterOffice = () => {
   const [formData, setFormData] = useState({
     tittle_name: '',
     address: '',
-    phoneno: '',
+    mobile_no: '',
+    contenttype: 0,
+    footertype:3,
   });
   const [errors, setErrors] = useState({});
 
@@ -24,32 +44,44 @@ export const FooterOffice = () => {
     if (!formData.tittle_name.trim()) {
       newErrors.tittle_name = 'Name is required';
     }
+    if (!formData.mobile_no) {
+      newErrors.mobile_no = "Please enter your mobile number";
+    } else if (!/^(\+91|\+91\-|0)?[789]\d{9}$/.test(formData.mobile_no)) {
+      newErrors.mobile_no = "Please enter a valid 10-digit phone number ";
+    }
   
     if (!formData.address.trim()) {
       newErrors.address = 'Address is required';
     }
   
-    if (!formData.phoneno) {
-      errors.phoneno = "Mobile number is required";
-    } else if (!/^[0-9]{10}$/.test(formData.phoneno)) {
-      errors.phoneno = "Invalid mobile number format";
-    }
   
 
     setErrors(newErrors);
 
     return Object.keys(newErrors).length === 0;
   };
+  const handleOpenConfirmation = () => {
+    
+      setConfirmDialogOpen(true);
+    
+  };
+
+  const handleCloseConfirmation = () => {
+    setConfirmDialogOpen(false);
+  };
+
 
   const handleConfirmSubmit = async () => {
+    handleCloseConfirmation();
     try {
       if (validateForm()) {
         const formDataToSend = new FormData();
         formDataToSend.append('tittle_name', formData.tittle_name);
         formDataToSend.append('address', formData.address);
-        formDataToSend.append('phoneno', formData.phoneno);
-
-        const response = await Axios.post('your-api-endpoint', formDataToSend, {
+        formDataToSend.append('mobile_no', formData.mobile_no);
+        formDataToSend.append('footertype', formData.footertype);
+        formDataToSend.append('contenttype', formData.contenttype);
+        const response = await Axios.post(apis.newfooter, formDataToSend, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -63,7 +95,7 @@ export const FooterOffice = () => {
         setFormData({
           tittle_name: '',
           address: '',
-          phoneno: '',
+          mobile_no: '',
         });
       }
     } catch (error) {
@@ -78,7 +110,7 @@ export const FooterOffice = () => {
       [name]: value,
     });
   };
-
+console.log(formData)
   return (
     <div className="container">
       <div className="row">
@@ -129,19 +161,41 @@ export const FooterOffice = () => {
               className="form-control"
               type="text"
               placeholder="Phone No"
-              name="phoneno"
-              value={formData.phoneno}
+              name="mobile_no"
+              value={formData.mobile_no}
               onChange={handleInputChange}
               maxLength={10}
               minLength={10}
             />
-            {errors.phoneno && <div className="text-danger">{errors.phoneno}</div>}
+            {errors.mobile_no && <div className="text-danger">{errors.mobile_no}</div>}
           </div>
 
           <div className="btnsubmit">
-            <button className="btn btn-primary" onClick={handleConfirmSubmit}>
+            <button className="btn btn-primary" onClick={handleOpenConfirmation}>
               Submit
             </button>
+            <Dialog open={confirmDialogOpen} onClose={handleCloseConfirmation}>
+              <DialogTitle>Confirm Submit</DialogTitle>
+              <DialogContent>
+                Are you sure you want to submit this data?
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseConfirmation} color="primary">
+                  Cancel
+                </Button>
+                <Button onClick={handleConfirmSubmit} color="primary">
+                  Confirm
+                </Button>
+              </DialogActions>
+            </Dialog>
+            <Snackbar
+              open={snackbarOpen}
+              autoHideDuration={3000} // Adjust as needed
+              onClose={() => setSnackbarOpen(false)}>
+              <Alert severity="success" onClose={() => setSnackbarOpen(false)}>
+                {modalMessage}
+              </Alert>
+            </Snackbar>
           </div>
           </div>
         </div>
