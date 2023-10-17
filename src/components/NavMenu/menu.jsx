@@ -210,14 +210,11 @@ const onChange = useCallback((newContent) => {
 
   return (
     <div className="container">
-      <div className="row">
-        <div className="col">
-         
-          <h1 className="text-center">Menu</h1>
-        </div>
-      </div>
       <div className="row justify-content-center">
         <div className="col-md-6">
+
+        <div class="box-sec"> 
+        <h1 className="text-center heading-main">Menu</h1>
           {/* Input for Name */}
           <div className="mb-3">
             <label className="form-label text-dark">Name</label>
@@ -368,6 +365,7 @@ const onChange = useCallback((newContent) => {
       </Snackbar>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

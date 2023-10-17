@@ -232,14 +232,10 @@ export const Submenu = () => {
 
   return (
     <div className="container">
-      <div className="row">
-        <div className="col">
-
-          <h1 className="text-center">Sub Menu</h1>
-        </div>
-      </div>
       <div className="row justify-content-center">
         <div className="col-md-6">
+        <div class="box-sec">
+        <h1 className="text-center">Sub Menu</h1>
           <Form.Group className="mb-3" controlId="Usertype">
             <div className="mb-12">
               <Form.Label className="text-center" style={{ color: "black" }}>Menu Names</Form.Label>
@@ -408,6 +404,7 @@ export const Submenu = () => {
             </Snackbar>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
