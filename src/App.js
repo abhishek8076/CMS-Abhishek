@@ -42,6 +42,7 @@ import { FooterServTable } from "./components/FooterNav/FooterTable/FootetServTa
 import {FooterNavEdit} from "./components/FooterNav/FooderEdit/FooterNavEdit"
 import{ MenuTable} from './components/NavMenu/NavMenuTable/MenuTable'
 import {Index} from './components/NavMenu/EditNavMenu/Index'
+import {IndexFooterEdit} from './components/FooterNav/FooderEdit/IndexFooterEdit'
 function App() {
   const { darkMode } = useContext(DarkModeContext);
   // const LocalStorageData = localStorage.getItem("token");
@@ -126,13 +127,8 @@ function App() {
        <Route path="footer"  >
            <Route index element={<IndexFooter />} />
             <Route path="footertable" element={<FooterNavTable />} />
-            <Route path="footerdesctable" element={<FooterDescTable />} />
-            <Route path="footerofficetable" element={<FooterOfficeTable />} />
-            <Route path="footerservtable" element={<FooterServTable />} />
-            <Route path="footerdesc" element={<FooterDesc/>} />
-            <Route path="footerservice" element={<FooterService/>} />
-            <Route path="footeroffice" element={<FooterOffice/>} />
-            <Route path="footernavedit/:id" element={<FooterNavEdit />} />
+            
+            <Route path="footernavedit/:id" element={<IndexFooterEdit />} />
             {/* <Route path="footerpage" element={<FooterNav/>} /> */}
             
             {/* <Route path="editfooter/:id" element={<EditWhatsnew />} /> */}

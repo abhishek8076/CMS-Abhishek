@@ -15,6 +15,7 @@
     "getwhatsnewbyid":"/api/Whatsnew/",
      "newfooter":"/api/lowerfooter" ,
      "getfooter":"/api/lowerfooter",
+     "getfooterbyid":"/api/lowerfooter/",
     "getimage":"/api/Slider", 
     "deleteImg" :"/api/Slider/",
     "getApiToken":"/auth/getApiToken",

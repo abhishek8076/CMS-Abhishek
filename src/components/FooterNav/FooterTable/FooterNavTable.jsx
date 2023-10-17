@@ -147,7 +147,7 @@ export const FooterNavTable = () => {
                         
                         <TableCell>
                           <Link
-                            to={`/FooterEdit/FooterNavEdit/${item.u_id}`}
+                            to={`/footer/footernavedit/${item.u_id}`}
                             style={{ textDecoration: 'none' }}
                           >
                             <Button
