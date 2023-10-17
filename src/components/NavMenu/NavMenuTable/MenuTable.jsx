@@ -145,7 +145,7 @@ console.log(data)
                         
                         <TableCell>
                           <Link
-                            to={`/cms/editmenu/${item.u_id}`}
+                            to={`/cms/menuedit/editmenu/${item.u_id}`}
                             style={{ textDecoration: 'none' }}
                           >
                             <Button

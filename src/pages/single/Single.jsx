@@ -7,7 +7,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import apiClinet from '../../services/AxiosApi';
 import api from '../../utils/apiUrl.json';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert } from '@mui/material'; // Import Material-UI components
-
+import { toast } from 'react-toastify';
+import apiClient from '../../services/AxiosApi'
 export function Single() {
   const { id } = useParams();
   const [data, setData] = useState({
@@ -26,7 +27,8 @@ export function Single() {
   const [validationErrors, setValidationErrors] = useState({});
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [successDialogOpen, setSuccessDialogOpen] = useState(false);
+
 
   useEffect(() => {
     async function fetchData() {
@@ -96,31 +98,33 @@ export function Single() {
     setConfirmDialogOpen(false);
   };
 
-  const handleDeleteConfirm = async () => {
-    // Handle confirm action in the confirmation dialog
+ const handleDeleteConfirm = async () => {
+  // Handle confirm action in the confirmation dialog
 
-    // Close the confirmation dialog
-    setConfirmDialogOpen(false);
+  // Close the confirmation dialog
+  setConfirmDialogOpen(false);
 
-    try {
-      setLoading(true);
-      await apiClinet.put(api.edituser + id, data);
-      setUpdateSuccess(true);
-      setLoading(false);
+  try {
+    const formDataToSend = {
+      ...data,
+      usertype: parseInt(selectedRole, 10),
+    };
 
-      // Show the snackbar with a success message
-      setSnackbarMessage('User data updated successfully.');
-      setSnackbarOpen(true);
-    } catch (error) {
-      console.error('Error updating user data:', error);
-      setUpdateError('Failed to update user data');
-      setLoading(false);
+    const response = await apiClient.put(api.edituser + id, formDataToSend);
+    if (response.status === 200) {
+      // Show the success dialog
+      setSuccessDialogOpen(true);
 
-      // Show the snackbar with an error message
-      setSnackbarMessage('Failed to update user data');
-      setSnackbarOpen(true);
+      
+    } else {
+      toast.error('Something went wrong');
     }
-  };
+  } catch (error) {
+    console.error('Error submitting data:', error);
+    toast.error('Something went wrong');
+  }
+};
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -179,6 +183,7 @@ export function Single() {
                               value={data.name}
                               onChange={handleInputChange}
                               isInvalid={!!validationErrors.name}
+                              maxLength={15}
                             />
                             <Form.Control.Feedback type="invalid">
                               {validationErrors.name}
@@ -318,16 +323,20 @@ export function Single() {
         </DialogActions>
       </Dialog>
 
-      {/* Snackbar */}
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={3000}
-        onClose={() => setSnackbarOpen(false)}
-      >
-        <Alert severity={updateSuccess ? "success" : "error"} onClose={() => setSnackbarOpen(false)}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
+      <Dialog
+  open={successDialogOpen}
+  onClose={() => setSuccessDialogOpen(false)}
+>
+  <DialogTitle>Success</DialogTitle>
+  <DialogContent>
+    User updated successfully!
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={() => setSuccessDialogOpen(false)} color="primary">
+      OK
+    </Button>
+  </DialogActions>
+</Dialog>
     </>
   );
 }

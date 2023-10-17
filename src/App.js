@@ -41,7 +41,8 @@ import { FooterDescTable } from "./components/FooterNav/FooterTable/FooterDescTa
 import { FooterServTable } from "./components/FooterNav/FooterTable/FootetServTable";
 import {FooterNavEdit} from "./components/FooterNav/FooderEdit/FooterNavEdit"
 import{ MenuTable} from './components/NavMenu/NavMenuTable/MenuTable'
-import {EditNavMenu} from "./components/NavMenu/EditNavMenu/EditNavMenu";
+
+import { Editmenu } from "./components/NavMenu/NavMenuTable/Editmenu";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
   // const LocalStorageData = localStorage.getItem("token");
@@ -112,7 +113,7 @@ function App() {
        <Route path="cms"  >
            <Route index element={<Cms />} />
             <Route path="menutable" element={<MenuTable />} />
-            <Route path="editmenu/:id" element={<EditNavMenu />} />
+            <Route path="menuedit/editmenu/:id" element={<Editmenu/>} />
 
 
           </Route>
