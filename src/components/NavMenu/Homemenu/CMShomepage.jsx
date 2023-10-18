@@ -31,16 +31,15 @@ export const CMShomepage = () => {
 
   const handleConfirmSubmit = async () => {
     try {
-      const formData = new FormData();
-      formData.append('h_html',content);
+      const sendformData = new FormData();
+      sendformData.append('h_html',content);
   
-      const response = await apiClient.post(apis.homepage, formData
-      
-      );
+      const response = await apiClient.post(apis.homepage, sendformData);
   
       console.log(response.data);
       setModalMessage('Content saved successfully.');
       setSnackbarOpen(true);
+      setContent('')
     } catch (error) {
       console.error('Error:', error);
       setModalMessage('Error saving content.');
