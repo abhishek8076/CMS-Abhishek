@@ -10,6 +10,7 @@ import AddIcon from '@mui/icons-material/Add';
 import api from '../../utils/apiUrl.json';
 import './datatable.scss';
 
+
 import {
   Table,
   TableBody,
@@ -31,7 +32,7 @@ const Datatable = () => {
   const [loading, setLoading] = useState(true);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [deleteItemId, setDeleteItemId] = useState(null);
-
+  const [mobileFilter, setMobileFilter] = useState('');
   // Filter state for name and email
   const [nameFilter, setNameFilter] = useState('');
   const [emailFilter, setEmailFilter] = useState('');
@@ -65,7 +66,7 @@ const Datatable = () => {
   const handleDeleteConfirm = async () => {
     try {
       // Make a DELETE request to your API with the deleteItemId
-      await apiClient.delete(api.deleteuser +deleteItemId);
+      await apiClient.delete(api.deleteuser + deleteItemId);
 
       // Remove the deleted item from the data array
       const updatedData = data.filter((item) => item.users_id !== deleteItemId);
@@ -82,13 +83,18 @@ const Datatable = () => {
     setOpenDeleteDialog(false);
   };
 
-  // Filter the table data based on name and email
-  const filteredData = data.filter(
-    (item) =>
-      item.user_name.toLowerCase().includes(nameFilter.toLowerCase()) &&
-      item.user_email.toLowerCase().includes(emailFilter.toLowerCase())
-  );
-
+  const filteredData = data.filter((item) => {
+    const lowerCaseName = item.user_name.toLowerCase();
+    const lowerCaseEmail = item.user_email.toLowerCase();
+    const lowerCaseMobile = item.user_mobile_no.toLowerCase();
+    
+    return (
+      (lowerCaseName.includes(nameFilter.toLowerCase()) ||
+        lowerCaseEmail.includes(nameFilter.toLowerCase()) ||
+        lowerCaseMobile.includes(nameFilter.toLowerCase()))
+    );
+  });
+  
   return (
     <>
       <div className="datatable">
@@ -99,17 +105,22 @@ const Datatable = () => {
               <AddIcon /> Add New
             </Button>
           </Link>
-          <Link to="/services" className="link">
-            <Button id="btn" variant="contained">
-              <AddIcon /> Services
-            </Button>
-          </Link>
         </div>
 
         {/* Filter inputs */}
-       
-      </div>
+        {/* <TextField
+          label="Search"
+          variant="outlined"
+          value={nameFilter || emailFilter || mobileFilter}
+          onChange={(e) => {
+            const searchValue = e.target.value.toLowerCase();
+            setNameFilter(searchValue);
+            setEmailFilter(searchValue);
+            setMobileFilter(searchValue);
+          }}
+        /> */}
 
+      </div>
       <div className="container">
         {loading ? (
           <CircularProgress style={{ margin: '20px auto', display: 'block' }} />
@@ -117,6 +128,18 @@ const Datatable = () => {
           <TableContainer component={Paper} className="table" style={{ maxHeight: '500px', overflow: 'auto' }}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
+                <TableRow>  <TextField
+          label="Search"
+          variant="outlined"
+          value={nameFilter || emailFilter || mobileFilter}
+          onChange={(e) => {
+            const searchValue = e.target.value.toLowerCase();
+            setNameFilter(searchValue);
+            setEmailFilter(searchValue);
+            setMobileFilter(searchValue);
+          }}
+        />
+</TableRow>
                 <TableRow>
                   <TableCell>ID</TableCell>
                   <TableCell>Name</TableCell>

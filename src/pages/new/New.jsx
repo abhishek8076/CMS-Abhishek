@@ -215,7 +215,7 @@ export function New() {
                                 value={formData.address}
                                 onChange={handleChange}
                                 isInvalid={!!formErrors.address}
-                                maxLength={20}
+                                maxLength={30}
                               />
                               <Form.Control.Feedback type="invalid">
                                 {formErrors.address}

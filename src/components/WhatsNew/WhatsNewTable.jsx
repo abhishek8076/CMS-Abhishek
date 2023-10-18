@@ -9,7 +9,7 @@ import {
   Paper,
   Button,
   Snackbar,
-  DialogTitle, // Add this import
+  DialogTitle,
   DialogContent,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -25,7 +25,7 @@ import Sidebar from '../sidebar/Sidebar.jsx';
 import Navbar from '../navbar/Navbar.jsx'
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
-import Alert from '@mui/material/Alert'; 
+import Alert from '@mui/material/Alert';
 
 import './whatsnew.scss';
 
@@ -36,6 +36,7 @@ export const WhatsNewTable = () => {
   const [deleteItemId, setDeleteItemId] = useState(null);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(''); // State for search query
 
   const handleButtonClick = (users_id) => {
     const selectedItem = data.find((item) => item.u_id === users_id);
@@ -50,48 +51,19 @@ export const WhatsNewTable = () => {
     setConfirmDialogOpen(true);
   };
 
-  // const handleDeleteConfirm = async () => {
-  //   try {
-  //     // Make a DELETE request to your API with the deleteItemId
-  //     await apiClient.delete(apis.deletewhatsnew + deleteItemId);
-
-  //     // Remove the deleted item from the data array
-  //     const updatedData = data.filter((item) => item.u_id !== deleteItemId);
-  //     setData(updatedData);
-
-  //     // Close the confirmation dialog
-  //     setConfirmDialogOpen(false);
-
-  //     // Show a toast notification
-  //     setSnackbarOpen(true);
-  //   } catch (error) {
-  //     console.error('Error deleting item:', error);
-  //   }
-  // };
   const handleDeleteConfirm = async () => {
     try {
-      // Make a DELETE request to your API with the deleteItemId
       await apiClient.delete(apis.deletewhatsnew + deleteItemId);
-  
-      // Remove the deleted item from the data array
+
       const updatedData = data.filter((item) => item.u_id !== deleteItemId);
-      
-      console.log('Deleted item ID:', deleteItemId);
-      
-      console.log('Updated Data after deletion:', updatedData);
-      
       setData(updatedData);
-  
-      // Close the confirmation dialog
+
       setConfirmDialogOpen(false);
-  
-      // Show a toast notification
       setSnackbarOpen(true);
     } catch (error) {
       console.error('Error deleting item:', error);
     }
   };
-  
 
   const handleDeleteCancel = () => {
     setConfirmDialogOpen(false);
@@ -109,6 +81,11 @@ export const WhatsNewTable = () => {
     fetchData();
   }, []);
 
+  // Filter data based on the search query
+  const filteredData = data.filter((item) =>
+    item.u_news_tittle.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div>
       <div className="list">
@@ -124,6 +101,13 @@ export const WhatsNewTable = () => {
               </Button>
             </div>
             <div className="scrollable-table">
+              {/* Add the search bar input field */}
+              <input
+                type="text"
+                placeholder="Search by Title"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
               <TableContainer component={Paper} className="table">
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                   <TableHead>
@@ -137,7 +121,7 @@ export const WhatsNewTable = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {data.map((item, i) => (
+                    {filteredData.map((item, i) => (
                       <TableRow key={item.u_id}>
                         <TableCell>{i + 1}</TableCell>
                         <TableCell>{item.u_news_tittle}</TableCell>
