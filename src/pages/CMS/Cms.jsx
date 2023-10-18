@@ -18,7 +18,7 @@ import {Submenu} from '../../components/NavMenu/submenu';
 import { Row, Col,  Button } from 'react-bootstrap';
 import { CMShomepage } from '../../components/NavMenu/Homemenu/CMShomepage';
 import { Link } from 'react-router-dom';
-
+import { MenuTable } from '../../components/NavMenu/NavMenuTable/MenuTable';
 export const Cms = () => {
   const [menu, setMenu] = React.useState('');
   const [showDiv, setShowDiv] = useState(false);
@@ -86,7 +86,7 @@ export const Cms = () => {
           
             </div>
             <div style={{ display: activeButton === "button2" ? "block" : "none" }}>
-            <Menu />
+            <MenuTable />
               
             </div>
             <div style={{ display: activeButton === "button3" ? "block" : "none" }}>

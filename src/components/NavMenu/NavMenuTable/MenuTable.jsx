@@ -110,16 +110,13 @@ export const MenuTable = () => {
   }, []);
 console.log(data)
   return (
-    <div>
-      <div className="list">
-        <Sidebar />
-        <div className="listContainer">
-          <Navbar />
+    <div>   
+      
           <div className="containertable">
             <div>
               <Button type="button" className="view-button">
-                <Link to="/cms" className="view-button">
-                  <ArrowBackIcon /> Back
+                <Link to="/cms/menu" className="view-button">
+                  Add Menu
                 </Link>
               </Button>
             </div>
@@ -169,8 +166,7 @@ console.log(data)
               </TableContainer>
             </div>
           </div>
-        </div>
-      </div>
+  
 
       <Dialog open={confirmDialogOpen} onClose={handleDeleteCancel}>
         <DialogTitle>Confirm Delete</DialogTitle>

@@ -13,6 +13,8 @@ import ViewListIcon from '@mui/icons-material/ViewList';
 import { Link } from 'react-router-dom';
 import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
 import JoditEditor from "jodit-react";
+import Sidebar from '../sidebar/Sidebar.jsx';
+import Navbar from '../navbar/Navbar.jsx'
 
 
 
@@ -210,18 +212,22 @@ const onChange = useCallback((newContent) => {
   console.log(formData,html)
 
   return (
+    <div className="list">
+    <Sidebar />
+    <div className="listContainer">
+      <Navbar />
     <div className="container">
       <div className="row justify-content-center">
         <div >
-        <Row>
+        {/* <Row>
                 <Col xs={12} className="text-end">
                 <Link to='/cms/menutable' style={{textDecoration:'none'}}>
             <Button>
-              Table
+              Back
             </Button>
             </Link>
                 </Col>
-              </Row>
+              </Row> */}
         <div class="box-sec"> 
         <h1 className="text-center heading-main">Menu</h1>
           {/* Input for Name */}
@@ -334,12 +340,22 @@ const onChange = useCallback((newContent) => {
               {errors.editorContent && <div className="text-danger">{errors.editorContent}</div>}
             </div>
           )}
-
+</div>
+</div>
           {/* Submit Button */}
           <div className="btnsubmit">
             <button className="btn btn-primary" onClick={handleOpenConfirmation}>
               Submit
             </button>
+             <Row>
+                <Col xs={12} className="text-end">
+                <Link to='/cms' style={{textDecoration:'none'}}>
+            <Button>
+              Back
+            </Button>
+            </Link>
+                </Col>
+              </Row>
             <Dialog open={confirmDialogOpen} onClose={handleCloseConfirmation}>
               <DialogTitle>Confirm Submit</DialogTitle>
               <DialogContent>
