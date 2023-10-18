@@ -1,4 +1,4 @@
-import React, { useState, useEffect ,useCallback,useMemo} from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Axios from 'axios';
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
@@ -6,7 +6,7 @@ import 'froala-editor/css/froala_style.min.css';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
 import apiClient from '../../services/AxiosApi';
 import apis from '../../utils/apiUrl.json';
-import  HtmlEditor  from '../htmlEditor/htmlEditor';
+import HtmlEditor from '../htmlEditor/htmlEditor';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ViewListIcon from '@mui/icons-material/ViewList';
@@ -34,7 +34,7 @@ import {
   DialogTitle, // Add this import
   DialogContent,
   Dialog,
-} from '@mui/material'; 
+} from '@mui/material';
 import { Col, Row } from 'react-bootstrap';
 
 function EAlert(props) {
@@ -53,17 +53,17 @@ export const Menu = () => {
   const [dropdownOptions, setDropdownOptions] = useState([]);
   const [formErrors, setFormErrors] = useState({});
 
-const config = useMemo(
-  () => ({
-    readonly: false
-  }),
-  []
-);
+  const config = useMemo(
+    () => ({
+      readonly: false
+    }),
+    []
+  );
 
-const onChange = useCallback((newContent) => {
-  console.log("Editor content changed:", newContent);
-  setContent(newContent);
-}, []);
+  const onChange = useCallback((newContent) => {
+    console.log("Editor content changed:", newContent);
+    setContent(newContent);
+  }, []);
 
   // const handleEditorChange = (content) => {
   //   setEditorContent(content);
@@ -74,7 +74,7 @@ const onChange = useCallback((newContent) => {
     ContentType: '',
     external_link: '',
     internal_link: '',
- 
+
     submenu_id: 0,
     file: '',
     html: '',
@@ -88,7 +88,7 @@ const onChange = useCallback((newContent) => {
       ContentType: '',
       external_link: '',
       internal_link: '',
-  
+
       submenu_id: 0,
       file: '',
       html: '',
@@ -209,17 +209,17 @@ const onChange = useCallback((newContent) => {
     }
     fetchData1();
   }, []);
-  console.log(formData,html)
+  console.log(formData, html)
 
   return (
-    <div className="list">
-    <Sidebar />
-    <div className="listContainer">
-      <Navbar />
-    <div className="container">
-      <div className="row justify-content-center">
-        <div >
-        {/* <Row>
+    <div >
+   
+      <div >
+     
+        <div className="container">
+          <div className="row justify-content-center">
+            <div >
+              {/* <Row>
                 <Col xs={12} className="text-end">
                 <Link to='/cms/menutable' style={{textDecoration:'none'}}>
             <Button>
@@ -228,169 +228,169 @@ const onChange = useCallback((newContent) => {
             </Link>
                 </Col>
               </Row> */}
-        <div class="box-sec"> 
-        <h1 className="text-center heading-main">Menu</h1>
-          {/* Input for Name */}
-          <div className="mb-3">
-            <label className="form-label text-dark">Name</label>
-            <input
-              className="form-control"
-              type="text"
-              placeholder="Name"
-              name="MenuName"
-              value={formData.MenuName}
-              onChange={handleInputChange}
-              maxLength={20}
-            />
-            {errors.MenuName && <div className="text-danger">{errors.MenuName}</div>}
-          </div>
+              <div class="box-sec">
+                <h1 className="text-center heading-main">Menu</h1>
+                {/* Input for Name */}
+                <div className="mb-3">
+                  <label className="form-label text-dark">Name</label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    placeholder="Name"
+                    name="MenuName"
+                    value={formData.MenuName}
+                    onChange={handleInputChange}
+                    maxLength={20}
+                  />
+                  {errors.MenuName && <div className="text-danger">{errors.MenuName}</div>}
+                </div>
 
-          {/* Input for Select a content type */}
-          <div className="mb-3">
-            <label className="form-label text-dark">Select a content type</label>
-            <select
-              className="form-select"
-              name="ContentType"
-              value={formData.ContentType}
-              onChange={handleInputChange}
-            >
-              <option value="">Select a content type</option>
-              <option value="4">External Link</option>
-              <option value="3">Internal Link</option>
-              <option value="2">File</option>
-              <option value="1">HTML</option>
-            </select>
-            {errors.ContentType && <div className="text-danger">{errors.ContentType}</div>}
-          </div>
+                {/* Input for Select a content type */}
+                <div className="mb-3">
+                  <label className="form-label text-dark">Select a content type</label>
+                  <select
+                    className="form-select"
+                    name="ContentType"
+                    value={formData.ContentType}
+                    onChange={handleInputChange}
+                  >
+                    <option value="">Select a content type</option>
+                    <option value="4">External Link</option>
+                    <option value="3">Internal Link</option>
+                    <option value="2">File</option>
+                    <option value="1">HTML</option>
+                  </select>
+                  {errors.ContentType && <div className="text-danger">{errors.ContentType}</div>}
+                </div>
 
-          {/* Input for External Link */}
-          {formData.ContentType === '4' && (
-            <div className="mb-3">
-              <label className="form-label text-dark">Enter External Link</label>
-              <input
-                className="form-control"
-                type="text"
-                placeholder="Enter External Link"
-                name="external_link"
-                value={formData.external_link}
-                onChange={handleInputChange}
-              />
-              {errors.external_link && <div className="text-danger">{errors.external_link}</div>}
-            </div>
-          )}
+                {/* Input for External Link */}
+                {formData.ContentType === '4' && (
+                  <div className="mb-3">
+                    <label className="form-label text-dark">Enter External Link</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      placeholder="Enter External Link"
+                      name="external_link"
+                      value={formData.external_link}
+                      onChange={handleInputChange}
+                    />
+                    {errors.external_link && <div className="text-danger">{errors.external_link}</div>}
+                  </div>
+                )}
 
-          {/* Input for Internal Link */}
-          {formData.ContentType === '3' && (
-            <div className="mb-3">
-              <select
-                                  className='form-control'
-                                  name='internal_link'
-                                  value={formData.internal_link}
-                                  onChange={handleInputChange}
-                                  isInvalid={!!formErrors.internal_link}
-                                >
-                                  <option value='' style={{color:"black"}}>Select a role</option>
-                                  {dropdownOptions.map((data) => (
-                                    <option key={data.u_id} value={"/menu/"+data.u_menu_url}>
-                                      {"Menu Name"+":-"+data.u_menu_name}
-                                    </option>
-                                  ))}
-                                </select>
-              {errors.internal_link && <div className="text-danger">{errors.internal_link}</div>}
-            </div>
-          )}
+                {/* Input for Internal Link */}
+                {formData.ContentType === '3' && (
+                  <div className="mb-3">
+                    <select
+                      className='form-control'
+                      name='internal_link'
+                      value={formData.internal_link}
+                      onChange={handleInputChange}
+                      isInvalid={!!formErrors.internal_link}
+                    >
+                      <option value='' style={{ color: "black" }}>Select a role</option>
+                      {dropdownOptions.map((data) => (
+                        <option key={data.u_id} value={"/menu/" + data.u_menu_url}>
+                          {"Menu Name" + ":-" + data.u_menu_name}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.internal_link && <div className="text-danger">{errors.internal_link}</div>}
+                  </div>
+                )}
 
-          {/* Input for File */}
-          {formData.ContentType === '2' && (
-            <div className="mb-3">
-              <label className="form-label text-dark">Choose File</label>
-              <input
-                className="form-control"
-                type="file"
-                name="file"
-                onChange={handleImageChange}
-              />
-              {errors.file && <div className="text-danger">{errors.file}</div>}
-            </div>
-          )}
+                {/* Input for File */}
+                {formData.ContentType === '2' && (
+                  <div className="mb-3">
+                    <label className="form-label text-dark">Choose File</label>
+                    <input
+                      className="form-control"
+                      type="file"
+                      name="file"
+                      onChange={handleImageChange}
+                    />
+                    {errors.file && <div className="text-danger">{errors.file}</div>}
+                  </div>
+                )}
 
-          {/* HTML Editor Input */}
-          {formData.ContentType === '1' && (
-            <div className="mb-3">
-              <label className="form-label text-dark">HTML Editor</label>
-              <div >
-                {/* <textarea
+                {/* HTML Editor Input */}
+                {formData.ContentType === '1' && (
+                  <div className="mb-3">
+                    <label className="form-label text-dark">HTML Editor</label>
+                    <div >
+                      {/* <textarea
                   className="form-control"
                   value={html}
                   onChange={(e) => handleEditorChange(e.target.value)}
                 ></textarea> */}
-              </div>
-              {/* <FroalaEditorComponent
+                    </div>
+                    {/* <FroalaEditorComponent
       tag='textarea'
       model={html}
       onModelChange={handleEditorChange}
     /> */}
-    {/* <HtmlEditor/> */}
-    <JoditEditor
-        value={content}
-        config={config}
-        tabIndex={1}
-        onChange={onChange}
-      />
-              {errors.editorContent && <div className="text-danger">{errors.editorContent}</div>}
+                    {/* <HtmlEditor/> */}
+                    <JoditEditor
+                      value={content}
+                      config={config}
+                      tabIndex={1}
+                      onChange={onChange}
+                    />
+                    {errors.editorContent && <div className="text-danger">{errors.editorContent}</div>}
+                  </div>
+                )}
+              </div>
             </div>
-          )}
-</div>
-</div>
-          {/* Submit Button */}
-          <div className="btnsubmit">
-            <button className="btn btn-primary" onClick={handleOpenConfirmation}>
-              Submit
-            </button>
-             <Row>
+            {/* Submit Button */}
+            <div className="btnsubmit">
+              <button className="btn btn-primary" onClick={handleOpenConfirmation}>
+                Submit
+              </button>
+              <Row>
                 <Col xs={12} className="text-end">
-                <Link to='/cms' style={{textDecoration:'none'}}>
-            <Button>
-              Back
-            </Button>
-            </Link>
+                  <Link to='/cms' style={{ textDecoration: 'none' }}>
+                    <Button>
+                      Back
+                    </Button>
+                  </Link>
                 </Col>
               </Row>
-            <Dialog open={confirmDialogOpen} onClose={handleCloseConfirmation}>
-              <DialogTitle>Confirm Submit</DialogTitle>
-              <DialogContent>
-                Are you sure you want to submit this data?
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleCloseConfirmation} color="primary">
-                  Cancel
-                </Button>
-                <Button onClick={handleConfirmSubmit} color="primary">
-                  Confirm
-                </Button>
-              </DialogActions>
-            </Dialog>
-            <Snackbar
-              open={snackbarOpen}
-              autoHideDuration={3000} // Adjust as needed
-              onClose={() => setSnackbarOpen(false)}
-            >
-              <Alert severity="success" onClose={() => setSnackbarOpen(false)}>
-                {modalMessage}
-              </Alert>
-            </Snackbar>
-            <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={3000} // Adjust as needed
-        onClose={() => setSnackbarOpen(false)}
-      >
-        <Alert severity="success" onClose={() => setSnackbarOpen(false)}>
-          Data Save successfully.
-        </Alert>
-      </Snackbar>
+              <Dialog open={confirmDialogOpen} onClose={handleCloseConfirmation}>
+                <DialogTitle>Confirm Submit</DialogTitle>
+                <DialogContent>
+                  Are you sure you want to submit this data?
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCloseConfirmation} color="primary">
+                    Cancel
+                  </Button>
+                  <Button onClick={handleConfirmSubmit} color="primary">
+                    Confirm
+                  </Button>
+                </DialogActions>
+              </Dialog>
+              <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={3000} // Adjust as needed
+                onClose={() => setSnackbarOpen(false)}
+              >
+                <Alert severity="success" onClose={() => setSnackbarOpen(false)}>
+                  {modalMessage}
+                </Alert>
+              </Snackbar>
+              <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={3000} // Adjust as needed
+                onClose={() => setSnackbarOpen(false)}
+              >
+                <Alert severity="success" onClose={() => setSnackbarOpen(false)}>
+                  Data Save successfully.
+                </Alert>
+              </Snackbar>
+            </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   );

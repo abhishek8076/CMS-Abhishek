@@ -379,6 +379,15 @@ export const Submenu = () => {
             <button className="btn btn-primary" onClick={handleOpenConfirmation}>
               Submit
             </button>
+            <Row>
+                <Col xs={12} className="text-end">
+                  <Link to='/cms' style={{ textDecoration: 'none' }}>
+                    <Button>
+                      Back
+                    </Button>
+                  </Link>
+                </Col>
+              </Row>
             <Dialog open={confirmDialogOpen} onClose={handleCloseConfirmation}>
               <DialogTitle>Confirm Submit</DialogTitle>
               <DialogContent>

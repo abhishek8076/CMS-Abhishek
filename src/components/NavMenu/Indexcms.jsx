@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Sidebar from '../../components/sidebar/Sidebar';
-import Navbar from '../../components/navbar/Navbar';
-import NoteViewer from '../../components/Edit/Edit';
-import Whats_New from '../../components/WhatsNew/WhatsNew';
-import './Cms.scss';
+import Sidebar from '../sidebar/Sidebar';
+import Navbar from '../navbar/Navbar';
+import NoteViewer from '../Edit/Edit';
+import Whats_New from '../WhatsNew/WhatsNew';
+
 import { Container } from 'react-bootstrap';
 import Grid from '@mui/material/Grid';
 // import {Item}  from '@mui/material';
@@ -12,14 +12,14 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import { Form } from 'react-bootstrap';
 import New from '../../pages/new/New'
-import { Menu } from '../../components/NavMenu/menu';
-import {Submenu} from '../../components/NavMenu/submenu';
+import { Menu } from './menu';
+import {Submenu} from './submenu';
 // import './Cms.scss'
 import { Row, Col,  Button } from 'react-bootstrap';
-import { CMShomepage } from '../../components/NavMenu/Homemenu/CMShomepage';
+import { CMShomepage } from './Homemenu/CMShomepage';
 import { Link } from 'react-router-dom';
-import { MenuTable } from '../../components/NavMenu/NavMenuTable/MenuTable';
-export const Cms = () => {
+import { MenuTable } from './NavMenuTable/MenuTable';
+export const Indexcms = () => {
   const [menu, setMenu] = React.useState('');
   const [showDiv, setShowDiv] = useState(false);
   const [showDiv1, setShowDiv1] = useState(false);
@@ -75,19 +75,18 @@ export const Cms = () => {
     
             <div className="container">
           <div className="tab-box">
-            <button onClick={() => handleButtonClick("button1")} className="tab1">Menu</button>
-            <button onClick={() => handleButtonClick("button2")} className="tab2">Home</button>
+            <button onClick={() => handleButtonClick("button1")} className="tab1">Menu </button>
+            <button onClick={() => handleButtonClick("button2")} className="tab2">Sub Menu</button>
             {/* <button onClick={() => handleButtonClick("button3")} className="tab3">Sub Menu</button> */}
             {/* <button onClick={() => handleButtonClick("button4")} className="tab4">Linking</button> */}
 </div>
 
             <div style={{ display: activeButton === "button1" ? "block" : "none" }}>
-            
-            <MenuTable />
+            <Menu/>
           
             </div>
             <div style={{ display: activeButton === "button2" ? "block" : "none" }}>
-            < CMShomepage/>
+            <Submenu />
               
             </div>
            

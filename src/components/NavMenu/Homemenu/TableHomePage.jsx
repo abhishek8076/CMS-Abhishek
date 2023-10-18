@@ -131,9 +131,7 @@ export const TableHomePage = () => {
                     <TableRow>
                       <TableCell>ID</TableCell>
                       <TableCell>Title</TableCell>
-                      <TableCell>Content Type</TableCell>
-                      <TableCell>File</TableCell>
-                      <TableCell>External Link</TableCell>
+                      
                       <TableCell>Action</TableCell>
                     </TableRow>
                   </TableHead>
@@ -141,10 +139,7 @@ export const TableHomePage = () => {
                     {data.map((item, i) => (
                       <TableRow key={item.u_id}>
                         <TableCell>{i + 1}</TableCell>
-                        <TableCell>{item.u_tittle_name}</TableCell>
-                        <TableCell>{item.u_contenttype}</TableCell>
-                        <TableCell>{item.u_file}</TableCell>
-                        <TableCell>{item.u_external_link}</TableCell>
+                        <TableCell>{item.u_h_html}</TableCell>
                         
                         <TableCell>
                           <Link
