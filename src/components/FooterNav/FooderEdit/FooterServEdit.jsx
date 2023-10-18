@@ -1,84 +1,127 @@
 import React, { useState, useEffect } from 'react';
+import Axios from 'axios';
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.min.css';
-
+import FroalaEditorComponent from 'react-froala-wysiwyg';
 import apiClient from '../../../services/AxiosApi';
 import apis from '../../../utils/apiUrl.json';
+
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ViewListIcon from '@mui/icons-material/ViewList';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
+
+import DialogActions from '@mui/material/DialogActions';
+import Alert from '@mui/material/Alert';
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
   Button,
   Snackbar,
   DialogTitle,
   DialogContent,
   Dialog,
-  DialogActions,
 } from '@mui/material';
 
-export const FooterService = () => {
-  const [html, setHtml] = useState('');
-  const [selectedFile, setSelectedFile] = useState(null);
+function EAlert(props) {
+  return <Alert elevation={6} variant="filled" {...props} />;
+}
+
+ 
+export const FooterService  = () => {
+  const {id}= useParams()
+  const [html, sethtml] = useState('');
+  const [file, setselectedfile] = useState(null);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const [formData, setFormData] = useState({
-    title_name: '',
+    tittle_name: '',
     description: '',
+    footertype:2,
+    contenttype:0
   });
-
   const [errors, setErrors] = useState({});
 
-  useEffect(() => {
-    setFormData({
-      title_name: '',
-      description: '',
-    });
-  }, []);
+  // useEffect(() => {
+  //   setFormData({
+  //     tittle_name: '',
+  //     description: '',
+  //   });
+  // }, []);
 
   const handleEditorChange = (content) => {
-    setHtml(content);
+    sethtml(content);
+  };
+  useEffect(() => {
+    async function fetchData() {
+      try {
+       
+        const response = await apiClient.get(apis.getfooterbyid+id);
+        setFormData(response.data);
+     
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+       
+      }
+    }
+    fetchData();
+  }, [id]);
+ 
+    const validateForm = () => {
+      const errors = {};
+  
+      // Regular expression to match names with alphabets and spaces
+      const namePattern = /^[a-zA-Z\s]+$/;
+  
+      if (!formData.tittle_name) {
+        errors.tittle_name = 'Name is required';
+      } else if (!formData.tittle_name.match(namePattern)) {
+        errors.tittle_name = 'Name should only contain alphabets and spaces';
+      }
+  
+      if (!formData.description) {
+        errors.description = 'Description is required';
+      }
+
+    setErrors(errors);
+
+    return Object.keys(errors).length === 0;
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!formData.title_name) {
-      newErrors.title_name = 'Title is required';
-    } else {
-      newErrors.title_name = '';
-    }
-
-    if (!formData.description) {
-      newErrors.description = 'Description is required';
-    } else {
-      newErrors.description = '';
-    }
-
-    setErrors(newErrors);
-
-    return Object.keys(newErrors).every((key) => newErrors[key] === '');
-  };
-
-  const handleFileChange = (event) => {
+  const handleImageChange = (event) => {
     const imageFile = event.target.files[0];
-    setSelectedFile(imageFile);
+    setselectedfile(imageFile);
   };
 
   const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    const { name, value, type } = event.target;
+
+    if (type === '2') {
+      setFormData({
+        ...formData,
+        [name]: event.target.files[0],
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const handleOpenConfirmation = () => {
-    setConfirmDialogOpen(true);
+    if (validateForm()) {
+      setConfirmDialogOpen(true);
+    }
   };
 
   const handleCloseConfirmation = () => {
@@ -88,42 +131,39 @@ export const FooterService = () => {
   const handleConfirmSubmit = async () => {
     handleCloseConfirmation();
 
-    if (validateForm()) {
-      try {
-        const formDataToSend = new FormData();
-        formDataToSend.append('title_name', formData.title_name);
-        formDataToSend.append('description', formData.description);
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('tittle_name', formData.tittle_name);
+      formDataToSend.append('description', formData.description);
+      formDataToSend.append('footertype', formData.footertype);
+      formDataToSend.append('contenttype', formData.contenttype);
 
-        // Add more formData fields here if needed
+      const response = await apiClient.put(apis.getfooterbyid+id , formDataToSend, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
-        const response = await apiClient.post(apis.newfooter, formDataToSend, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
+      console.log('Data saved:', response.data);
+      toast.success('Data saved successfully!');
+      setModalMessage('Data saved successfully!');
+      setSnackbarOpen(true);
 
-        console.log('Data saved:', response.data);
-        toast.success('Data saved successfully!');
-        setModalMessage('Data saved successfully!');
-        setSnackbarOpen(true);
-
-        // Clear the form fields
-        setFormData({
-          title_name: '',
-          description: '',
-        });
-      } catch (error) {
-        console.error('Error saving data:', error);
-      }
+      // Clear the form fields
+     
+    } catch (error) {
+      console.error('Error saving data:', error);
     }
   };
-  
+
+console.log(formData)
+
   return (
     <div className="container">
       <div className="row">
         <div className="col">
           <div className="col text-end">
-            <Link to="/footer/footerservtable" style={{ textDecoration: 'none' }}>
+            <Link to="/footer/footertable" style={{ textDecoration: 'none' }}>
               <button className="btn btn-primary">
                 <ViewListIcon /> Data view
               </button>
@@ -134,22 +174,20 @@ export const FooterService = () => {
       </div>
       <div className="row justify-content-center">
         <div className="col-md-6">
-          {/* Input for Title */}
           <div className="mb-3">
             <label className="form-label text-dark">Enter Title</label>
             <input
               className="form-control"
               type="text"
-              placeholder="Title"
-              name="title_name"
-              value={formData.title_name}
+              placeholder="Name"
+              name="tittle_name"
+              value={formData.tittle_name}
               onChange={handleInputChange}
             />
-            {errors.title_name && <div className="text-danger">{errors.title_name}</div>}
+            {errors.tittle_name && <div className="text-danger">{errors.tittle_name}</div>}
           </div>
-          {/* Input for Description */}
           <div className="mb-3">
-            <label className="form-label text-dark">Enter Description</label>
+            <label className="form-label text-dark">Description</label>
             <textarea
               className="form-control"
               type="text"
@@ -160,7 +198,6 @@ export const FooterService = () => {
             />
             {errors.description && <div className="text-danger">{errors.description}</div>}
           </div>
-          {/* Submit Button */}
           <div className="btnsubmit">
             <button className="btn btn-primary" onClick={handleOpenConfirmation}>
               Submit
@@ -182,7 +219,9 @@ export const FooterService = () => {
               autoHideDuration={3000}
               onClose={() => setSnackbarOpen(false)}
             >
-              {modalMessage}
+              <Alert severity="success" onClose={() => setSnackbarOpen(false)}>
+                {modalMessage}
+              </Alert>
             </Snackbar>
           </div>
         </div>
@@ -190,5 +229,3 @@ export const FooterService = () => {
     </div>
   );
 };
-
-export default FooterService;

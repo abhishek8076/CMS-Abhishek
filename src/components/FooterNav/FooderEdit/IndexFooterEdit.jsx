@@ -33,16 +33,16 @@ import  {FooterNavEdit } from './FooterNavEdit';
       <div className="listContainer">
         <Navbar />
       <div>
-     {data.u_footertype===1&&(
+     {data.footertype===1&&(
         <FooterDesc/>
      )}
-      {data.u_footertype===2&&(
+      {data.footertype===2&&(
         <FooterService/>
      )}
-      {data.u_footertype===3&&(
+      {data.footertype===3&&(
         <FooterOffice/>
      )}
-      {data.u_footertype
+      {data.footertype
       ===4&&(
         <FooterNavEdit/>
      )}

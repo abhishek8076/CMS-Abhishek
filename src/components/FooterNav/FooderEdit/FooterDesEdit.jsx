@@ -45,15 +45,17 @@ export const FooterDesc = () => {
   const [formData, setFormData] = useState({
     tittle_name: '',
     description: '',
+    footertype:1,
+    contenttype:0
   });
   const [errors, setErrors] = useState({});
 
-  useEffect(() => {
-    setFormData({
-      tittle_name: '',
-      description: '',
-    });
-  }, []);
+  // useEffect(() => {
+  //   setFormData({
+  //     tittle_name: '',
+  //     description: '',
+  //   });
+  // }, []);
 
   const handleEditorChange = (content) => {
     sethtml(content);
@@ -132,8 +134,10 @@ export const FooterDesc = () => {
       const formDataToSend = new FormData();
       formDataToSend.append('tittle_name', formData.tittle_name);
       formDataToSend.append('description', formData.description);
+      formDataToSend.append('footertype', formData.footertype);
+      formDataToSend.append('contenttype', formData.contenttype);
 
-      const response = await apiClient.put(apis.newfooter, formDataToSend, {
+      const response = await apiClient.put(apis.getfooterbyid+id , formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -145,19 +149,13 @@ export const FooterDesc = () => {
       setSnackbarOpen(true);
 
       // Clear the form fields
-      setFormData({
-        tittle_name: '',
-        description: '',
-      });
+     
     } catch (error) {
       console.error('Error saving data:', error);
     }
   };
 
-  const config = {
-    placeholderText: 'Edit Your Content Here!',
-    charCounterCount: false,
-  };
+console.log(formData)
 
   return (
     <div className="container">
