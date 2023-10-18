@@ -39,6 +39,7 @@ export const CMShomepage = () => {
       console.log(response.data);
       setModalMessage('Content saved successfully.');
       setSnackbarOpen(true);
+      setContent('')
     } catch (error) {
       console.error('Error:', error);
       setModalMessage('Error saving content.');
