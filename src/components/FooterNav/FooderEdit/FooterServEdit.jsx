@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.min.css';
-import FroalaEditorComponent from 'react-froala-wysiwyg';
+
 import apiClient from '../../../services/AxiosApi';
 import apis from '../../../utils/apiUrl.json';
 import { ToastContainer, toast } from 'react-toastify';
@@ -11,13 +11,6 @@ import ViewListIcon from '@mui/icons-material/ViewList';
 import { Link } from 'react-router-dom';
 
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
   Button,
   Snackbar,
   DialogTitle,
@@ -124,6 +117,7 @@ export const FooterService = () => {
       }
     }
   };
+  
   return (
     <div className="container">
       <div className="row">

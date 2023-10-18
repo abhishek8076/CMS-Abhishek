@@ -10,7 +10,7 @@ import apis from '../../../utils/apiUrl.json';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ViewListIcon from '@mui/icons-material/ViewList';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 
 import DialogActions from '@mui/material/DialogActions';
@@ -35,6 +35,7 @@ function EAlert(props) {
 }
 
 export const FooterDesc = () => {
+  const {id}= useParams()
   const [html, sethtml] = useState('');
   const [file, setselectedfile] = useState(null);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
@@ -57,7 +58,20 @@ export const FooterDesc = () => {
   const handleEditorChange = (content) => {
     sethtml(content);
   };
-
+  useEffect(() => {
+    async function fetchData() {
+      try {
+       
+        const response = await apiClient.get(apis.getfooterbyid+id);
+        setFormData(response.data);
+     
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+       
+      }
+    }
+    fetchData();
+  }, [id]);
  
     const validateForm = () => {
       const errors = {};
@@ -119,7 +133,7 @@ export const FooterDesc = () => {
       formDataToSend.append('tittle_name', formData.tittle_name);
       formDataToSend.append('description', formData.description);
 
-      const response = await apiClient.post(apis.newfooter, formDataToSend, {
+      const response = await apiClient.put(apis.newfooter, formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
