@@ -4,15 +4,14 @@ import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.min.css';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
-import apiClient from '../../services/AxiosApi';
-import apis from '../../utils/apiUrl.json';
-import MyEditor, { HtmlEditor } from '../htmlEditor/htmlEditor';
+import apiClient from '../../../services/AxiosApi';
+import apis from '../../../utils/apiUrl.json';
+
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import { Link } from 'react-router-dom';
-import Sidebar from '../sidebar/Sidebar';
-import Navbar from '../navbar/Navbar';
+
 
 import DialogActions from '@mui/material/DialogActions';
 import Alert from '@mui/material/Alert';

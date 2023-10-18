@@ -41,7 +41,7 @@ import { FooterDescTable } from "./components/FooterNav/FooterTable/FooterDescTa
 import { FooterServTable } from "./components/FooterNav/FooterTable/FootetServTable";
 import {FooterNavEdit} from "./components/FooterNav/FooderEdit/FooterNavEdit"
 import{ MenuTable} from './components/NavMenu/NavMenuTable/MenuTable'
-import {Index} from './components/NavMenu/EditNavMenu/Index'
+import {Index} from './components/NavMenu/EditNavMenu/IndexeditMenu'
 import {IndexFooterEdit} from './components/FooterNav/FooderEdit/IndexFooterEdit'
 import {Indexcms}from './components/NavMenu/Indexcms'
 // import { Menu } from "./components/NavMenu/menu";

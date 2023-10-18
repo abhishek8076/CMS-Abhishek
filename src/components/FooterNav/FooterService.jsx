@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import Axios from 'axios';
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.min.css';
 import FroalaEditorComponent from 'react-froala-wysiwyg';
 import apiClient from '../../services/AxiosApi';
 import apis from '../../utils/apiUrl.json';
+import MyEditor, { HtmlEditor } from '../htmlEditor/htmlEditor';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import { Link } from 'react-router-dom';
-
+import Sidebar from '../sidebar/Sidebar';
+import Navbar from '../navbar/Navbar';
+import './indexFooter.scss';
+import DialogActions from '@mui/material/DialogActions';
+import Alert from '@mui/material/Alert';
 import {
   Table,
   TableBody,
@@ -23,73 +29,73 @@ import {
   DialogTitle,
   DialogContent,
   Dialog,
-  DialogActions,
 } from '@mui/material';
 
+
+
 export const FooterService = () => {
-  const [html, setHtml] = useState('');
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [html, sethtml] = useState('');
+  const [file, setselectedfile] = useState(null);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const [formData, setFormData] = useState({
-    title_name: '',
+    tittle_name: '',
     description: '',
     footertype:2,
-    contenttype :0,
+    contenttype:0
   });
-
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
     setFormData({
-      title_name: '',
+      tittle_name: '',
       description: '',
-      footertype: 2,
-      contenttype :0,
+      footertype:2,
+      contenttype:0
     });
   }, []);
 
-  const handleEditorChange = (content) => {
-    setHtml(content);
+ 
+    const validateForm = () => {
+      const errors = {};
+  
+      // Regular expression to match names with alphabets and spaces
+      const namePattern = /^[a-zA-Z\s]+$/;
+  
+      if (!formData.tittle_name) {
+        errors.tittle_name = 'Name is required';
+      } else if (!formData.tittle_name.match(namePattern)) {
+        errors.tittle_name = 'Name should only contain alphabets and spaces';
+      }
+  
+      if (!formData.description) {
+        errors.description = 'Description is required';
+      }
+
+    setErrors(errors);
+
+    return Object.keys(errors).length === 0;
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!formData.title_name) {
-      newErrors.title_name = 'Title is required';
-    } else {
-      newErrors.title_name = '';
-    }
-
-    if (!formData.description) {
-      newErrors.description = 'Description is required';
-    } else {
-      newErrors.description = '';
-    }
-
-    setErrors(newErrors);
-
-    return Object.keys(newErrors).every((key) => newErrors[key] === '');
-  };
-
-  const handleFileChange = (event) => {
-    const imageFile = event.target.files[0];
-    setSelectedFile(imageFile);
-  };
 
   const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    const { name, value} = event.target;
+
+  
+    
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    
   };
 
   const handleOpenConfirmation = () => {
-    setConfirmDialogOpen(true);
+    if (validateForm()) {
+      setConfirmDialogOpen(true);
+    }
   };
 
   const handleCloseConfirmation = () => {
@@ -99,44 +105,43 @@ export const FooterService = () => {
   const handleConfirmSubmit = async () => {
     handleCloseConfirmation();
 
-    if (validateForm()) {
-      try {
-        const formDataToSend = new FormData();
-        formDataToSend.append('title_name', formData.title_name);
-        formDataToSend.append('description', formData.description);
-        formDataToSend.append('contenttype', formData.contenttype);
-        formDataToSend.append('footertype', formData.footertype);
-        // Add more formData fields here if needed
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('tittle_name', formData.tittle_name);
+      formDataToSend.append('description', formData.description);
+      formDataToSend.append('footertype', formData.footertype);
+      formDataToSend.append('contenttype', formData.contenttype);
 
-        const response = await apiClient.post(apis.newfooter, formDataToSend, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
+      const response = await apiClient.post(apis.newfooter, formDataToSend, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
-        console.log('Data saved:', response.data);
-        toast.success('Data saved successfully!');
-        setModalMessage('Data saved successfully!');
-        setSnackbarOpen(true);
+      console.log('Data saved:', response.data);
+      toast.success('Data saved successfully!');
+      setModalMessage('Data saved successfully!');
+      setSnackbarOpen(true);
 
-        // Clear the form fields
-        setFormData({
-          title_name: '',
-          description: '',
-         
-        });
-      } catch (error) {
-        console.error('Error saving data:', error);
-      }
+      // Clear the form fields
+      setFormData({
+        tittle_name: '',
+        description: '',
+       
+      });
+    } catch (error) {
+      console.error('Error saving data:', error);
     }
   };
-console.log(formData);
+
+  console.log(formData)
+
   return (
     <div className="container">
       <div className="row">
         <div className="col">
           <div className="col text-end">
-            <Link to="/footer/footerservtable" style={{ textDecoration: 'none' }}>
+            <Link to="/footer/footertable" style={{ textDecoration: "none" }}>
               <button className="btn btn-primary">
                 <ViewListIcon /> Data view
               </button>
@@ -144,26 +149,29 @@ console.log(formData);
           </div>
         </div>
       </div>
+      {/* <div className="main-body"> */}
       <div className="row justify-content-center">
         <div className="col-md-6">
-        <div className="box-sec">
+<div className="box-sec">
+        <div className="mb-3">
         <h1 className="text-center heading-main">Footer Service</h1>
-          {/* Input for Title */}
+          </div>
           <div className="mb-3">
             <label className="form-label text-dark">Enter Title</label>
             <input
               className="form-control"
               type="text"
-              placeholder="Title"
-              name="title_name"
-              value={formData.title_name}
+              placeholder="Name"
+              name="tittle_name"
+              value={formData.tittle_name}
               onChange={handleInputChange}
             />
-            {errors.title_name && <div className="text-danger">{errors.title_name}</div>}
+            {errors.tittle_name && (
+              <div className="text-danger">{errors.tittle_name}</div>
+            )}
           </div>
-          {/* Input for Description */}
           <div className="mb-3">
-            <label className="form-label text-dark">Enter Description</label>
+            <label className="form-label text-dark">Description</label>
             <textarea
               className="form-control"
               type="text"
@@ -172,16 +180,22 @@ console.log(formData);
               value={formData.description}
               onChange={handleInputChange}
             />
-            {errors.description && <div className="text-danger">{errors.description}</div>}
+            {errors.description && (
+              <div className="text-danger">{errors.description}</div>
+            )}
           </div>
-          {/* Submit Button */}
           <div className="btnsubmit">
-            <button className="btn btn-primary" onClick={handleOpenConfirmation}>
+            <button
+              className="btn btn-primary"
+              onClick={handleOpenConfirmation}
+            >
               Submit
             </button>
             <Dialog open={confirmDialogOpen} onClose={handleCloseConfirmation}>
               <DialogTitle>Confirm Submit</DialogTitle>
-              <DialogContent>Are you sure you want to submit this data?</DialogContent>
+              <DialogContent>
+                Are you sure you want to submit this data?
+              </DialogContent>
               <DialogActions>
                 <Button onClick={handleCloseConfirmation} color="primary">
                   Cancel
@@ -196,14 +210,15 @@ console.log(formData);
               autoHideDuration={3000}
               onClose={() => setSnackbarOpen(false)}
             >
-              {modalMessage}
+              <Alert severity="success" onClose={() => setSnackbarOpen(false)}>
+                {modalMessage}
+              </Alert>
             </Snackbar>
           </div>
           </div>
         </div>
       </div>
     </div>
+    // </div>
   );
 };
-
-export default FooterService;

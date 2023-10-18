@@ -4,17 +4,17 @@ import apis from '../../../utils/apiUrl.json'
 
 import Sidebar from '../../sidebar/Sidebar';
 import Navbar from '../../navbar/Navbar';
-import { useParams } from 'react-router-dom';
-import { FooterDesc } from '../FooterDesc';
-import FooterService from '../FooterService';
-import { FooterOffice } from '../FooterOffice';
-import { FooterPage } from '../FooterNav';
+import { Navigate, useParams } from 'react-router-dom';
+import { FooterDesc } from "./FooterDesEdit";
+import {FooterService }from './FooterServEdit';
+import {FooterOffice}  from './FooterOfficeEdit';
+import  {FooterNavEdit } from './FooterNavEdit';
 
  export const IndexFooterEdit  = () => {
     const [data,setData] = useState([])
     const {id}= useParams()
     useEffect(() => {
-        async function fetchData2() {
+        async function fetchData() {
           try {
            
             const response = await apiClient.get(apis.getfooterbyid+id);
@@ -25,7 +25,7 @@ import { FooterPage } from '../FooterNav';
            
           }
         }
-        fetchData2();
+        fetchData();
       }, [id]);
   return (
     <div className="list">
@@ -44,9 +44,9 @@ import { FooterPage } from '../FooterNav';
      )}
       {data.u_footertype
       ===4&&(
-        <FooterPage/>
+        <FooterNavEdit/>
      )}
-     
+      
       </div>
       </div>
     </div>
