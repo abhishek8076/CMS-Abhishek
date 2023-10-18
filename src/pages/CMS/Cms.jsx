@@ -90,7 +90,7 @@ export const Cms = () => {
               
             </div>
             <div style={{ display: activeButton === "button3" ? "block" : "none" }}>
-            <Submenu />
+            <MenuTable />
             </div>
             {/* <div style={{ display: activeButton === "button4" ? "block" : "none" }}>
             <FooterPage />

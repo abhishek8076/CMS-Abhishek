@@ -101,7 +101,7 @@ export const TableHomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await apiClient.get(apis.getfooter);
+        const response = await apiClient.get(apis.homepage);
         setData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
