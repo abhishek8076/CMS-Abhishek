@@ -70,8 +70,7 @@ const onChange = useCallback((newContent) => {
     ContentType: '',
     external_link: '',
     internal_link: '',
- 
-    submenu_id: '',
+    submenu_id:0,
     file: '',
     html: '',
   });
@@ -85,7 +84,7 @@ const onChange = useCallback((newContent) => {
       external_link: '',
       internal_link: '',
   
-      submenu_id:'',
+      submenu_id:0,
       file: '',
       html: '',
     });
@@ -208,13 +207,13 @@ const onChange = useCallback((newContent) => {
   useEffect(() => {
     async function fetchData2() {
       try {
-        setLoading(true);
+        
         const response = await apiClient.get(apis.getmenudatabyid+id);
-        setDropdownOptions(response.data);
-        setLoading(false);
+        setFormData(response.data);
+        
       } catch (error) {
         console.error('Error fetching user data:', error);
-        setLoading(false);
+        
       }
     }
     fetchData2();

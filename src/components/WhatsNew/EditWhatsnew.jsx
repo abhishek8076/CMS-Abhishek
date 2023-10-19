@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useMemo,useCallback} from 'react';
 import Axios from 'axios';
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
@@ -13,11 +13,12 @@ import ViewListIcon from '@mui/icons-material/ViewList';
 import { Link, useParams } from 'react-router-dom';
 import Navbar from '../navbar/Navbar';
 import Sidebar from '../sidebar/Sidebar';
+import JoditEditor from 'jodit-react';
 
 export const EditWhatsnew = () => {
   const { id } = useParams();
-  const [u_html, setu_html] = useState('');
-  const [ufile, setFile] = useState(null);
+  const [html, sethtml] = useState('');
+  const [file, setFile] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [formData, setFormData] = useState({
@@ -28,7 +29,7 @@ export const EditWhatsnew = () => {
     file: null,  // Use null for file state
     startdate: '',
     end_date: '',  // Corrected field name
-    u_html: '',
+    html: '',
   });
   const [errors, setErrors] = useState({});
   const [editingItemId, setEditingItemId] = useState(null);
@@ -39,6 +40,17 @@ export const EditWhatsnew = () => {
     { id: 2, label: 'File' },
     { id: 1, label: 'HTML' },  // Updated label
   ];
+  const config = useMemo(
+    () => ({
+      readonly: false
+    }),
+    []
+  );
+
+  const onChange = useCallback((newContent) => {
+    console.log("Editor content changed:", newContent);
+    sethtml(newContent);
+  }, []);
 
   useEffect(() => {
     if (id) {
@@ -80,7 +92,7 @@ export const EditWhatsnew = () => {
   // }, [id]);
 
   const handleEditorChange = (content) => {
-    setu_html(content);
+    sethtml(content);
   };
 
   const validateForm = () => {
@@ -102,12 +114,12 @@ export const EditWhatsnew = () => {
       errors.internal_file = 'Internal Link is required';
     }
 
-    if (formData.contenttype === '2' && !ufile) {
+    if (formData.contenttype === '2' && !file) {
       errors.file = 'File is required';
     }
 
-    if (formData.contenttype === '1' && !u_html) {
-      errors.u_html = 'HTML content is required';  // Updated field name
+    if (formData.contenttype === '1' && !html) {
+      errors.html = 'HTML content is required';  // Updated field name
     }
 
     if (!formData.startdate) {
@@ -167,9 +179,9 @@ export const EditWhatsnew = () => {
   //       } else if (formData.contenttype === 3) {
   //         formDataToSend.append('internal_file', formData.internal_file);
   //       } else if (formData.contenttype ===2) {
-  //         formDataToSend.append('file', ufile);
+  //         formDataToSend.append('file', file);
   //       } else if (formData.contenttype === 1) {
-  //         formDataToSend.append('html', u_html);  // Updated field name
+  //         formDataToSend.append('html', html);  // Updated field name
   //       }
 
   //       formDataToSend.append('startdate', formData.startdate);
@@ -201,9 +213,9 @@ export const EditWhatsnew = () => {
         } else if (formData.contenttype === 3) {
           formDataToSend.append('internal_file', formData.internal_file);
         } else if (formData.contenttype === 2) {
-          formDataToSend.append('file', ufile); // Use ufile here
+          formDataToSend.append('file', file); // Use file here
         } else if (formData.contenttype === 1) {
-          formDataToSend.append('html', u_html);
+          formDataToSend.append('html', html);
         }
   
         formDataToSend.append('startdate', formData.startdate);
@@ -222,11 +234,7 @@ export const EditWhatsnew = () => {
       }
     }
   };
-  
-  const config = {
-    placeholderText: 'Edit Your Content Here!',
-    charCounterCount: false,
-  };
+
   console.log(formData)
   return (
     <div className="list">
@@ -324,8 +332,8 @@ export const EditWhatsnew = () => {
                       
                       onChange={handleImageChange}
                     />
-                    {errors.ufile && (
-                      <div className="text-danger">{errors.ufile}</div>
+                    {errors.file && (
+                      <div className="text-danger">{errors.file}</div>
                     )}
                   </div>
                 )}
@@ -334,16 +342,22 @@ export const EditWhatsnew = () => {
                   <div className="mb-3">
                     <label className="form-label text-dark">HTML Editor</label>  {/* Updated label */}
                     <div>
-                      <FroalaEditorComponent
+                      {/* <FroalaEditorComponent
                         tag="textarea"
                         config={config}
-                        model={u_html}
+                        model={html}
                         value={formData.html}
                         onModelChange={handleEditorChange}
-                      />
+                      /> */}
+                      <JoditEditor
+                      value={formData.html}
+                      config={config}
+                      tabIndex={1}
+                      onChange={onChange}
+                    />
                     </div>
-                    {errors.u_html && (
-                      <div className="text-danger">{errors.u_html}</div>  
+                    {errors.html && (
+                      <div className="text-danger">{errors.html}</div>  
                     )}
                   </div>
                 )}
