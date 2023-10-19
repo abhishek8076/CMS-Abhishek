@@ -69,8 +69,8 @@ export default function Login() {
 
         if (dt) {
           localStorage.setItem("token", token);
-          setDialogText("Login Success!!");
-          handleOpenDialog(); // Open the dialog with the success message
+          setDialogText("Login is Successfull!!");
+          handleOpenDialog(true); // Open the dialog with the success message
           navigate("/dashboard");
         }
       }
