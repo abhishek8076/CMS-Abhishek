@@ -89,6 +89,43 @@ body {
 .custom-content6{
   background-color: #20c997;
 }
+.custom-content7 {
+  background-color: #bb86fc;
+}
 .tab-box button.active {
   border: 2px solid #fff;
+}
+.dashtop-left {
+  position: absolute;
+  top: 8px;
+  left: 16px;
+}
+.dashtop-left
+{
+  position: absolute;
+  top: 8px;
+  left: 16px;
+}
+.pr-button-container{
+  text-align: center;
+
+}
+.pr-button{
+  background-color: #e9204f;
+  
+}
+.pr-button-text-icon-wrapper{
+  color: #ffffff;
+  font-family: "Dosis", Sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0px;
+  border-style: solid;
+  border-width: 2px 2px 2px 2px;
+  border-color: #e9204f;
+  background-color: #e9204f;
+  border-radius: 2px;
+  padding: 20px 20px 20px 20px;
+
 }
