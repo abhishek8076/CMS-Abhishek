@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import ViewListIcon from '@mui/icons-material/ViewList';
+import apiClient from '../../../services/AxiosApi';
+import apis from '../../../utils/apiUrl.json';
 
 export const FooterOffice = () => {
+  const {id}= useParams()
   const [html, setHtml] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
@@ -13,7 +16,9 @@ export const FooterOffice = () => {
   const [formData, setFormData] = useState({
     tittle_name: '',
     address: '',
-    phoneno: '',
+    mobile_no: '',
+    footertype:3,
+    contenttype:0
   });
   const [errors, setErrors] = useState({});
 
@@ -29,10 +34,10 @@ export const FooterOffice = () => {
       newErrors.address = 'Address is required';
     }
   
-    if (!formData.phoneno) {
-      errors.phoneno = "Mobile number is required";
-    } else if (!/^[0-9]{10}$/.test(formData.phoneno)) {
-      errors.phoneno = "Invalid mobile number format";
+    if (!formData.mobile_no) {
+      errors.mobile_no = "Mobile number is required";
+    } else if (!/^[0-9]{10}$/.test(formData.mobile_no)) {
+      errors.mobile_no = "Invalid mobile number format";
     }
   
 
@@ -40,6 +45,21 @@ export const FooterOffice = () => {
 
     return Object.keys(newErrors).length === 0;
   };
+  useEffect(() => {
+    async function fetchData() {
+      try {
+       
+        const response = await apiClient.get(apis.getfooterbyid+id);
+        setFormData(response.data);
+     
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+       
+      }
+    }
+    fetchData();
+  }, [id]);
+ 
 
   const handleConfirmSubmit = async () => {
     try {
@@ -47,9 +67,11 @@ export const FooterOffice = () => {
         const formDataToSend = new FormData();
         formDataToSend.append('tittle_name', formData.tittle_name);
         formDataToSend.append('address', formData.address);
-        formDataToSend.append('phoneno', formData.phoneno);
+        formDataToSend.append('mobile_no', formData.mobile_no);
+        formDataToSend.append('footertype', formData.footertype);
+        formDataToSend.append('contenttype', formData.contenttype);
 
-        const response = await Axios.post('your-api-endpoint', formDataToSend, {
+        const response = await apiClient.put(apis.getfooterbyid+id, formDataToSend, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -59,12 +81,7 @@ export const FooterOffice = () => {
         setModalMessage('Data saved successfully!');
         setSnackbarOpen(true);
 
-        // Clear the form fields
-        setFormData({
-          tittle_name: '',
-          address: '',
-          phoneno: '',
-        });
+      
       }
     } catch (error) {
       console.error('Error saving data:', error);
@@ -125,13 +142,13 @@ export const FooterOffice = () => {
               className="form-control"
               type="text"
               placeholder="Phone No"
-              name="phoneno"
-              value={formData.phoneno}
+              name="mobile_no"
+              value={formData.mobile_no}
               onChange={handleInputChange}
               maxLength={10}
               minLength={10}
             />
-            {errors.phoneno && <div className="text-danger">{errors.phoneno}</div>}
+            {errors.mobile_no && <div className="text-danger">{errors.mobile_no}</div>}
           </div>
 
           <div className="btnsubmit">

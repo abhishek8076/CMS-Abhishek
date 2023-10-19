@@ -27,7 +27,7 @@ export const CMShomepage = () => {
     async function fetchData() {
       try {
         const response = await apiClient.get(apis.homepagebyid+id);
-        setData(response.data.u_h_html);
+        setData(response.data.h_html);
       } catch (error) {
         console.error('Error fetching content:', error);
       }
@@ -35,9 +35,9 @@ export const CMShomepage = () => {
     fetchData();
   }, []);
 
-  const onChange = useCallback((newContent) => {
-    console.log('Editor content changed:', newContent);
-    setContent(newContent);
+  const onChange = useCallback((data) => {
+    console.log('Editor content changed:', data);
+    setContent(data);
   }, []);
 
   const handleSave = () => {
@@ -47,9 +47,13 @@ export const CMShomepage = () => {
   const handleConfirmSubmit = async () => {
     try {
       const sendformData = new FormData();
-      sendformData.append('h_html', data);
+      sendformData.append('h_html', content);
 
-      const response = await apiClient.put(apis.homepagebyid +id, sendformData);
+      const response = await apiClient.put(apis.homepagebyid + id, sendformData, {
+        headers: {
+          'Content-Type': 'application/json', // Set the content type to match the server's expectations
+        },
+      });
 
       console.log(response.data);
       setModalMessage('Content saved successfully.');

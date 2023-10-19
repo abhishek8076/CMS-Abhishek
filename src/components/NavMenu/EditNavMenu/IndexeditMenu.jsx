@@ -30,10 +30,10 @@ import { useParams } from 'react-router-dom';
       <div className="listContainer">
         <Navbar />
       <div>
-     {data.r_submenu_id===0&&(
+     {data.u_submenu_id===0&&(
         <Editmenu/>
      )}
-     {data.r_submenu_id!==0&&(
+     {data.u_submenu_id!==0&&(
         <Editsubmenu/>
      )}
       </div>
