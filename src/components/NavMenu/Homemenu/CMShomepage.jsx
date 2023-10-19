@@ -17,6 +17,7 @@ import apis from '../../../utils/apiUrl.json'
 export const CMShomepage = () => {
   const id = 21;
   const [content, setContent] = useState('');
+  const[data , setData]= useState(null)
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
@@ -26,7 +27,7 @@ export const CMShomepage = () => {
     async function fetchData() {
       try {
         const response = await apiClient.get(apis.homepagebyid+id);
-        setContent(response.data.u_h_html);
+        setData(response.data.u_h_html);
       } catch (error) {
         console.error('Error fetching content:', error);
       }
@@ -46,7 +47,7 @@ export const CMShomepage = () => {
   const handleConfirmSubmit = async () => {
     try {
       const sendformData = new FormData();
-      sendformData.append('h_html', content);
+      sendformData.append('h_html', data);
 
       const response = await apiClient.put(apis.homepagebyid +id, sendformData);
 
@@ -66,13 +67,14 @@ export const CMShomepage = () => {
   const handleCloseConfirmation = () => {
     setConfirmDialogOpen(false);
   };
+  console.log(data)
 
   return (
     <div>
       <div className="box-sec">
         <h1 className="heading-main">Home Page</h1>
         <div className="App">
-          <JoditEditor value={content} onChange={onChange} />
+          <JoditEditor value={data} onChange={onChange} />
           <Button onClick={handleSave}>Save Content</Button>
         </div>
 
