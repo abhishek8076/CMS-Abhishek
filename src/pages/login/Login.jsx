@@ -66,12 +66,16 @@ export default function Login() {
         localStorage.setItem("user", JSON.stringify(user));
         const storedUserString = localStorage.getItem('user');
         const u = JSON.parse(storedUserString);
-
+  
         if (dt) {
           localStorage.setItem("token", token);
-          setDialogText("Login is Successfull!!");
+          setDialogText("Login is Successful!!");
           handleOpenDialog(true); // Open the dialog with the success message
-          navigate("/dashboard");
+  
+          setTimeout(() => {
+            handleCloseDialog();
+            navigate("/dashboard");
+          }, 4000);
         }
       }
     } else {
@@ -79,7 +83,6 @@ export default function Login() {
       handleOpenDialog(); // Open the dialog with the error message
     }
   };
-
   const handleChange = (event) => {
     const { name, value } = event.target;
     setUser((prevUser) => ({
