@@ -66,12 +66,12 @@ export default function Login() {
         localStorage.setItem("user", JSON.stringify(user));
         const storedUserString = localStorage.getItem('user');
         const u = JSON.parse(storedUserString);
-  
+
         if (dt) {
           localStorage.setItem("token", token);
           setDialogText("Login is Successful!!");
-          handleOpenDialog(true); // Open the dialog with the success message
-  
+          handleOpenDialog(true);
+
           setTimeout(() => {
             handleCloseDialog();
             navigate("/dashboard");
@@ -80,7 +80,7 @@ export default function Login() {
       }
     } else {
       setDialogText("You have entered incorrect email/password");
-      handleOpenDialog(); // Open the dialog with the error message
+      handleOpenDialog();
     }
   };
   const handleChange = (event) => {
@@ -97,6 +97,30 @@ export default function Login() {
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
+  };
+
+  // Additional CSS for styling the dialog
+  const dialogStyles = {
+    maxWidth: "400px",
+    position: "absolute",
+    left: "50%",
+    top: "50%",
+    transform: "translate(-50%, -50%)"
+  };
+
+  const titleStyles = {
+    backgroundColor: "#3f51b5",
+    color: "#fff",
+    padding: "10px",
+  };
+
+  const contentTextStyles = {
+    padding: "20px",
+  };
+
+  const dialogActionsStyles = {
+    borderTop: "1px solid #e0e0e0",
+    padding: "10px",
   };
 
   return (
@@ -152,20 +176,23 @@ export default function Login() {
         </Box>
       </Container>
 
-      {/* Dialog for displaying messages */}
+      {/* Dialog for displaying messages with custom styles */}
       <Dialog
         open={openDialog}
         onClose={handleCloseDialog}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        style={dialogStyles}
       >
-        <DialogTitle id="alert-dialog-title">{"Message"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title" style={titleStyles}>
+          {"Message"}
+        </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText id="alert-dialog-description" style={contentTextStyles}>
             {dialogText}
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
+        <DialogActions style={dialogActionsStyles}>
           <Button onClick={handleCloseDialog} color="primary">
             OK
           </Button>
