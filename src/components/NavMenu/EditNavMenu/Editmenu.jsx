@@ -20,13 +20,7 @@ import DialogActions from '@mui/material/DialogActions';
 
 import Alert from '@mui/material/Alert';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
+
   Button,
   Snackbar,
   DialogTitle, // Add this import
@@ -48,6 +42,7 @@ export const Editmenu = () => {
   const [loading, setLoading] = useState(false);
   const [dropdownOptions, setDropdownOptions] = useState([]);
   const [formErrors, setFormErrors] = useState({});
+  
 
 const config = useMemo(
   () => ({
@@ -56,9 +51,9 @@ const config = useMemo(
   []
 );
 
-const onChange = useCallback((newContent) => {
-  console.log("Editor content changed:", newContent);
-  setContent(newContent);
+const onChange = useCallback((html) => {
+  console.log("Editor content changed:", html);
+  setContent(html);
 }, []);
 
   // const handleEditorChange = (content) => {
@@ -66,27 +61,32 @@ const onChange = useCallback((newContent) => {
   // };
 
   const [formData, setFormData] = useState({
-    MenuName: '',
-    ContentType: '',
-    external_link: '',
-    internal_link: '',
-    submenu_id:0,
-    file: '',
-    html: '',
+    menu_id: '',
+    submenu_id: 0,
+  
+    menuname: "",
+    menuurl: "",
+    contenttype: "",
+    html: "",
+    file: "",
+    internal_link: "",
+    external_link: ""
   });
 
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
     setFormData({
-      MenuName: '',
-      ContentType: '',
-      external_link: '',
-      internal_link: '',
-  
-      submenu_id:0,
-      file: '',
-      html: '',
+      menu_id: '',
+      submenu_id: 0,
+    
+      menuname: "",
+      menuurl: "",
+      contenttype: "",
+      html: "",
+      file: "",
+      internal_link: "",
+      external_link: ""
     });
   }, []);
 
@@ -97,15 +97,15 @@ const onChange = useCallback((newContent) => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.MenuName) {
+    if (!formData.menuname) {
       newErrors.MenuName = 'Name is required';
     }
 
-    if (!formData.ContentType) {
+    if (!formData.contenttype) {
       newErrors.ContentType = 'Select a content type';
     }
 
-    if (formData.ContentType === '4' && !formData.external_link) {
+    if (formData.contenttype === '4' && !formData.external_link) {
       newErrors.external_link = 'External Link is required';
     }
 
@@ -113,7 +113,7 @@ const onChange = useCallback((newContent) => {
     //   newErrors.internal_link = 'Internal Link is required';
     // }
 
-    if (formData.ContentType === '2' && !file) {
+    if (formData.contenttype === '2' && !file) {
       newErrors.file = 'File is required';
     }
 
@@ -162,9 +162,9 @@ const onChange = useCallback((newContent) => {
 
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append('MenuName', formData.MenuName);
-      formDataToSend.append('ContentType', formData.ContentType);
-      formDataToSend.append('MenuUrl', formData.MenuUrl);
+      formDataToSend.append('MenuName', formData.menuname);
+      formDataToSend.append('ContentType', formData.contenttype);
+      formDataToSend.append('MenuUrl', formData.menuurl);
       formDataToSend.append('submenu_id', formData.submenu_id);
 
       if (formData.ContentType === '4') {
@@ -218,7 +218,7 @@ const onChange = useCallback((newContent) => {
     }
     fetchData2();
   }, [id]);
-  console.log(formData,html)
+  console.log(formData ,content)
 
   return (
     
@@ -245,8 +245,8 @@ const onChange = useCallback((newContent) => {
               className="form-control"
               type="text"
               placeholder="Name"
-              name="MenuName"
-              value={formData.MenuName}
+              name="menuname"
+              value={formData.menuname}
               onChange={handleInputChange}
               maxLength={20}
             />
@@ -258,8 +258,8 @@ const onChange = useCallback((newContent) => {
             <label className="form-label text-dark">Select a content type</label>
             <select
               className="form-select"
-              name="ContentType"
-              value={formData.ContentType}
+              name="contenttype"
+              value={formData.contenttype}
               onChange={handleInputChange}
             >
               <option value="">Select a content type</option>
@@ -272,7 +272,7 @@ const onChange = useCallback((newContent) => {
           </div>
 
           {/* Input for External Link */}
-          {formData.ContentType === '4' && (
+          {formData.contenttype === '4' && (
             <div className="mb-3">
               <label className="form-label text-dark">Enter External Link</label>
               <input
@@ -288,7 +288,7 @@ const onChange = useCallback((newContent) => {
           )}
 
           {/* Input for Internal Link */}
-          {formData.ContentType === '3' && (
+          {formData.contenttype === '3' && (
             <div className="mb-3">
               <select
                                   className='form-control'
@@ -309,7 +309,7 @@ const onChange = useCallback((newContent) => {
           )}
 
           {/* Input for File */}
-          {formData.ContentType === '2' && (
+          {formData.contenttype === '2' && (
             <div className="mb-3">
               <label className="form-label text-dark">Choose File</label>
               <input
@@ -323,7 +323,7 @@ const onChange = useCallback((newContent) => {
           )}
 
           {/* HTML Editor Input */}
-          {formData.ContentType === '1' && (
+          {formData.contenttype === '1' && (
             <div className="mb-3">
               <label className="form-label text-dark">HTML Editor</label>
               <div >
@@ -340,7 +340,7 @@ const onChange = useCallback((newContent) => {
     /> */}
     {/* <HtmlEditor/> */}
     <JoditEditor
-        value={content}
+        value={formData.html}
         config={config}
         tabIndex={1}
         onChange={onChange}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useMemo,useCallback} from 'react';
 import Axios from 'axios';
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
@@ -32,6 +32,7 @@ import {
   DialogContent,
   Dialog,
 } from '@mui/material'; 
+import JoditEditor from 'jodit-react';
 
 function EAlert(props) {
   return <Alert elevation={6} variant="filled" {...props} />;
@@ -40,11 +41,23 @@ function EAlert(props) {
 export const FooterPage = () => {
   const [html, sethtml] = useState('');
   const [file, setselectefile] = useState(null);
+  const [content ,setContent]= useState('')
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false); // Confirmation dialog state
   // const [snackbarOpen, setSnackbarOpen] = useState(false); // Snackbar state
   const [modalMessage, setModalMessage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const navigate = useNavigate();
+  const config = useMemo(
+    () => ({
+      readonly: false
+    }),
+    []
+  );
+
+  const onChange = useCallback((content) => {
+    console.log("Editor content changed:", content);
+    sethtml(content);
+  }, []);
 
   const [formData, setFormData] = useState({
     tittle_name: '',
@@ -154,7 +167,7 @@ export const FooterPage = () => {
       } else if (formData.contenttype === '2') {
         formDataToSend.append('file', file);
       } else if (formData.contenttype === '1') {
-        formDataToSend.append('html_content', html);
+        formDataToSend.append('html', content);
       }
 
       const response = await apiClient.post(apis.newfooter, formDataToSend, {
@@ -181,10 +194,7 @@ export const FooterPage = () => {
     }
   };
 
-  const config = {
-    placeholderText: 'Edit Your Content Here!',
-    charCounterCount: false,
-  };
+
   console.log(formData)
 
   return (
@@ -287,11 +297,17 @@ export const FooterPage = () => {
             <div className="mb-3">
               <label className="form-label text-dark">HTML Editor</label>
               <div>
-                <textarea
+                {/* <textarea
                   className="form-control"
                   value={html}
                   onChange={(e) => handleEditorChange(e.target.value)}
-                ></textarea>
+                ></textarea> */}
+                 <JoditEditor
+                    value={content}
+                    config={config}
+                    tabIndex={1}
+                    onChange={onChange}
+                  />
               </div>
               {errors.editorContent && <div className="text-danger">{errors.editorContent}</div>}
             </div>
