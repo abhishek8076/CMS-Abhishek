@@ -75,7 +75,7 @@ export default function Login() {
           setTimeout(() => {
             handleCloseDialog();
             navigate("/dashboard");
-          }, 4000);
+          }, 1000);
         }
       }
     } else {
