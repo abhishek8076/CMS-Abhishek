@@ -21,6 +21,9 @@ export const EditWhatsnew = () => {
   const [file, setFile] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+  const [selectedRole, setSelectedRole] = useState('');
+  const [prevContentType, setPrevContentType] = useState('');
+
   const [formData, setFormData] = useState({
     news_tittle: '',  // Corrected typo in the field name
     contenttype: '',
@@ -75,6 +78,7 @@ export const EditWhatsnew = () => {
       });
     }
   }, [id]);
+  
 
   // useEffect(() => {
   //   async function fetchData() {
@@ -141,10 +145,29 @@ export const EditWhatsnew = () => {
   };
   
 
+  // const handleInputChange = (event) => {
+  //   const { name, value, type } = event.target;
+
+  //   if (type === 'file') {  // Updated type value
+  //     setFormData({
+  //       ...formData,
+  //       [name]: event.target.files[0],
+  //     });
+  //   } else {
+  //     setFormData({
+  //       ...formData,
+  //       [name]: value,
+  //     });
+  //   }
+  // };
+
   const handleInputChange = (event) => {
     const { name, value, type } = event.target;
-
-    if (type === 'file') {  // Updated type value
+  
+    // Store the previous content type
+    setPrevContentType(formData.contenttype);
+  
+    if (type === 'file') {
       setFormData({
         ...formData,
         [name]: event.target.files[0],
@@ -156,7 +179,7 @@ export const EditWhatsnew = () => {
       });
     }
   };
-
+  
   const openModal = (message) => {
     setModalMessage(message);
     setIsModalOpen(true);
@@ -277,18 +300,26 @@ export const EditWhatsnew = () => {
               name="contenttype"
               value={formData.contenttype}
               onChange={handleInputChange}
+              // onClick={handleChangeOptions}
+
             >
               <option value="">Select a content type</option>
-              <option value={4}>External Link</option>
+              {/* <option value={4}>External Link</option>
               <option value={3}>Internal Link</option>
               <option value={2}>File</option>
-              <option value={1}>HTML</option>
+              <option value={1}>HTML</option> */}
+               {optionsData.map((data) => (
+                                    <option key={data.id} value={data.id}>
+                                      {data.label}
+                                    </option>
+                                  ))}
             </select>
             {errors.contenttype && <div className="text-danger">{errors.contenttype}</div>}
           </div>
 
                 {/* Render fields based on contenttype */}
-                {formData.contenttype === "4" && (
+                {formData.contenttype === 4 && (
+                  
                   <div className="mb-3">
                     <label className="form-label text-dark">Enter External Link</label>
                     <input
@@ -305,7 +336,7 @@ export const EditWhatsnew = () => {
                   </div>
                 )}
 
-                {formData.contenttype === "3" && (
+                {formData.contenttype === 3 && (
                   <div className="mb-3">
                     <label className="form-label text-dark">Enter Internal Link</label>
                     <input
@@ -322,7 +353,7 @@ export const EditWhatsnew = () => {
                   </div>
                 )}
 
-                {formData.contenttype === "2" && (
+                {formData.contenttype === 2 && (
                   <div className="mb-3">
                     <label className="form-label text-dark">Choose File</label>
                     <input
@@ -355,12 +386,81 @@ export const EditWhatsnew = () => {
                       tabIndex={1}
                       onChange={onChange}
                     />
+                    {console.log("hf")}
                     </div>
                     {errors.html && (
                       <div className="text-danger">{errors.html}</div>  
                     )}
                   </div>
                 )}
+<div className="mb-3">
+  {formData.contenttype === "4" ? (
+    <>
+      <label className="form-label text-dark">Enter External Link</label>
+      <input
+        className="form-control"
+        type="text"
+        placeholder="Enter External Link"
+        name="external_file"
+        value={formData.external_file}
+        onChange={handleInputChange}
+      />
+      {errors.external_file && (
+        <div className="text-danger">{errors.external_file}</div>
+      )}
+    </>
+  ) : formData.contenttype === "3" ? (
+    <>
+      <label className="form-label text-dark">Enter Internal Link</label>
+      <input
+        className="form-control"
+        type="text"
+        placeholder="Enter Internal Link"
+        name="internal_file"
+        value={formData.internal_file}
+        onChange={handleInputChange}
+      />
+      {errors.internal_file && (
+        <div className="text-danger">{errors.internal_file}</div>
+      )}
+    </>
+  ) : formData.contenttype === "2" ? (
+    <>
+      <label className="form-label text-dark">Choose File</label>
+      <input
+        className="form-control"
+        type="file"
+        onChange={handleImageChange}
+      />
+      {errors.file && (
+        <div className="text-danger">{errors.file}</div>
+      )}
+    </>
+  ) : formData.contenttype === "1" ? (
+    <>
+      <label className="form-label text-dark">HTML Editor</label>
+      <div>
+        {/* <FroalaEditorComponent
+          tag="textarea"
+          config={config}
+          model={html}
+          value={formData.html}
+          onModelChange={handleEditorChange}
+        /> */}
+        <JoditEditor
+          value={formData.html}
+          config={config}
+          tabIndex={1}
+          onChange={onChange}
+        />
+        {console.log("hf")}
+      </div>
+      {errors.html && (
+        <div className="text-danger">{errors.html}</div>
+      )}
+    </>
+  ) : null}
+</div>
 
                 <div className="mb-3">
                   <label className="form-label text-dark">Starting Date</label>

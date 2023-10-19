@@ -10,7 +10,7 @@ import apis from'../../../utils/apiUrl.json';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ViewListIcon from '@mui/icons-material/ViewList';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Editor, { DiffEditor, useMonaco, loader } from '@monaco-editor/react';
 
 
@@ -40,12 +40,14 @@ function EAlert(props) {
 }
 
 export const Editsubmenu = () => {
+  const {id} = useParams()
   const [html, setHtml] = useState('');
   const [file, setFile] = useState(null);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [data, Setdata] = useState([])
+  const [submenus, setSubMenu] = useState('')
   const [selectedRole, setSelectedRole] = useState('');
   const [content, setContent] = useState("");
   const [dropdownOptions, setDropdownOptions] = useState([]);
@@ -53,23 +55,24 @@ export const Editsubmenu = () => {
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-    MenuName: '',
-    ContentType: '',
-    external_link: '',
-    internal_link: '',
-  
+   
     submenu_id: "",
-    file: '',
-    html: '',
-    
+  
+    menuname: "",
+  
+    contenttype: "",
+    html: "",
+    file: "",
+    internal_link: "",
+    external_link: ""
   });
 
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
     setFormData({
-      MenuName: '',
-      ContentType: '',
+      menuname: '',
+      contenttype: '',
       external_link: '',
       internal_link: '',
       submenu_id: "",
@@ -87,9 +90,9 @@ export const Editsubmenu = () => {
     []
   );
   
-  const onChange = useCallback((newContent) => {
-    console.log("Editor content changed:", newContent);
-    setContent(newContent);
+  const onChange = useCallback((html) => {
+    console.log("Editor content changed:", html);
+    setContent(html);
   }, []);
 
   const handleEditorChange = (content) => {
@@ -99,34 +102,34 @@ export const Editsubmenu = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.MenuName) {
-      newErrors.MenuName = 'Name is required';
+    if (!formData.menuname) {
+      newErrors.menuname = 'Name is required';
     }
     // if (!formData.menu_id) {
-    //   newErrors.MenuName = 'Name is required';
+    //   newErrors.menuname = 'Name is required';
     // }
 
 
-    if (!formData.ContentType) {
-      newErrors.ContentType = 'Select a content type';
+    if (!formData.contenttype) {
+      newErrors.contenttype = 'Select a content type';
     }
     if (!selectedRole) {
-      newErrors.ContentType = 'Select Menu';
+      newErrors.contenttype = 'Select Menu';
     }
 
-    if (formData.ContentType === '4' && !formData.external_link) {
+    if (formData.contenttype === '4' && !formData.external_link) {
       newErrors.external_link = 'External Link is required';
     }
 
-    if (formData.ContentType === '3' && !formData.internal_link) {
+    if (formData.contenttype === '3' && !formData.internal_link) {
       newErrors.internal_link = 'Internal Link is required';
     }
 
-    if (formData.ContentType === '2' && !file) {
+    if (formData.contenttype === '2' && !file) {
       newErrors.file = 'File is required';
     }
 
-    // if (formData.ContentType === '1' && !html) {
+    // if (formData.contenttype === '1' && !html) {
     //   newErrors.html = 'HTML content is required';
     // }
 
@@ -141,7 +144,9 @@ export const Editsubmenu = () => {
   };
 
   const handleInputChange = (event) => {
+    setSubMenu(event.target.value)
     setSelectedRole(event.target.value);
+    
     const { name, value, type } = event.target;
 
     if (type === 'file') {
@@ -150,6 +155,7 @@ export const Editsubmenu = () => {
         [name]: event.target.files[0],
       });
     } else {
+      setSubMenu(event.target.value)
       setSelectedRole(event.target.value);
       setFormData({
         ...formData,
@@ -173,19 +179,19 @@ export const Editsubmenu = () => {
 
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append('MenuName', formData.MenuName);
-      formDataToSend.append('ContentType', formData.ContentType);
+      formDataToSend.append('menuname', formData.menuname);
+      formDataToSend.append('contenttype', formData.contenttype);
    
       // formDataToSend.append('submenu_id', formData.submenu_id);
-      formDataToSend.append('submenu_id', selectedRole);
+      formDataToSend.append('submenu_id', submenus);
 
-      if (formData.ContentType === '4') {
+      if (formData.contenttype === '4') {
         formDataToSend.append('external_link', formData.external_link);
-      } else if (formData.ContentType === '3') {
-        formDataToSend.append('internal_link', formData.internal_link);
-      } else if (formData.ContentType === '2') {
+      } else if (formData.contenttype === '3') {
+        formDataToSend.append('internal_link', selectedRole);
+      } else if (formData.contenttype === '2') {
         formDataToSend.append('file', file);
-      } else if (formData.ContentType === '1') {
+      } else if (formData.contenttype === '1') {
         formDataToSend.append('html', content);
       }
 
@@ -227,6 +233,20 @@ export const Editsubmenu = () => {
     }
     fetchData1();
   }, []);
+  useEffect(() => {
+    async function fetchData2() {
+      try {
+        
+        const response = await apiClient.get(apis.getmenudatabyid+id);
+        setFormData(response.data);
+        
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        
+      }
+    }
+    fetchData2();
+  }, [id]);
 
   console.log(formData)
 
@@ -251,7 +271,7 @@ export const Editsubmenu = () => {
               <select
                 className='form-control'
                 name='submenu_id'
-                value={selectedRole}
+                value={formData.submenu_id}
                 onChange={handleInputChange}
 
               >
@@ -276,12 +296,12 @@ export const Editsubmenu = () => {
               className="form-control"
               type="text"
               placeholder="Name"
-              name="MenuName"
-              value={formData.MenuName}
+              name="menuname"
+              value={formData.menuname}
               onChange={handleInputChange}
               maxLength={18}
             />
-            {errors.MenuName && <div className="text-danger">{errors.MenuName}</div>}
+            {errors.menuname && <div className="text-danger">{errors.menuname}</div>}
           </div>
 
           {/* Input for Select a content type */}
@@ -289,8 +309,8 @@ export const Editsubmenu = () => {
             <label className="form-label text-dark">Select a content type</label>
             <select
               className="form-select"
-              name="ContentType"
-              value={formData.ContentType}
+              name="contenttype"
+              value={formData.contenttype}
               onChange={handleInputChange}
             >
               <option value="">Select a content type</option>
@@ -299,11 +319,11 @@ export const Editsubmenu = () => {
               <option value="2">File</option>
               <option value="1">HTML</option>
             </select>
-            {errors.ContentType && <div className="text-danger">{errors.ContentType}</div>}
+            {errors.contenttype && <div className="text-danger">{errors.contenttype}</div>}
           </div>
 
           {/* Input for External Link */}
-          {formData.ContentType === '4' && (
+          {formData.contenttype === '4' && (
             <div className="mb-3">
               <label className="form-label text-dark">Enter External Link</label>
               <input
@@ -319,7 +339,7 @@ export const Editsubmenu = () => {
           )}
 
           {/* Input for Internal Link */}
-          {formData.ContentType === '3' && (
+          {formData.contenttype === '3' && (
             <div className="mb-3">
               <select
                                   className='form-control'
@@ -340,7 +360,7 @@ export const Editsubmenu = () => {
           )}
 
           {/* Input for File */}
-          {formData.ContentType === '2' && (
+          {formData.contenttype === '2' && (
             <div className="mb-3">
               <label className="form-label text-dark">Choose File</label>
               <input
@@ -354,7 +374,7 @@ export const Editsubmenu = () => {
           )}
 
           {/* HTML Editor Input */}
-          {formData.ContentType === '1' && (
+          {formData.contenttype === '1' && (
             <div className="mb-3">
               <label className="form-label text-dark">HTML Editor</label>
               <div>
@@ -364,7 +384,7 @@ export const Editsubmenu = () => {
                   onChange={(e) => handleEditorChange(e.target.value)}
                 ></textarea> */}
                 <JoditEditor
-        value={content}
+        value={formData.html}
         config={config}
         tabIndex={1}
         onChange={onChange}

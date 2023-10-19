@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useCallback,useMemo } from 'react';
 import Axios from 'axios';
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
@@ -10,7 +10,7 @@ import apis from '../../../utils/apiUrl.json';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ViewListIcon from '@mui/icons-material/ViewList';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 
 
@@ -31,13 +31,15 @@ import {
   DialogContent,
   Dialog,
 } from '@mui/material'; 
+import JoditEditor from 'jodit-react';
 
 function EAlert(props) {
   return <Alert elevation={6} variant="filled" {...props} />;
 }
 
 export const FooterNavEdit = () => {
-  const [html, sethtml] = useState('');
+  const {id}= useParams()
+  const [cotent, setContent] = useState('');
   const [file, setselectefile] = useState(null);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false); // Confirmation dialog state
   // const [snackbarOpen, setSnackbarOpen] = useState(false); // Snackbar state
@@ -65,10 +67,21 @@ export const FooterNavEdit = () => {
       html: '',
     });
   }, []);
+  const config = useMemo(
+    () => ({
+      readonly: false
+    }),
+    []
+  );
 
-  const handleEditorChange = (content) => {
-    sethtml(content);
-  };
+  const onChange = useCallback((html) => {
+    console.log("Editor content changed:", html);
+    setContent(html);
+  }, []);
+
+  // const handleEditorChange = (content) => {
+  //   sethtml(content);
+  // };
 
   const validateForm = () => {
     const errors = {};
@@ -93,9 +106,9 @@ export const FooterNavEdit = () => {
       errors.file = 'File is required';
     }
 
-    if (formData.contenttype === '1' && !html) {
-      errors.editorContent = 'HTML content is required';
-    }
+    // if (formData.contenttype === '1' && !html) {
+    //   errors.editorContent = 'HTML content is required';
+    // }
 
     setErrors(errors);
 
@@ -146,11 +159,12 @@ export const FooterNavEdit = () => {
         formDataToSend.append('internale_link', formData.internale_link);
       } else if (formData.contenttype === '2') {
         formDataToSend.append('file', file);
-      } else if (formData.contenttype === '1') {
-        formDataToSend.append('html_content', html);
+      } 
+      else if (formData.contenttype === '1') {
+        formDataToSend.append('html_content', cotent);
       }
 
-      const response = await apiClient.post(apis.newfooter, formDataToSend, {
+      const response = await apiClient.put(apis.newfooter, formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -173,11 +187,20 @@ export const FooterNavEdit = () => {
       console.error('Error saving data:', error);
     }
   };
-
-  const config = {
-    placeholderText: 'Edit Your Content Here!',
-    charCounterCount: false,
-  };
+  useEffect(() => {
+    async function fetchData() {
+      try {
+       
+        const response = await apiClient.get(apis.getfooterbyid+id);
+        setFormData(response.data);
+     
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+       
+      }
+    }
+    fetchData();
+  }, [id]);
   console.log(formData)
 
   return (
@@ -275,15 +298,21 @@ export const FooterNavEdit = () => {
           )}
 
           {/* HTML Editor Input */}
-          {formData.contenttype === '1' && (
+          {formData.contenttype === 1 && (
             <div className="mb-3">
               <label className="form-label text-dark">HTML Editor</label>
               <div>
-                <textarea
+                {/* <textarea
                   className="form-control"
                   value={html}
                   onChange={(e) => handleEditorChange(e.target.value)}
-                ></textarea>
+                ></textarea> */}
+                 <JoditEditor
+                    value={cotent}
+                    config={config}
+                    tabIndex={1}
+                    onChange={onChange}
+                  />
               </div>
               {errors.editorContent && <div className="text-danger">{errors.editorContent}</div>}
             </div>
