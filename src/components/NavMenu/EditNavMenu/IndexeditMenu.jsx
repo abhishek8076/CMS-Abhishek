@@ -24,16 +24,17 @@ import { useParams } from 'react-router-dom';
         }
         fetchData2();
       }, [id]);
+      console.log(data)
   return (
     <div className="list">
       <Sidebar />
       <div className="listContainer">
         <Navbar />
       <div>
-     {data.u_submenu_id===0&&(
+     {data.submenu_id===0&&(
         <Editmenu/>
      )}
-     {data.u_submenu_id!==0&&(
+     {data.submenu_id!==0&&(
         <Editsubmenu/>
      )}
       </div>

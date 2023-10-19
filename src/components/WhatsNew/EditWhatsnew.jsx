@@ -65,7 +65,7 @@ export const EditWhatsnew = () => {
     } else {
       setFormData({
         news_tittle: '',
-        contenttype: '',
+        contenttype: 0,
         external_file: '',
         internal_file: '',
         file: null,
@@ -288,7 +288,7 @@ export const EditWhatsnew = () => {
           </div>
 
                 {/* Render fields based on contenttype */}
-                {formData.contenttype === 4 && (
+                {formData.contenttype === "4" && (
                   <div className="mb-3">
                     <label className="form-label text-dark">Enter External Link</label>
                     <input
@@ -305,7 +305,7 @@ export const EditWhatsnew = () => {
                   </div>
                 )}
 
-                {formData.contenttype === 3 && (
+                {formData.contenttype === "3" && (
                   <div className="mb-3">
                     <label className="form-label text-dark">Enter Internal Link</label>
                     <input
@@ -322,7 +322,7 @@ export const EditWhatsnew = () => {
                   </div>
                 )}
 
-                {formData.contenttype === 2 && (
+                {formData.contenttype === "2" && (
                   <div className="mb-3">
                     <label className="form-label text-dark">Choose File</label>
                     <input
