@@ -12,8 +12,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import apiClient from '../../services/AxiosApi';
 import { Link, useNavigate } from "react-router-dom";
 import api from '../../utils/apiUrl.json';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import logo from '../../assets/logo.jpg';
 
 export default function Login() {
@@ -69,13 +67,13 @@ export default function Login() {
 
         if (dt) {
           localStorage.setItem("token", token);
-          setDialogText("Login is Successful!!");
-          handleOpenDialog(true);
+          setDialogText("You have successfully logged in ");
+          handleOpenDialog();
 
           setTimeout(() => {
             handleCloseDialog();
-            navigate("/dashboard");
-          }, 1300);
+            navigate("/dashboard"); // Navigate to the "/dashboard" page after successful login
+          }, 1500); // Adjust the delay as needed
         }
       }
     } else {
@@ -83,6 +81,7 @@ export default function Login() {
       handleOpenDialog();
     }
   };
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setUser((prevUser) => ({
@@ -99,19 +98,16 @@ export default function Login() {
     setOpenDialog(false);
   };
 
-  // Additional CSS for styling the dialog
+  // Custom CSS styling for the dialog
   const dialogStyles = {
+    minWidth: "300px",
     maxWidth: "400px",
-    position: "absolute",
-    left: "50%",
-    top: "50%",
-    transform: "translate(-50%, -50%)"
+    borderRadius: "10px",
   };
 
   const titleStyles = {
     backgroundColor: "#3f51b5",
     color: "#fff",
-    padding: "10px",
   };
 
   const contentTextStyles = {
@@ -176,17 +172,14 @@ export default function Login() {
         </Box>
       </Container>
 
-      {/* Dialog for displaying messages with custom styles */}
       <Dialog
         open={openDialog}
         onClose={handleCloseDialog}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-        style={dialogStyles}
+        PaperProps={{ style: dialogStyles }}
       >
-        <DialogTitle id="alert-dialog-title" style={titleStyles}>
-          {"Message"}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title" style={titleStyles}>{"Message"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description" style={contentTextStyles}>
             {dialogText}

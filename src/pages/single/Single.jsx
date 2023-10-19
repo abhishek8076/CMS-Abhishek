@@ -145,7 +145,7 @@ export function Single() {
   };
 
   const isValidMobile = (mobile) => {
-    const mobileRegex = /^[6-9]{10}$/;
+    const mobileRegex = /^[0-9]{10}$/;
 
     return mobileRegex.test(mobile);
   };
