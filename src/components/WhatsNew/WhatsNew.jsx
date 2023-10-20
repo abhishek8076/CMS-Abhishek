@@ -21,6 +21,7 @@ export const WhatsNew = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [content, setContent] = useState("");
+  const [dropdownOptions, setDropdownOptions] = useState([]);
 
   const config = useMemo(
     () => ({
@@ -87,9 +88,9 @@ export const WhatsNew = () => {
       errors.external_file = 'External Link is required';
     }
 
-    if (formData.contenttype === '3' && !formData.internale_file) {
-      errors.internale_file = 'Internal Link is required';
-    }
+    // if (formData.contenttype === '3' && !formData.internale_file) {
+    //   errors.internale_file = 'Internal Link is required';
+    // }
 
     if (formData.contenttype === '2' && !file) {
       errors.file = 'File is required';
@@ -149,9 +150,9 @@ export const WhatsNew = () => {
         formDataToSend.append('contenttype', formData.contenttype);
 
         if (formData.contenttype === '4') {
-          formDataToSend.append('external_file', formData.external_file);
+          formDataToSend.append('external_file', formData.external_link);
         } else if (formData.contenttype === '3') {
-          formDataToSend.append('internale_file', formData.internale_file);
+          formDataToSend.append('internale_file', formData.internal_link);
         } else if (formData.contenttype === '2') {
           formDataToSend.append('file', file);
         } else if (formData.contenttype === '1') {
@@ -167,6 +168,16 @@ export const WhatsNew = () => {
           },
         });
         console.log('Data saved:', response.data);
+        setFormData({
+          news_title: '',
+          contenttype: '',
+          external_file: '',
+          internale_file: '',
+          file: "",
+          startdate: '',
+          end_date: '',
+          html: ""
+        });
         toast.success('Data saved successfully!');
         openModal('Data saved successfully!');
       } catch (error) {
@@ -174,6 +185,20 @@ export const WhatsNew = () => {
       }
     }
   };
+  useEffect(() => {
+    const fetchData1= async()=> {
+     try {
+      
+       const response = await apiClient.get(apis.getmenuname);
+       setDropdownOptions(response.data);
+  
+     } catch (error) {
+       console.error('Error fetching user data:', error);
+    
+     }
+   }
+   fetchData1();
+ }, []);
 
   console.log(formData);
 
@@ -243,14 +268,28 @@ export const WhatsNew = () => {
             {formData.contenttype === '3' && (
               <div className="mb-3">
                 <label className="form-label text-dark">Enter Internal Link</label>
-                <input
+                {/* <input
                   className="form-control"
                   type="text"
                   placeholder="Enter Internal Link"
                   name="internale_file"
                   value={formData.internale_file}
                   onChange={handleInputChange}
-                />
+                /> */}
+                 <select
+                                  className='form-control'
+                                  name='internal_link'
+                                  value={formData.internal_link}
+                                  onChange={handleInputChange}
+                                 
+                                >
+                                  <option value='' style={{color:"black"}}>Select a MenuName</option>
+                                  {dropdownOptions.map((data) => (
+                                    <option key={data.u_id} value={"/menu/"+data.u_menu_url}>
+                                      {"Menu Name"+":-"+data.u_menu_name}
+                                    </option>
+                                  ))}
+                                </select>
                 {errors.internale_file && (
                   <div className="text-danger">{errors.internale_file}</div>
                 )}

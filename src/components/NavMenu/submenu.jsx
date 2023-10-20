@@ -180,7 +180,7 @@ export const Submenu = () => {
       formDataToSend.append('ContentType', formData.ContentType);
    
       // formDataToSend.append('submenu_id', formData.submenu_id);
-      formDataToSend.append('submenu_id', selectedRole);
+      formDataToSend.append('submenu_id', formData.submenu_id);
 
       if (formData.ContentType === '4') {
         formDataToSend.append('external_link', formData.external_link);
@@ -216,20 +216,20 @@ export const Submenu = () => {
     };
     fetchRoles();
   }, []);
-  useEffect(() => {
-    async function fetchData1() {
-      try {
-        setLoading(true);
-        const response = await apiClient.get(apis.getmenuname);
-        setDropdownOptions(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-        setLoading(false);
-      }
-    }
-    fetchData1();
-  }, []);
+  // useEffect(() => {
+  //    const fetchData1= async()=> {
+  //     try {
+  //       setLoading(true);
+  //       const response = await apiClient.get(apis.getmenuname);
+  //       setDropdownOptions(response.data);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       console.error('Error fetching user data:', error);
+  //       setLoading(false);
+  //     }
+  //   }
+  //   fetchData1();
+  // }, []);
 
   console.log(formData)
 
@@ -254,7 +254,7 @@ export const Submenu = () => {
               <select
                 className='form-control'
                 name='submenu_id'
-                value={selectedRole}
+                value={formData.submenu_id}
                 onChange={handleInputChange}
 
               >
@@ -332,7 +332,7 @@ export const Submenu = () => {
                                   isInvalid={!!formErrors.internal_link}
                                 >
                                   <option value='' style={{color:"black"}}>Select a role</option>
-                                  {dropdownOptions.map((data) => (
+                                  {data.map((data) => (
                                     <option key={data.u_id} value={"/menu/"+data.u_menu_url}>
                                       {"Menu Name"+":-"+data.u_menu_name}
                                     </option>
