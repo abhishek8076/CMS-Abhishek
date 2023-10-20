@@ -16,6 +16,7 @@ import Navbar from '../navbar/Navbar';
 import './indexFooter.scss';
 import DialogActions from '@mui/material/DialogActions';
 import Alert from '@mui/material/Alert';
+import HomeIcon from '@mui/icons-material/Home';
 import {
   Table,
   TableBody,
@@ -191,6 +192,11 @@ export const FooterDesc = () => {
             >
               Submit
             </button>
+            <Link to="/dashboard" className="link">
+            <Button id="btn" variant="contained">
+            <HomeIcon /> Back
+            </Button>
+          </Link>
             <Dialog open={confirmDialogOpen} onClose={handleCloseConfirmation}>
               <DialogTitle>Confirm Submit</DialogTitle>
               <DialogContent>

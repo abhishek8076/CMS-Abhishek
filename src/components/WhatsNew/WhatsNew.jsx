@@ -13,6 +13,7 @@ import './whatsnew.scss'
 import ViewListIcon from '@mui/icons-material/ViewList';
 import { Link } from 'react-router-dom';
 import JoditEditor from "jodit-react";
+import HomeIcon from '@mui/icons-material/Home';
 
 export const WhatsNew = () => {
   const [html, sethtml] = useState('');
@@ -73,10 +74,10 @@ export const WhatsNew = () => {
     const errors = {};
 
     if (!formData.news_title) {
-        errors.name = 'Please enter your name';
-      } else if (!/^[A-Za-z ]+$/.test(formData.name)) {
-        errors.name = 'Please input alphabet characters only';
-      }
+      errors.name = 'Please enter your name';
+    } else if (!/^[A-Za-z ]+$/.test(formData.name)) {
+      errors.name = 'Please input alphabet characters only';
+    }
 
     if (!formData.contenttype) {
       errors.contenttype = 'Select a content type';
@@ -315,6 +316,11 @@ export const WhatsNew = () => {
               <button className="btn btn-primary" onClick={handleSubmit}>
                 Submit
               </button>
+              <Link to="/dashboard" className="link">
+                <button className="btn btn-primary" >
+                  <HomeIcon />Back
+                </button>
+              </Link>
               <CustomModal isOpen={isModalOpen} message={modalMessage} onClose={closeModal} />
             </div>
           </div>

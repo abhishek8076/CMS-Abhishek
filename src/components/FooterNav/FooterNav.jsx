@@ -13,6 +13,7 @@ import ViewListIcon from '@mui/icons-material/ViewList';
 import { Link } from 'react-router-dom';
 import Foo from '../FooterNav/FooterDesc';
 import {Routes, Route, useNavigate} from 'react-router-dom';
+import HomeIcon from '@mui/icons-material/Home';
 
 
 import DialogActions from '@mui/material/DialogActions';
@@ -319,6 +320,12 @@ export const FooterPage = () => {
             <button className="btn btn-primary" onClick={handleOpenConfirmation}>
               Submit
             </button>
+            <Link to="/dashboard" className="link">
+            <button className="btn btn-primary" onClick={handleOpenConfirmation}>
+              <HomeIcon/>Back
+            </button>
+            </Link>
+            
             <Dialog open={confirmDialogOpen} onClose={handleCloseConfirmation}>
               <DialogTitle>Confirm Submit</DialogTitle>
               <DialogContent>

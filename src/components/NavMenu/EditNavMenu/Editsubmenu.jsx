@@ -255,9 +255,9 @@ export const Editsubmenu = () => {
       <div className="row justify-content-center">
       <Row>
                 <Col xs={12} className="text-end">
-                <Link to='/cms/menutable' style={{textDecoration:'none'}}>
+                <Link to='/cms' style={{textDecoration:'none'}}>
             <Button>
-              Table
+              Back
             </Button>
             </Link>
                 </Col>

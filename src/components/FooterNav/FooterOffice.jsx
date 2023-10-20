@@ -5,6 +5,7 @@ import ViewListIcon from '@mui/icons-material/ViewList';
 import apis from '../../utils/apiUrl.json';
 import DialogActions from '@mui/material/DialogActions';
 import Alert from '@mui/material/Alert';
+import HomeIcon from '@mui/icons-material/Home';
 import {
   Table,
   TableBody,
@@ -115,7 +116,7 @@ console.log(formData)
     <div className="container">
       <div className="row">
       <div className="col text-end">
-            <Link to="/footer/footerofficetable" style={{ textDecoration: 'none' }}>
+            <Link to="/footer/footertable" style={{ textDecoration: 'none' }}>
               <button className="btn btn-primary">
                 <ViewListIcon /> Data view
               </button>
@@ -174,6 +175,11 @@ console.log(formData)
             <button className="btn btn-primary" onClick={handleOpenConfirmation}>
               Submit
             </button>
+            <Link to="/dashboard" className="link">
+            <button className="btn btn-primary">
+              <HomeIcon/>Back
+            </button>
+            </Link>
             <Dialog open={confirmDialogOpen} onClose={handleCloseConfirmation}>
               <DialogTitle>Confirm Submit</DialogTitle>
               <DialogContent>

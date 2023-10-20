@@ -11,7 +11,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import { Link, useParams } from 'react-router-dom';
-
+import HomeIcon from '@mui/icons-material/Home';
 
 import DialogActions from '@mui/material/DialogActions';
 import Alert from '@mui/material/Alert';
@@ -201,6 +201,12 @@ console.log(formData)
             <button className="btn btn-primary" onClick={handleOpenConfirmation}>
               Submit
             </button>
+            {/* <Link to="/dashboard" className="link"> */}
+            <button className="btn btn-primary" onClick={handleOpenConfirmation}>
+              <HomeIcon/>Back
+            </button>
+          {/* </Link> */}
+            
             <Dialog open={confirmDialogOpen} onClose={handleCloseConfirmation}>
               <DialogTitle>Confirm Submit</DialogTitle>
               <DialogContent>Are you sure you want to submit this data?</DialogContent>

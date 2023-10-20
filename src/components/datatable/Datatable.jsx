@@ -9,6 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import api from '../../utils/apiUrl.json';
 import './datatable.scss';
+import HomeIcon from '@mui/icons-material/Home';
 
 
 import {
@@ -87,14 +88,14 @@ const Datatable = () => {
     const lowerCaseName = item.user_name.toLowerCase();
     const lowerCaseEmail = item.user_email.toLowerCase();
     const lowerCaseMobile = item.user_mobile_no.toLowerCase();
-    
+
     return (
       (lowerCaseName.includes(nameFilter.toLowerCase()) ||
         lowerCaseEmail.includes(nameFilter.toLowerCase()) ||
         lowerCaseMobile.includes(nameFilter.toLowerCase()))
     );
   });
-  
+
   return (
     <>
       <div className="datatable">
@@ -103,6 +104,14 @@ const Datatable = () => {
           <Link to="/users/new" className="link">
             <Button id="btn" variant="contained">
               <AddIcon /> Add New
+            </Button>
+          </Link>
+        </div>
+        <div className="datatableTitle" style={{ paddingTop: 20, paddingLeft: 10 }}>
+         
+          <Link to="/dashboard" className="link">
+            <Button id="btn" variant="contained">
+            <HomeIcon /> Back
             </Button>
           </Link>
         </div>
@@ -129,17 +138,23 @@ const Datatable = () => {
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>  <TextField
-          label="Search"
-          variant="outlined"
-          value={nameFilter || emailFilter || mobileFilter}
-          onChange={(e) => {
-            const searchValue = e.target.value.toLowerCase();
-            setNameFilter(searchValue);
-            setEmailFilter(searchValue);
-            setMobileFilter(searchValue);
-          }}
-        />
-</TableRow>
+                  label="Search"
+                  variant="outlined"
+                  value={nameFilter || emailFilter || mobileFilter}
+                  onChange={(e) => {
+                    const searchValue = e.target.value.toLowerCase();
+                    setNameFilter(searchValue);
+                    setEmailFilter(searchValue);
+                    setMobileFilter(searchValue);
+                  }}
+                />
+                </TableRow>
+                {/* <Link to="/dashboard">
+                  <Button variant="primary" type="submit" style={{ width: 100 }}>
+                    Back
+                  </Button>
+                </Link> */}
+
                 <TableRow>
                   <TableCell>ID</TableCell>
                   <TableCell>Name</TableCell>
@@ -176,6 +191,7 @@ const Datatable = () => {
             </Table>
           </TableContainer>
         )}
+  
       </div>
       <Dialog open={openDeleteDialog} onClose={handleDeleteCancel}>
         <DialogTitle>Confirm Delete</DialogTitle>

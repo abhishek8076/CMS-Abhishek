@@ -34,6 +34,7 @@ const Home = () => {
           <div class="main-body">
             <div className="row">
               <div className="col-md-6">
+              <Link to='/profile'>
                 {/* <Link to='/Cms' style={{ textDecoration: "none" }}> */}
                 <Card sx={{ maxWidth: 600, height: 250, marginBottom: '40px' }}>
                   <CardActionArea>
@@ -54,7 +55,8 @@ const Home = () => {
                     </CardContent>
                   </CardActionArea>
                 </Card>
-                {/* </Link> */}
+                </Link>
+              
               </div>
               <div className="col-md-6">
                 {/* <Link to='/Cms' style={{ textDecoration: "none" }}> */}

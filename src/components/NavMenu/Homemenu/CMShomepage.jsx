@@ -13,6 +13,8 @@ import { ButtonBase } from '@mui/material';
 import { ButtonGroup } from 'react-bootstrap';
 import apiClient from '../../../services/AxiosApi'
 import apis from '../../../utils/apiUrl.json'
+import { Link } from 'react-router-dom';
+import HomeIcon from '@mui/icons-material/Home';
 
 export const CMShomepage = () => {
   const id = 21;
@@ -80,6 +82,11 @@ export const CMShomepage = () => {
         <div className="App">
           <JoditEditor value={data} onChange={onChange} />
           <Button onClick={handleSave}>Save Content</Button>
+          <Link to="/dashboard" className="link">
+            <Button id="btn" variant="contained">
+            <HomeIcon /> Back
+            </Button>
+          </Link>
         </div>
 
         <Dialog open={confirmDialogOpen} onClose={handleCloseConfirmation}>

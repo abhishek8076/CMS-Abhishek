@@ -354,6 +354,11 @@ const onChange = useCallback((html) => {
             <button className="btn btn-primary" onClick={handleOpenConfirmation}>
               Update
             </button>
+            <Button type="button" className="view-button">
+              <Link to="/cms" className="view-button">
+               Back
+              </Link>
+            </Button>
             <Dialog open={confirmDialogOpen} onClose={handleCloseConfirmation}>
               <DialogTitle>Confirm Submit</DialogTitle>
               <DialogContent>

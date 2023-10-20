@@ -213,9 +213,9 @@ export const Menu = () => {
 
   return (
     <div >
-   
+
       <div >
-     
+
         <div className="container">
           <div className="row justify-content-center">
             <div >
@@ -319,10 +319,7 @@ export const Menu = () => {
                   <div className="mb-3">
                     <label className="form-label text-dark">HTML Editor</label>
                     <div >
-                     
                     </div>
-                    
-                   
                     <JoditEditor
                       value={content}
                       config={config}

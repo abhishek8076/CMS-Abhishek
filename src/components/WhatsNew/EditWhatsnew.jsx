@@ -1,4 +1,4 @@
-import React, { useState, useEffect ,useMemo,useCallback} from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import Axios from 'axios';
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
@@ -14,6 +14,7 @@ import { Link, useParams } from 'react-router-dom';
 import Navbar from '../navbar/Navbar';
 import Sidebar from '../sidebar/Sidebar';
 import JoditEditor from 'jodit-react';
+import HomeIcon from '@mui/icons-material/Home';
 
 export const EditWhatsnew = () => {
   const { id } = useParams();
@@ -60,7 +61,7 @@ export const EditWhatsnew = () => {
       apiClient.get(apis.getwhatsnewbyid + id)
         .then((response) => {
           setFormData(response.data)
-         
+
         })
         .catch((error) => {
           console.error('Error fetching data for editing:', error);
@@ -78,18 +79,18 @@ export const EditWhatsnew = () => {
       });
     }
   }, [id]);
-  
+
 
   // useEffect(() => {
   //   async function fetchData() {
   //     try {
-        
+
   //       const response = await apiClient.get(apis.getwhatsnewbyid + id);
   //       setFormData(response.data);
-       
+
   //     } catch (error) {
   //       console.error('Error fetching user data:', error);
-       
+
   //     }
   //   }
   //   fetchData();
@@ -143,7 +144,7 @@ export const EditWhatsnew = () => {
     const imageFile = event.target.files[0];
     setFile(imageFile);
   };
-  
+
 
   // const handleInputChange = (event) => {
   //   const { name, value, type } = event.target;
@@ -163,10 +164,10 @@ export const EditWhatsnew = () => {
 
   const handleInputChange = (event) => {
     const { name, value, type } = event.target;
-  
+
     // Store the previous content type
     setPrevContentType(formData.contenttype);
-  
+
     if (type === 'file') {
       setFormData({
         ...formData,
@@ -179,7 +180,7 @@ export const EditWhatsnew = () => {
       });
     }
   };
-  
+
   const openModal = (message) => {
     setModalMessage(message);
     setIsModalOpen(true);
@@ -218,7 +219,7 @@ export const EditWhatsnew = () => {
   //         console.log('Data updated:', response.data);
   //         toast.success('Data updated successfully!');
   //         openModal('Data updated successfully!');
-        
+
   //     } catch (error) {
   //       console.error('Error saving/updating data:', error);
   //     }
@@ -230,7 +231,7 @@ export const EditWhatsnew = () => {
         const formDataToSend = new FormData();
         formDataToSend.append('news_tittle', formData.news_tittle);
         formDataToSend.append('contenttype', formData.contenttype);
-  
+
         if (formData.contenttype === 4) {
           formDataToSend.append('external_file', formData.external_file);
         } else if (formData.contenttype === 3) {
@@ -240,10 +241,10 @@ export const EditWhatsnew = () => {
         } else if (formData.contenttype === 1) {
           formDataToSend.append('html', html);
         }
-  
+
         formDataToSend.append('startdate', formData.startdate);
         formDataToSend.append('end_date', formData.end_date);
-  
+
         const response = await apiClient.put(apis.getwhatsnewbyid + id, formDataToSend, {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -293,33 +294,33 @@ export const EditWhatsnew = () => {
                   {errors.news_tittle && <div className="text-danger">{errors.news_tittle}</div>}
                 </div>
 
-                 <div className="mb-3">
-            <label className="form-label text-dark">Select a content type</label>
-            <select
-              className="form-select"
-              name="contenttype"
-              value={formData.contenttype}
-              onChange={handleInputChange}
-              // onClick={handleChangeOptions}
+                <div className="mb-3">
+                  <label className="form-label text-dark">Select a content type</label>
+                  <select
+                    className="form-select"
+                    name="contenttype"
+                    value={formData.contenttype}
+                    onChange={handleInputChange}
+                  // onClick={handleChangeOptions}
 
-            >
-              <option value="">Select a content type</option>
-              {/* <option value={4}>External Link</option>
+                  >
+                    <option value="">Select a content type</option>
+                    {/* <option value={4}>External Link</option>
               <option value={3}>Internal Link</option>
               <option value={2}>File</option>
               <option value={1}>HTML</option> */}
-               {optionsData.map((data) => (
-                                    <option key={data.id} value={data.id}>
-                                      {data.label}
-                                    </option>
-                                  ))}
-            </select>
-            {errors.contenttype && <div className="text-danger">{errors.contenttype}</div>}
-          </div>
+                    {optionsData.map((data) => (
+                      <option key={data.id} value={data.id}>
+                        {data.label}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.contenttype && <div className="text-danger">{errors.contenttype}</div>}
+                </div>
 
                 {/* Render fields based on contenttype */}
                 {formData.contenttype === 4 && (
-                  
+
                   <div className="mb-3">
                     <label className="form-label text-dark">Enter External Link</label>
                     <input
@@ -359,8 +360,8 @@ export const EditWhatsnew = () => {
                     <input
                       className="form-control"
                       type="file"
-                     
-                      
+
+
                       onChange={handleImageChange}
                     />
                     {errors.file && (
@@ -381,86 +382,86 @@ export const EditWhatsnew = () => {
                         onModelChange={handleEditorChange}
                       /> */}
                       <JoditEditor
-                      value={formData.html}
-                      config={config}
-                      tabIndex={1}
-                      onChange={onChange}
-                    />
-                    {console.log("hf")}
+                        value={formData.html}
+                        config={config}
+                        tabIndex={1}
+                        onChange={onChange}
+                      />
+                      {console.log("hf")}
                     </div>
                     {errors.html && (
-                      <div className="text-danger">{errors.html}</div>  
+                      <div className="text-danger">{errors.html}</div>
                     )}
                   </div>
                 )}
-<div className="mb-3">
-  {formData.contenttype === "4" ? (
-    <>
-      <label className="form-label text-dark">Enter External Link</label>
-      <input
-        className="form-control"
-        type="text"
-        placeholder="Enter External Link"
-        name="external_file"
-        value={formData.external_file}
-        onChange={handleInputChange}
-      />
-      {errors.external_file && (
-        <div className="text-danger">{errors.external_file}</div>
-      )}
-    </>
-  ) : formData.contenttype === "3" ? (
-    <>
-      <label className="form-label text-dark">Enter Internal Link</label>
-      <input
-        className="form-control"
-        type="text"
-        placeholder="Enter Internal Link"
-        name="internal_file"
-        value={formData.internal_file}
-        onChange={handleInputChange}
-      />
-      {errors.internal_file && (
-        <div className="text-danger">{errors.internal_file}</div>
-      )}
-    </>
-  ) : formData.contenttype === "2" ? (
-    <>
-      <label className="form-label text-dark">Choose File</label>
-      <input
-        className="form-control"
-        type="file"
-        onChange={handleImageChange}
-      />
-      {errors.file && (
-        <div className="text-danger">{errors.file}</div>
-      )}
-    </>
-  ) : formData.contenttype === "1" ? (
-    <>
-      <label className="form-label text-dark">HTML Editor</label>
-      <div>
-        {/* <FroalaEditorComponent
+                <div className="mb-3">
+                  {formData.contenttype === "4" ? (
+                    <>
+                      <label className="form-label text-dark">Enter External Link</label>
+                      <input
+                        className="form-control"
+                        type="text"
+                        placeholder="Enter External Link"
+                        name="external_file"
+                        value={formData.external_file}
+                        onChange={handleInputChange}
+                      />
+                      {errors.external_file && (
+                        <div className="text-danger">{errors.external_file}</div>
+                      )}
+                    </>
+                  ) : formData.contenttype === "3" ? (
+                    <>
+                      <label className="form-label text-dark">Enter Internal Link</label>
+                      <input
+                        className="form-control"
+                        type="text"
+                        placeholder="Enter Internal Link"
+                        name="internal_file"
+                        value={formData.internal_file}
+                        onChange={handleInputChange}
+                      />
+                      {errors.internal_file && (
+                        <div className="text-danger">{errors.internal_file}</div>
+                      )}
+                    </>
+                  ) : formData.contenttype === "2" ? (
+                    <>
+                      <label className="form-label text-dark">Choose File</label>
+                      <input
+                        className="form-control"
+                        type="file"
+                        onChange={handleImageChange}
+                      />
+                      {errors.file && (
+                        <div className="text-danger">{errors.file}</div>
+                      )}
+                    </>
+                  ) : formData.contenttype === "1" ? (
+                    <>
+                      <label className="form-label text-dark">HTML Editor</label>
+                      <div>
+                        {/* <FroalaEditorComponent
           tag="textarea"
           config={config}
           model={html}
           value={formData.html}
           onModelChange={handleEditorChange}
         /> */}
-        <JoditEditor
-          value={formData.html}
-          config={config}
-          tabIndex={1}
-          onChange={onChange}
-        />
-        {console.log("hf")}
-      </div>
-      {errors.html && (
-        <div className="text-danger">{errors.html}</div>
-      )}
-    </>
-  ) : null}
-</div>
+                        <JoditEditor
+                          value={formData.html}
+                          config={config}
+                          tabIndex={1}
+                          onChange={onChange}
+                        />
+                        {console.log("hf")}
+                      </div>
+                      {errors.html && (
+                        <div className="text-danger">{errors.html}</div>
+                      )}
+                    </>
+                  ) : null}
+                </div>
 
                 <div className="mb-3">
                   <label className="form-label text-dark">Starting Date</label>
@@ -494,6 +495,11 @@ export const EditWhatsnew = () => {
                   <button className="btn btn-primary" onClick={handleSubmit}>
                     Update
                   </button>
+                  <Link to="/dashboard" className="link">
+                    <button className="btn btn-primary" >
+                      <HomeIcon />Back
+                    </button>
+                  </Link>
                   <CustomModal isOpen={isModalOpen} message={modalMessage} onClose={closeModal} />
                 </div>
               </div>

@@ -123,6 +123,11 @@ console.log(data)
                 Add data
               </Link>
             </Button>
+            <Button type="button" className="view-button">
+              <Link to="/dashboard" className="view-button">
+                Back
+              </Link>
+            </Button>
           </div>
           <div className="scrollable-table">
             <input

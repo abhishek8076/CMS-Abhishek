@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import apiClient from '../../../services/AxiosApi';
 import apis from '../../../utils/apiUrl.json';
-
+import HomeIcon from '@mui/icons-material/Home';
 export const FooterOffice = () => {
   const {id}= useParams()
   const [html, setHtml] = useState('');
@@ -155,6 +155,11 @@ export const FooterOffice = () => {
             <button className="btn btn-primary" onClick={handleConfirmSubmit}>
               Submit
             </button>
+            <Link to="/dashboard" className="link">
+            <button className="btn btn-primary">
+              <HomeIcon/>Back
+            </button>
+            </Link>
           </div>
         </div>
       </div>
