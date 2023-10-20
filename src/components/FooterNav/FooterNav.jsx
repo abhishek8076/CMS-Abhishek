@@ -34,6 +34,7 @@ import {
 } from '@mui/material'; 
 import JoditEditor from 'jodit-react';
 
+
 function EAlert(props) {
   return <Alert elevation={6} variant="filled" {...props} />;
 }
@@ -46,6 +47,7 @@ export const FooterPage = () => {
   // const [snackbarOpen, setSnackbarOpen] = useState(false); // Snackbar state
   const [modalMessage, setModalMessage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [dropdownOptions, setDropdownOptions] = useState([]);
   const navigate = useNavigate();
   const config = useMemo(
     () => ({
@@ -163,7 +165,7 @@ export const FooterPage = () => {
       if (formData.contenttype === '4') {
         formDataToSend.append('external_link', formData.external_link);
       } else if (formData.contenttype === '3') {
-        formDataToSend.append('internale_link', formData.internale_link);
+        formDataToSend.append('internale_link', formData.internal_link);
       } else if (formData.contenttype === '2') {
         formDataToSend.append('file', file);
       } else if (formData.contenttype === '1') {
@@ -193,6 +195,21 @@ export const FooterPage = () => {
       console.error('Error saving data:', error);
     }
   };
+  useEffect(() => {
+    const fetchData1= async()=> {
+     try {
+      
+       const response = await apiClient.get(apis.getmenuname);
+       setDropdownOptions(response.data);
+      
+     } catch (error) {
+       console.error('Error fetching user data:', error);
+     
+     }
+   }
+   fetchData1();
+ }, []);
+
 
 
   console.log(formData)
@@ -266,15 +283,29 @@ export const FooterPage = () => {
           {formData.contenttype === '3' && (
             <div className="mb-3">
               <label className="form-label text-dark">Enter Internal Link</label>
-              <input
+              {/* <input
                 className="form-control"
                 type="text"
                 placeholder="Enter Internal Link"
                 name="internale_link"
                 value={formData.internale_link}
                 onChange={handleInputChange}
-              />
-              {errors.internale_link && <div className="text-danger">{errors.internale_link}</div>}
+              /> */}
+               <select
+                                  className='form-control'
+                                  name='internal_link'
+                                  value={formData.internal_link}
+                                  onChange={handleInputChange}
+                                  // isInvalid={!!formErrors.internal_link}
+                                >
+                                  <option value='' style={{color:"black"}}>Select a Menu Name</option>
+                                  {dropdownOptions.map((data) => (
+                                    <option key={data.u_id} value={"/menu/"+data.u_menu_url}>
+                                      {"Menu Name"+":-"+data.u_menu_name}
+                                    </option>
+                                  ))}
+                                </select>
+              {errors.internale_link && <div className="text-danger">{errors.internal_link}</div>}
             </div>
           )}
 
