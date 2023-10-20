@@ -47,6 +47,7 @@ export const Submenu = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [data, Setdata] = useState([])
   const [selectedRole, setSelectedRole] = useState('');
+  const [selectedRole1, setSelectedRole1] = useState('');
   const [content, setContent] = useState("");
   const [dropdownOptions, setDropdownOptions] = useState([]);
   const [formErrors, setFormErrors] = useState({});
@@ -142,6 +143,7 @@ export const Submenu = () => {
 
   const handleInputChange = (event) => {
     setSelectedRole(event.target.value);
+    setSelectedRole1(event.target.value);
     const { name, value, type } = event.target;
 
     if (type === 'file') {
@@ -150,6 +152,7 @@ export const Submenu = () => {
         [name]: event.target.files[0],
       });
     } else {
+      setSelectedRole(event.target.value);
       setSelectedRole(event.target.value);
       setFormData({
         ...formData,

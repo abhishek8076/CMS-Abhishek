@@ -134,7 +134,10 @@ export const FooterNavEdit = () => {
         ...formData,
         [name]: event.target.files[0],
       });
-    } else {
+    } else if(formData.contenttype===1){
+          
+    }
+    else {
       setFormData({
         ...formData,
         [name]: value,
