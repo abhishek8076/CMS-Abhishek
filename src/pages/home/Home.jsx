@@ -15,8 +15,8 @@ import img3 from '../../img/whatsnew.png';
 import img4 from '../../img/banner1.png';
 import img5 from '../../img/link2.png';
 import img6 from '../../img/order.png';
-import img7 from '../../img/dashboard.png';
-import img8 from '../../img/dash.jpeg';
+import img7 from '../../img/dash1.jpg';
+import img8 from '../../img/dashboard3.jpg';
 
 
 import { AutoAwesomeMotionOutlined, AutoFixHigh } from '@mui/icons-material';
@@ -44,10 +44,13 @@ const Home = () => {
                       alt="green iguana"
                     />
                     <CardContent className="dashtop-left" >
-                      <Typography gutterBottom variant="h6" component="div" style={{ textAlign: 'left', fontFamily: ' Garamond, serif', color: "blueviolet", fontSize: '36px', fontWeight: 600 }}>
+                      <Typography gutterBottom variant="h6" component="div" style={{ textAlign: 'left', marginBottom:'2px', fontFamily: ' Garamond, serif', color: 'white', fontSize: '36px', fontWeight: 600 }}>
                         Good Morning
                       </Typography>
-                      {user.r_name}
+                      <Typography gutterBottom variant="h6" component="div" style={{ textAlign: 'left', marginLeft:'6px', fontFamily: ' Garamond, serif', color: 'white', fontSize: '26px', fontWeight: 600 }}>
+                      {user.r_name} !
+                      </Typography>
+                      
                     </CardContent>
                   </CardActionArea>
                 </Card>
@@ -64,7 +67,7 @@ const Home = () => {
                       alt="green iguana"
                     />
                     <CardContent className="dashtop-left" >
-                      <Typography gutterBottom variant="h6" component="div" style={{ textAlign: 'center', fontFamily: ' Garamond, serif', color: "white", fontSize: '25px', marginTop: '60px', marginLeft: '60px', fontWeight: 600 }}>
+                      <Typography gutterBottom variant="h6" component="div" style={{ textAlign: 'center', fontFamily: ' Garamond, serif', color: "white", fontSize: '28px', marginTop: '60px', marginLeft: '60px', fontWeight: 700 }}>
                         Build The Site Of Your Dreams
                       </Typography>
                       <div class="pr-button-container">
