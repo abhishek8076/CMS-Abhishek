@@ -45,6 +45,7 @@ export const FooterNavEdit = () => {
   // const [snackbarOpen, setSnackbarOpen] = useState(false); // Snackbar state
   const [modalMessage, setModalMessage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+ 
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -54,6 +55,7 @@ export const FooterNavEdit = () => {
     internale_link: '',
     file: '',
     html: '',
+    footertype:3,
   });
   const [errors, setErrors] = useState({});
 
@@ -65,6 +67,7 @@ export const FooterNavEdit = () => {
       internale_link: '',
       file: '',
       html: '',
+      footertype:3,
     });
   }, []);
   const config = useMemo(
@@ -73,6 +76,8 @@ export const FooterNavEdit = () => {
     }),
     []
   );
+;
+
 
   const onChange = useCallback((html) => {
     console.log("Editor content changed:", html);
@@ -123,6 +128,7 @@ export const FooterNavEdit = () => {
   const handleInputChange = (event) => {
     const { name, value, type } = event.target;
 
+
     if (type === 'file') {
       setFormData({
         ...formData,
@@ -152,19 +158,20 @@ export const FooterNavEdit = () => {
       const formDataToSend = new FormData();
       formDataToSend.append('tittle_name', formData.tittle_name);
       formDataToSend.append('contenttype', formData.contenttype);
+      formDataToSend.append('footertype', formData.footertype);
 
-      if (formData.contenttype === '4') {
+      if (formData.contenttype === 4) {
         formDataToSend.append('external_link', formData.external_link);
-      } else if (formData.contenttype === '3') {
+      } else if (formData.contenttype === 3) {
         formDataToSend.append('internale_link', formData.internale_link);
-      } else if (formData.contenttype === '2') {
+      } else if (formData.contenttype === 2) {
         formDataToSend.append('file', file);
       } 
-      else if (formData.contenttype === '1') {
-        formDataToSend.append('html_content', cotent);
+      else if (formData.contenttype === 1) {
+        formDataToSend.append('html', cotent);
       }
 
-      const response = await apiClient.put(apis.newfooter, formDataToSend, {
+      const response = await apiClient.put(apis.getfooterbyid+id, formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -175,14 +182,7 @@ export const FooterNavEdit = () => {
       setSnackbarOpen(true);
        // Show the success Snackbar
         // Clear the form fields
-    setFormData({
-      tittle_name: '',
-      contenttype: '',
-      external_link: '',
-      internale_link: '',
-      file: '',
-      html: '',
-    });
+    
     } catch (error) {
       console.error('Error saving data:', error);
     }
@@ -308,7 +308,7 @@ export const FooterNavEdit = () => {
                   onChange={(e) => handleEditorChange(e.target.value)}
                 ></textarea> */}
                  <JoditEditor
-                    value={cotent}
+                    value={formData.html}
                     config={config}
                     tabIndex={1}
                     onChange={onChange}

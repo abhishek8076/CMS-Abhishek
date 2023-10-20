@@ -56,7 +56,7 @@ export const FooterPage = () => {
 
   const onChange = useCallback((content) => {
     console.log("Editor content changed:", content);
-    sethtml(content);
+    setContent(content);
   }, []);
 
   const [formData, setFormData] = useState({
@@ -113,9 +113,9 @@ export const FooterPage = () => {
       errors.file = 'File is required';
     }
 
-    if (formData.contenttype === '1' && !html) {
-      errors.editorContent = 'HTML content is required';
-    }
+    // if (formData.contenttype === '1' && !html) {
+    //   errors.editorContent = 'HTML content is required';
+    // }
 
     setErrors(errors);
 
@@ -303,7 +303,7 @@ export const FooterPage = () => {
                   onChange={(e) => handleEditorChange(e.target.value)}
                 ></textarea> */}
                  <JoditEditor
-                    value={content}
+                  
                     config={config}
                     tabIndex={1}
                     onChange={onChange}
