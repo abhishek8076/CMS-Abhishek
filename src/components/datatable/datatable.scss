@@ -16,8 +16,44 @@
 
   }
 
-.table{
-  
+/* custom-styles.css */
+
+/* Style for the Add New button */
+.add-button {
+  background-color: #2196F3; /* Change the background color */
+  color: #fff; /* Change the text color */
+  margin-right: 10px; /* Adjust the margin */
 }
+
+/* Style for the Back button */
+.back-button {
+  background-color: #4CAF50; /* Change the background color */
+  color: #fff; /* Change the text color */
+}
+
+/* Style for the Search input */
+.search-input {
+  margin-top: 10px; /* Adjust the margin */
+}
+
+/* Style for the Edit button */
+.edit-button {
+  background-color: #FFC107; /* Change the background color */
+  color: #000; /* Change the text color */
+  margin-right: 5px; /* Adjust the margin */
+}
+
+/* Style for the Delete button */
+.delete-button {
+  background-color: #FF5722; /* Change the background color */
+  color: #fff; /* Change the text color */
+}
+
+/* Style for the Delete Confirm button in the dialog */
+.delete-confirm-button {
+  background-color: #FF5722; /* Change the background color */
+  color: #fff; /* Change the text color */
+}
+
   
 }
