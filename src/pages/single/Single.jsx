@@ -1,14 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Col, Row, Container, Card, Form, Button, Spinner } from 'react-bootstrap';
+import {
+  Container,
+  Card,
+  CardContent,
+  Button,
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  TextField,
+  Typography,
+  Box,
+} from '@mui/material'; // Import Material-UI components
 import Sidebar from '../../components/sidebar/Sidebar';
 import Navbar from '../../components/navbar/Navbar';
-import 'bootstrap/dist/css/bootstrap.css';
 import apiClinet from '../../services/AxiosApi';
 import api from '../../utils/apiUrl.json';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert } from '@mui/material'; // Import Material-UI components
+import { Dialog, DialogTitle, DialogContent, DialogActions, Alert } from '@mui/material'; // Import Material-UI components
 import { toast } from 'react-toastify';
-import apiClient from '../../services/AxiosApi'
+import apiClient from '../../services/AxiosApi';
+
 export function Single() {
   const { id } = useParams();
   const [data, setData] = useState({
@@ -16,19 +29,17 @@ export function Single() {
     email: '',
     mobile_no: '',
     address: '',
-    usertype:''
+    usertype: '',
   });
-  const [dropdownOptions, setDropdownOptions] = useState([]);
-  const [formErrors, setFormErrors] = useState({});
-  const [selectedRole, setSelectedRole] = useState('');
   const [loading, setLoading] = useState(false);
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [updateError, setUpdateError] = useState('');
   const [validationErrors, setValidationErrors] = useState({});
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [successDialogOpen, setSuccessDialogOpen] = useState(false);
-
+  const [dropdownOptions, setDropdownOptions] = useState([]);
+  const [selectedRole, setSelectedRole] = useState('');
+  const [showLoadingDialog, setShowLoadingDialog] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -44,6 +55,7 @@ export function Single() {
     }
     fetchData();
   }, [id]);
+
   useEffect(() => {
     async function fetchData1() {
       try {
@@ -67,7 +79,6 @@ export function Single() {
     } else if (!isValidName(data.name)) {
       errors.name = 'Please input alphabet characters only';
     }
-    
 
     if (!data.email) {
       errors.email = 'Email is required';
@@ -85,6 +96,10 @@ export function Single() {
       errors.address = 'Address is required';
     }
 
+    if (selectedRole === '') {
+      errors.usertype = 'Please select a role';
+    }
+
     if (Object.keys(errors).length > 0) {
       setValidationErrors(errors);
     } else {
@@ -98,33 +113,41 @@ export function Single() {
     setConfirmDialogOpen(false);
   };
 
- const handleDeleteConfirm = async () => {
-  // Handle confirm action in the confirmation dialog
-
-  // Close the confirmation dialog
-  setConfirmDialogOpen(false);
-
-  try {
-    const formDataToSend = {
-      ...data,
-      usertype: parseInt(selectedRole, 10),
-    };
-
-    const response = await apiClient.put(api.edituser + id, formDataToSend);
-    if (response.status === 200) {
-      // Show the success dialog
-      setSuccessDialogOpen(true);
-
+  const handleDeleteConfirm = async () => {
+    // Handle confirm action in the confirmation dialog
+    // Close the confirmation dialog
+    setConfirmDialogOpen(false);
+    // Show the loading indicator
+    setShowLoadingDialog(true);
+    
+    setTimeout(() => {
+      // Simulate a 3-second loading delay
+      setShowLoadingDialog(false);
       
-    } else {
-      toast.error('Something went wrong');
-    }
-  } catch (error) {
-    console.error('Error submitting data:', error);
-    toast.error('Something went wrong');
-  }
-};
-
+      // Update data
+      apiClient
+        .put(api.edituser + id, {
+          ...data,
+          usertype: parseInt(selectedRole, 10),
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            setUpdateSuccess(true);
+          } else {
+            setUpdateSuccess(false);
+            toast.error('Something went wrong');
+          }
+        })
+        .catch((error) => {
+          console.error('Error submitting data:', error);
+          setUpdateSuccess(false);
+          toast.error('Something went wrong');
+        })
+        .finally(() => {
+          setSuccessDialogOpen(true);
+        });
+    }, 3000);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -146,16 +169,13 @@ export function Single() {
 
   const isValidMobile = (mobile) => {
     const mobileRegex = /^[0-9]{10}$/;
-
     return mobileRegex.test(mobile);
   };
+
   const isValidName = (name) => {
     const nameRegex = /^[A-Za-z ]+$/;
     return nameRegex.test(name);
   };
-
-  const storedUserString = localStorage.getItem('user');
-  const user = JSON.parse(storedUserString);
 
   return (
     <>
@@ -164,144 +184,114 @@ export function Single() {
           <Sidebar className="nav" style={{}} />
           <div className="homeContainer">
             <Navbar />
-            <div></div>
-            <Container>
-              <Row className="vh-100 d-flex justify-content-center align-items-center">
-                <Col md={10} lg={6} xs={12}>
-                  <Card.Body>
-                    <div className="mb-3 mt-md-4">
-                      <h2 className="fw-bold mb-4 text-center text-uppercase">
-                        User Details
-                      </h2>
-                      <div className="mb-3">
-                        <Form>
-                          <Form.Group className="mb-3" controlId="Name">
-                            <Form.Label className="nametitle" style={{ color: "black" }}>Name</Form.Label>
-                            <Form.Control
-                              type="text"
-                              name="name"
-                              value={data.name}
-                              onChange={handleInputChange}
-                              isInvalid={!!validationErrors.name}
-                              maxLength={15}
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              {validationErrors.name}
-                            </Form.Control.Feedback>
-                          </Form.Group>
-                          <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label className="text-center" style={{ color: "black" }}>
-                              Email
-                            </Form.Label>
-                            <Form.Control
-                              type="email"
-                              name="email"
-                              value={data.email}
-                              onChange={handleInputChange}
-                              isInvalid={!!validationErrors.email}
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              {validationErrors.email}
-                            </Form.Control.Feedback>
-                          </Form.Group>
-                          <Form.Group className="mb-3" controlId="Mobile">
-                            <Form.Label className="text-center" style={{ color: "black" }}>Mobile</Form.Label>
-                            <Form.Control
-                              type="text"
-                              name="mobile_no"
-                              value={data.mobile_no}
-                              onChange={handleInputChange}
-                              isInvalid={!!validationErrors.mobile_no}
-                              maxLength={10}
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              {validationErrors.mobile_no}
-                            </Form.Control.Feedback>
-                          </Form.Group>
-                          <Form.Group className="mb-3" controlId="Address">
-                            <Form.Label className="text-center" style={{ color: "black" }}>Address</Form.Label>
-                            <Form.Control
-                              type="text"
-                              name="address"
-                              value={data.address}
-                              onChange={handleInputChange}
-                              isInvalid={!!validationErrors.address}
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              {validationErrors.address}
-                            </Form.Control.Feedback>
-                          </Form.Group>
-                          <Form.Group className="mb-3" controlId="Usertype">
-                              <div className="mb-12">
-                                <Form.Label className="text-center" style={{color:"black"}}>Role</Form.Label>
-                                <select
-                                  className='form-control'
-                                  name='usertype'
-                                  value={data.usertype}
-                                  onChange={handleInputChange}
-                                  isInvalid={!!formErrors.usertype}
-                                >
-                                  <option value='' style={{color:"black"}}>Select a role</option>
-                                  {dropdownOptions.map((data) => (
-                                    <option key={data.users_id} value={data.users_id}>
-                                      {data.user_name}
-                                    </option>
-                                  ))}
-                                </select>
-                                <Form.Control.Feedback type="invalid">
-                                  {formErrors.usertype}
-                                </Form.Control.Feedback>
-                              </div>
-                            </Form.Group>   
-                          {loading ? (
-                            <Spinner animation="border" variant="primary" />
-                          ) : (
-                            <>
-                              {updateSuccess && (
-                                <div className="alert alert-success">
-                                  User data updated successfully.
-                                </div>
-                              )}
-                              {updateError && (
-                                <div className="alert alert-danger">
-                                  {updateError}
-                                </div>
-                              )}
-                              <div
-                                style={{
-                                  display: 'flex',
-                                  
-                                  justifyContent:'space-between',
-                                  marginTop: '5px',
-                                }}
-                              >
-                                <Button
-                                  style={{ width: 'fit-content' }}
-                                  onClick={handleUpdateClick}
-                                >
-                                  Update User
-                                </Button>
-
-                                <Link to="/users">
-                                  <Button
-                                    variant="primary"
-                                    style={{
-                                      marginTop: '5px',
-                                      alignContent: 'right',
-                                    }}
-                                  >
-                                    Back
-                                  </Button>
-                                </Link>
-                              </div>
-                            </>
-                          )}
-                        </Form>
+            <Container maxWidth="lg">
+              <Card>
+                <CardContent>
+                  <Typography variant="h5" component="div">
+                    User Details
+                  </Typography>
+                  <Box mt={2}>
+                    <form>
+                      <Box mb={2}>
+                        <TextField
+                          fullWidth
+                          label="Name"
+                          type="text"
+                          name="name"
+                          value={data.name}
+                          onChange={handleInputChange}
+                          error={!!validationErrors.name}
+                          helperText={validationErrors.name}
+                          inputProps={{ maxLength: 15 }}
+                        />
+                      </Box>
+                      <Box mb={2}>
+                        <TextField
+                          fullWidth
+                          label="Email"
+                          type="email"
+                          name="email"
+                          value={data.email}
+                          onChange={handleInputChange}
+                          error={!!validationErrors.email}
+                          helperText={validationErrors.email}
+                        />
+                      </Box>
+                      <Box mb={2}>
+                        <TextField
+                          fullWidth
+                          label="Mobile"
+                          type="text"
+                          name="mobile_no"
+                          value={data.mobile_no}
+                          onChange={handleInputChange}
+                          error={!!validationErrors.mobile_no}
+                          helperText={validationErrors.mobile_no}
+                          inputProps={{ maxLength: 10 }}
+                        />
+                      </Box>
+                      <Box mb={2}>
+                        <TextField
+                          fullWidth
+                          label="Address"
+                          type="text"
+                          name="address"
+                          value={data.address}
+                          onChange={handleInputChange}
+                          error={!!validationErrors.address}
+                          helperText={validationErrors.address}
+                        />
+                      </Box>
+                      <Box>
+                        <FormControl fullWidth>
+                          <InputLabel id="role-label">Role</InputLabel>
+                          <Select
+                            labelId="role-label"
+                            id="role-select"
+                            name="usertype"
+                            value={selectedRole}
+                            onChange={handleInputChange}
+                            error={!!validationErrors.usertype}
+                          >
+                            <MenuItem value="">
+                              <em>None</em>
+                            </MenuItem>
+                            {dropdownOptions.map((option) => (
+                              <MenuItem key={option.users_id} value={option.users_id}>
+                                {option.user_name}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      </Box>
+                    </form>
+                  </Box>
+                  <Box mt={2}>
+                    {loading ? (
+                      <CircularProgress color="primary" />
+                    ) : (
+                      <div>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={handleUpdateClick}
+                        >
+                          Update User
+                        </Button>
+                        <Link to="/users">
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            style={{ marginLeft: '5px' }}
+                          >
+                            Back
+                          </Button>
+                        </Link>
                       </div>
-                    </div>
-                  </Card.Body>
-                </Col>
-              </Row>
+                    )}
+                  </Box>
+                </CardContent>
+              </Card>
             </Container>
           </div>
         </div>
@@ -323,20 +313,25 @@ export function Single() {
         </DialogActions>
       </Dialog>
 
-      <Dialog
-  open={successDialogOpen}
-  onClose={() => setSuccessDialogOpen(false)}
->
-  <DialogTitle>Success</DialogTitle>
-  <DialogContent>
-    User updated successfully!
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={() => setSuccessDialogOpen(false)} color="primary">
-      OK
-    </Button>
-  </DialogActions>
-</Dialog>
+      <Dialog open={successDialogOpen} onClose={() => setSuccessDialogOpen(false)}>
+        <DialogTitle>Success</DialogTitle>
+        <DialogContent>
+          User updated successfully!
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setSuccessDialogOpen(false)} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Loading Dialog */}
+      <Dialog open={showLoadingDialog} onClose={() => setShowLoadingDialog(false)}>
+        <DialogTitle>Loading</DialogTitle>
+        <DialogContent>
+          Updating data...
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
