@@ -1,9 +1,6 @@
 import React, { useState, useEffect ,useCallback,useMemo} from 'react';
 import Axios from 'axios';
-import 'froala-editor/js/froala_editor.pkgd.min.js';
-import 'froala-editor/css/froala_editor.pkgd.min.css';
-import 'froala-editor/css/froala_style.min.css';
-import FroalaEditorComponent from 'react-froala-wysiwyg';
+
 import apiClient from "../../../services/AxiosApi";
 import apis from '../../../utils/apiUrl.json';
 

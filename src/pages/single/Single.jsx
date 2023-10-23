@@ -249,7 +249,7 @@ export function Single() {
                             labelId="role-label"
                             id="role-select"
                             name="usertype"
-                            value={selectedRole}
+                            value={data.usertype}
                             onChange={handleInputChange}
                             error={!!validationErrors.usertype}
                           >
